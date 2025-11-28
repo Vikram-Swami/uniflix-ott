@@ -44,8 +44,10 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
     const movieId = query.get("movieId");
     useEffect(() => {
         if (movieData) {
-            let language = Cookies.get("lg") || movieData?.lang.find((item) => item.s === movieData?.d_lang).l
-            setSelectedLang(language)
+            let language = Cookies.get("lg") || movieData?.lang.find((item) => item.s === movieData?.d_lang)?.l
+            if (language) {
+                setSelectedLang(language)
+            }
         }
         if (movieData?.episodes[0] === null) {
             setActiveTab("related");
@@ -315,7 +317,7 @@ ${pageUrl}`;
     }
 
     return (
-        <div ref={scrollRef} className="bg-[#00050d] overflow-y-auto movie_details_popup_scroll h-screen serach_results overflow-x-hidden">
+        <div ref={scrollRef} className="bg-[#00050d] h-screen serach_results">
             {/* Hero Banner Section */}
             <section className="relative min-h-auto md:min-h-[75vh] 2xl:min-h-screen! w-full">
                 <div className="relative overflow-hidden z-10 flex min-h-auto md:min-h-[75vh] 2xl:min-h-screen! w-full items-end max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]! pb-5 xs:pb-10 md:pb-20 text-white max-md:flex-col">
@@ -333,7 +335,7 @@ ${pageUrl}`;
                                     e.target.src = getImageUrl(movieId);
                                 }}
                             /> */}
-                            <LazyImage src={bannerImage} alt={title} className={"transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"} />
+                            {/* <LazyImage src={bannerImage} alt={title} className={"transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"} /> */}
                         </div>
                     </div>
 
@@ -451,7 +453,7 @@ ${pageUrl}`;
                     </div>
                 </div>
             </section>
-            {movieData?.lang && <div className="max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]! mb-2 xs:mb-5">
+            {/* {movieData?.lang && <div className="max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]! mb-2 xs:mb-5">
                 <div className="max-w-[500px] overflow-x-scroll flex gap-2 xs:gap-4 pb-2 lang_slider">
                     {movieData?.lang.map((item, i) => {
                         return (
@@ -459,7 +461,7 @@ ${pageUrl}`;
                         )
                     })}
                 </div>
-            </div>}
+            </div>} */}
             {/* Tabs Section */}
             <section className="w-full pb-10">
                 <div className="sticky md:top-[60px] z-10">
@@ -499,7 +501,7 @@ ${pageUrl}`;
                         </ul>
 
                         {/* Episode Tab */}
-                        {activeTab === "episode" && episodes?.length > 0 && (
+                        {/* {activeTab === "episode" && episodes?.length > 0 && (
                             <div className="max-xs:mx-3 xs:mx-6 sm2:mx-8 md2:mx-11 2xl:mx-[72px]! pb-8" >
                                 {seasons?.length > 0 && (
                                     <div className="flex justify-end max-w-[1500px] mx-auto mb-10">
@@ -622,7 +624,7 @@ ${pageUrl}`;
                                     </button>}
                                 </div> : ""}
                             </div>
-                        )}
+                        )} */}
 
                         {/* Related Tab */}
                         {activeTab === "related" && (
