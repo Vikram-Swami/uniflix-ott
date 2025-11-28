@@ -8,14 +8,14 @@ export default function LazyImage({ src, alt, fallback, className }) {
 
             {/* Placeholder */}
             {!loaded && (
-                <div className="aspect-video w-full h-full bg-gray-300/20 shimmer"></div>
+                <div className="absolute inset-0 aspect-video w-full h-full bg-gray-300/20 shimmer"></div>
             )}
 
             {/* Real Image */}
             <img
                 src={src}
                 alt={alt}
-                className={`transition-opacity duration-700 object-cover h-full w-full 
+                className={`transition-opacity duration-700 object-cover aspect-video h-full w-full 
                     ${loaded ? "opacity-100" : "opacity-0"} ${className}`}
                 loading="lazy"
                 onLoad={() => setLoaded(true)}
