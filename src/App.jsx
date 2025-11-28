@@ -23,7 +23,6 @@ function App() {
   };
   const query = useQuery();
   const movieId = query.get("movieId")
-  console.log("isOpen", isOpen)
   // useEffect(() => {
   //   const html = document.querySelector("html");
   //   if (isOpen) {
@@ -77,7 +76,9 @@ function App() {
       {playlist && <VideoPlayerPopup movieData={movieData} />}
       <Navbar setIsOpen={setIsOpen} movieDetailsPopupScroll={MovieDetailsPopupScroll} isOpen={isOpen} />
       <SearchPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      {movieId && <SearchPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />}
+      {movieId && <div className="fixed inset-0 bg-[#00050d]/80 z-5000 flex justify-center items-center pt-20">
+        hello world
+      </div>}
       <Suspense
         fallback={
           <div className="flex justify-center items-end h-[50vh]">
@@ -86,7 +87,7 @@ function App() {
         }>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home setIsOpen={setIsOpen} />} />
+          <Route path="/home" element={<Home  />} />
           <Route path="/movies" element={<Movies />} />
           <Route path="/series" element={<TVShows />} />
           <Route path="/watch-list" element={<Watchlist />} />

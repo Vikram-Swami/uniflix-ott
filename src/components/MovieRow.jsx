@@ -16,7 +16,7 @@ import {
   TwoIcon,
 } from "../assets/icons";
 
-const MovieRow = ({ title, movieIds, setIsOpen }) => {
+const MovieRow = ({ title, movieIds }) => {
   const [reachStart, setReachStart] = useState(true);
   const [reachEnd, setReachEnd] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -127,7 +127,6 @@ const MovieRow = ({ title, movieIds, setIsOpen }) => {
                 id={id.trim()}
                 index={i}
                 ids={ids}
-                setIsOpen={setIsOpen}
                 activeIndex={activeIndex}
                 isHovering={isHovering}
                 setIsHovering={setIsHovering}
