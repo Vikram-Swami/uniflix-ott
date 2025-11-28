@@ -24,7 +24,7 @@ body {
 
 body,
 html {
-@apply sm:overflow-x-hidden
+@apply overflow-x-hidden
 }
 
 .movie_details_popup_scroll {
