@@ -25,7 +25,7 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
     const [seasonData, setSeasonData] = useState([]);
     const [activeIndex, setActiveIndex] = useState(0);
     const [hoveredIndex, setHoveredIndex] = useState(null);
-    const [selectedLang, setSelectedLang] = useState()
+    const [selectedLang, setSelectedLang] = useState("")
     const [page, setPage] = useState(1);
     const [isOpen, setIsOpen] = useState(false)
     const dropdownRef = useRef(null)
