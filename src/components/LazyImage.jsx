@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function LazyImage({ src, alt, fallback, className }) {
+export default function LazyImage({ src, alt, fallback, className, priority = false, }) {
     const [loaded, setLoaded] = useState(false);
 
     return (

@@ -326,7 +326,7 @@ ${pageUrl}`;
                         <div className="max-md:hidden absolute w-full md:w-[50%] h-full bg-linear-to-r from-[#000000cf] via-black/20 to-transparent z-10"></div>
                         <div className="w-full max-xs:-mx-3 xs:-mx-6 sm2:-mx-8 md:mx-0! max-sm:min-w-[calc(100%+24px)] xs:min-w-[calc(100%+48px)] sm2:min-w-[calc(100%+64px)]! md:min-w-full h-10 xs:h-64 hero_bg_leaner absolute -bottom-px left-0 z-10"></div>
                         <div className="group relative transition-all duration-500 ease-in-out opacity-100 w-full h-full max-xs:-mx-3 xs:-mx-6 sm2:-mx-8 md:mx-0! max-sm:min-w-[calc(100%+24px)] xs:min-w-[calc(100%+48px)] sm2:min-w-[calc(100%+64px)]! md:min-w-full">
-                            <LazyImage src={bannerImage} alt={title} className={"transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"} />
+                            <LazyImage priority={true} src={bannerImage} alt={title} className={"transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"} />
                         </div>
                     </div>
 
