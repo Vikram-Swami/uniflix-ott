@@ -182,7 +182,7 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
         }
     }, [selectedLang]);
 
-    const bannerImage = `/img/c/${movieId}.jpg`;
+    const bannerImage = `/api/img/c/${movieId}.jpg`;
     const title = movieData?.title || "Unknown Title";
     const description = movieData?.desc || "";
     const rating = movieData?.ua || "";
