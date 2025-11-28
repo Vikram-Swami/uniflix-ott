@@ -76,7 +76,7 @@ function App() {
       {playlist && <VideoPlayerPopup movieData={movieData} />}
       <Navbar setIsOpen={setIsOpen} movieDetailsPopupScroll={MovieDetailsPopupScroll} isOpen={isOpen} />
       <SearchPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      {movieId && <MovieDetailsPopup key={movieId} setMovieDetailsPopupScroll={setMovieDetailsPopupScroll} setMovieData={setMovieData} movieData={movieData} />}
+      {movieId && <SearchPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />}
       <Suspense
         fallback={
           <div className="flex justify-center items-end h-[50vh]">
