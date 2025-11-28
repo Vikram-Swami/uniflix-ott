@@ -24,12 +24,12 @@ body {
 
 body,
 html {
-  @apply sm:overflow-x-hidden;
+@apply sm:overflow-x-hidden
 }
 
-/* .movie_details_popup_scroll {
+.movie_details_popup_scroll {
   -webkit-overflow-scrolling: touch;
-} */
+}
 
 .nav_bg_leaner {
   background: linear-gradient(to bottom, #191e25, rgba(255, 0, 0, 0));
@@ -104,9 +104,8 @@ html {
   overflow: unset;
 }
 .swiper {
-  /* overflow: revert !important; */
+  overflow: revert !important;
   z-index: 1;
-  @apply sm:overflow-visible!;
 }
 
 .swiper-wrapper {
@@ -243,7 +242,7 @@ html {
 }
 
 .progress_bar_container:hover .progress_bar {
-  @apply md:h-2;
+  @apply md:h-2
 }
 
 .animate_height_loader {

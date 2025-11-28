@@ -175,15 +175,15 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
 
     const langRefs = useRef([]);
 
-    // useEffect(() => {
-    //     if (selectedLang && langRefs.current[selectedLang]) {
-    //         langRefs.current[selectedLang].scrollIntoView({
-    //             behavior: "smooth",
-    //             inline: "left",
-    //             block: "nearest"
-    //         });
-    //     }
-    // }, [selectedLang]);
+    useEffect(() => {
+        if (selectedLang && langRefs.current[selectedLang]) {
+            langRefs.current[selectedLang].scrollIntoView({
+                behavior: "smooth",
+                inline: "center",
+                block: "nearest"
+            });
+        }
+    }, [selectedLang]);
 
     const bannerImage = `/api/img/c/${movieId}.jpg`;
     const title = movieData?.title || "Unknown Title";
@@ -326,15 +326,6 @@ ${pageUrl}`;
                         <div className="max-md:hidden absolute w-full md:w-[50%] h-full bg-linear-to-r from-[#000000cf] via-black/20 to-transparent z-10"></div>
                         <div className="w-full max-xs:-mx-3 xs:-mx-6 sm2:-mx-8 md:mx-0! max-sm:min-w-[calc(100%+24px)] xs:min-w-[calc(100%+48px)] sm2:min-w-[calc(100%+64px)]! md:min-w-full h-10 xs:h-64 hero_bg_leaner absolute -bottom-px left-0 z-10"></div>
                         <div className="group relative transition-all duration-500 ease-in-out opacity-100 w-full h-full max-xs:-mx-3 xs:-mx-6 sm2:-mx-8 md:mx-0! max-sm:min-w-[calc(100%+24px)] xs:min-w-[calc(100%+48px)] sm2:min-w-[calc(100%+64px)]! md:min-w-full">
-                            {/* <img
-                                src={bannerImage}
-                                alt={title}
-                                loading="lazy"
-                                className="transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"
-                                onError={(e) => {   
-                                    e.target.src = getImageUrl(movieId);
-                                }}
-                            /> */}
                             <LazyImage src={bannerImage} alt={title} className={"transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"} />
                         </div>
                     </div>
@@ -453,7 +444,7 @@ ${pageUrl}`;
                     </div>
                 </div>
             </section>
-            {/* {movieData?.lang && <div className="max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]! mb-2 xs:mb-5">
+            {movieData?.lang && <div className="max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]! mb-2 xs:mb-5">
                 <div className="max-w-[500px] overflow-x-scroll flex gap-2 xs:gap-4 pb-2 lang_slider">
                     {movieData?.lang.map((item, i) => {
                         return (
@@ -461,7 +452,7 @@ ${pageUrl}`;
                         )
                     })}
                 </div>
-            </div>} */}
+            </div>}
             {/* Tabs Section */}
             <section className="w-full pb-10">
                 <div className="sticky md:top-[60px] z-10">
