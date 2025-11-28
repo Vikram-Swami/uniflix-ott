@@ -79,5 +79,5 @@ export const nextEpisode = async (id, series, page) => {
 
 export const getImageUrl = (id) => {
   if (!id) return;
-  return `/img/341/${id}.jpg`; // now going through proxy
+  return `/api/img/341/${id}.jpg`; // now going through proxy
 };
