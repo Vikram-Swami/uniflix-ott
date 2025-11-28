@@ -290,14 +290,14 @@ ${pageUrl}`;
 
     if (!movieId) {
         return (
-            <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center">
+            <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-l-2 border-sky-500"></div>
             </div>
         );
     }
     if (loading) {
         return (
-            <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center" />
+            <div className="fixed inset-0 z-50 bg-black flex items-center justify-center" />
         );
     }
 
@@ -317,7 +317,7 @@ ${pageUrl}`;
     }
 
     return (
-        <div ref={scrollRef} className="bg-[#00050d] h-screen serach_results">
+        <div ref={scrollRef} className="fixed inset-0 z-500 bg-[#00050d] overflow-y-auto movie_details_popup_scroll h-screen serach_results overflow-x-hidden">
             {/* Hero Banner Section */}
             <section className="relative min-h-auto md:min-h-[75vh] 2xl:min-h-screen! w-full">
                 <div className="relative overflow-hidden z-10 flex min-h-auto md:min-h-[75vh] 2xl:min-h-screen! w-full items-end max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]! pb-5 xs:pb-10 md:pb-20 text-white max-md:flex-col">
