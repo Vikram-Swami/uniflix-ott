@@ -7,31 +7,27 @@ export default async function handler(req, res) {
     const response = await fetch(targetUrl, {
       method: req.method,
       headers: {
-        "Content-Type": req.headers["content-type"] || "application/json",
-        "User-Agent": req.headers["user-agent"] || "Mozilla/5.0",
-        // ✅ IMPORTANT: Forward cookies to backend
-        ...(req.headers.cookie && { Cookie: req.headers.cookie }),
+        ...req.headers, // 👈 सभी headers forward करें (cookies भी)
       },
-      // Forward credentials
-      credentials: "include",
-      ...(req.method !== "GET" &&
-        req.method !== "HEAD" && {
-          body: JSON.stringify(req.body),
-        }),
+      body: req.method !== "GET" && req.method !== "HEAD" ? JSON.stringify(req.body) : undefined,
     });
 
+    // Response body
     const data = await response.text();
 
-    // ✅ Forward Set-Cookie headers from backend
-    const setCookieHeader = response.headers.get("set-cookie");
-    if (setCookieHeader) {
-      res.setHeader("Set-Cookie", setCookieHeader);
+    // Set CORS
+    res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true"); // 👈 IMPORTANT
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Cookies");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+
+    // Pass cookies back to client (set-cookie header)
+    const setCookie = response.headers.get("set-cookie");
+    if (setCookie) {
+      res.setHeader("Set-Cookie", setCookie);
     }
 
-    res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Cookie");
+    res.status(response.status).send(data);
   } catch (error) {
     console.error("Proxy error:", error);
     res.status(500).json({ error: "Proxy failed", message: error.message });

@@ -19,9 +19,7 @@ const PlaylistProvider = ({ children }) => {
 
         try {
             const res = await fetch(
-                `/api/playlist.php?id=${id}&tm=1763899957`, {
-                credentials: 'include',
-            }
+                `/api/playlist.php?id=${id}&tm=1763899957`
             );
             const data = await res.json();
 
@@ -44,7 +42,8 @@ const PlaylistProvider = ({ children }) => {
             }
 
             const playlistResponse = await fetch(fileUrl, {
-                credentials: 'include',
+                method: "GET",
+                credentials: "include",
                 headers: {
                     'Accept': 'application/vnd.apple.mpegurl',
                 }
