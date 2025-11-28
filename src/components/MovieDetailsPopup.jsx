@@ -315,7 +315,7 @@ ${pageUrl}`;
     }
 
     return (
-        <div ref={scrollRef} className="fixed inset-0 z-500 bg-[#00050d] overflow-y-auto movie_details_popup_scroll h-screen serach_results overflow-x-hidden">
+        < ref={scrollRef} className="fixed inset-0 z-500 bg-[#00050d] overflow-y-auto movie_details_popup_scroll h-screen serach_results overflow-x-hidden">
             {/* Hero Banner Section */}
             <section className="relative min-h-auto md:min-h-[75vh] 2xl:min-h-screen! w-full">
                 <div className="relative overflow-hidden z-10 flex min-h-auto md:min-h-[75vh] 2xl:min-h-screen! w-full items-end max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]! pb-5 xs:pb-10 md:pb-20 text-white max-md:flex-col">
@@ -785,6 +785,6 @@ ${pageUrl}`;
                     </div>
                 </div>
             </section>
-        </div>
+        </>
     );
 }

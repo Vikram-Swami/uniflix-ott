@@ -1176,7 +1176,7 @@ const VideoPlayerPopup = ({ movieData }) => {
                     <div className="absolute inset-0" />
 
                     {/* Actual progress bar */}
-                    <div style={{ width: `${(hoverTime / duration) * 100}%` }} className="absolute bottom-0 left-0 h-2 bg-white/50 z-10">
+                    <div style={{ width: `${(hoverTime / duration) * 100}%` }} className="absolute bottom-0 left-0 h-1.5 md:h-2 bg-white/50 z-10">
                     </div>
                     <div
                         ref={progressBarRef}
