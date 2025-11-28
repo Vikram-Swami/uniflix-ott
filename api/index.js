@@ -2,7 +2,6 @@ export default async function handler(req, res) {
   // Extract path after /api/proxy
   const path = req.url.replace("/api", "");
   const targetUrl = `https://net51.cc/pv${path}`;
-  console.log("target", targetUrl);
 
   try {
     const response = await fetch(targetUrl, {
@@ -10,7 +9,11 @@ export default async function handler(req, res) {
       headers: {
         "Content-Type": req.headers["content-type"] || "application/json",
         "User-Agent": req.headers["user-agent"] || "Mozilla/5.0",
+        // ✅ IMPORTANT: Forward cookies to backend
+        ...(req.headers.cookie && { Cookie: req.headers.cookie }),
       },
+      // Forward credentials
+      credentials: "include",
       ...(req.method !== "GET" &&
         req.method !== "HEAD" && {
           body: JSON.stringify(req.body),
@@ -19,12 +22,16 @@ export default async function handler(req, res) {
 
     const data = await response.text();
 
-    // Set CORS headers
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    // ✅ Forward Set-Cookie headers from backend
+    const setCookieHeader = response.headers.get("set-cookie");
+    if (setCookieHeader) {
+      res.setHeader("Set-Cookie", setCookieHeader);
+    }
 
-    res.status(response.status).send(data);
+    res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Cookie");
   } catch (error) {
     console.error("Proxy error:", error);
     res.status(500).json({ error: "Proxy failed", message: error.message });
