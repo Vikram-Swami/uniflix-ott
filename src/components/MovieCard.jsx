@@ -3,6 +3,7 @@ import { getImageUrl, fetchMovieInfo } from '../services/api';
 import { Check, Plus, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useWatchlist } from "../hooks/useWatchlist";
+import LazyImage from "./LazyImage";
 
 const MovieCard = ({ id, index, ids, isHovering, setIsHovering, activeIndex, onHoverStart, onHoverEnd, hoveredIndex, reachEnd, Icons, buttonName, item, handleDelete, className, handleWatchlist }) => {
     const [hoverInfo, setHoverInfo] = useState(null);
@@ -79,7 +80,7 @@ const MovieCard = ({ id, index, ids, isHovering, setIsHovering, activeIndex, onH
                 {item && <button onClick={() => handleDelete()} className={`absolute top-2 right-2 transition-all duration-200 cursor-pointer z-10 ${isHovering && index === hoveredIndex ? "opacity-100" : "opacity-0"}`} type="button"><X className="w-7 h-7 filter-[drop-shadow(0px_0px_10px_black)]" /></button>}
                 <Link to={`/home?movieId=${id}`} className={`${OnetoTenIcons ? "" : "overflow-hidden"} relative block rounded-lg`}>
                     {OnetoTenIcons ? <span className={`absolute bottom-0 ${isHovering && index === hoveredIndex ? "number" : "number2"}`}><OnetoTenIcons className="w-8 h-8 xs:w-10 md:w-13 md2:w-15 xs:h-10 md:h-13 md2:h-15" /></span> : ""}
-                    <img
+                    {/* <img
                         src={getImageUrl(id) || "https://picsum.photos/220/330"}
                         alt="Movie poster"
                         className="w-full h-full object-cover rounded-lg"
@@ -87,7 +88,8 @@ const MovieCard = ({ id, index, ids, isHovering, setIsHovering, activeIndex, onH
                         onError={(e) => {
                             e.target.src = 'https://via.placeholder.com/220x330/1a1a1a/666666?text=No+Image';
                         }}
-                    />
+                    /> */}
+                    <LazyImage src={getImageUrl(id) || "https://picsum.photos/220/330"} alt="Movie poster" className="w-full h-full object-cover rounded-lg" />
                     {item && (
                         <p className="bg-gray-800 text-white text-xs py-0.5 px-1 rounded-sm absolute bottom-3 right-2">
                             {`${formatTime((item.duration || 0) - (item.currentTime || 0))} Left`}
