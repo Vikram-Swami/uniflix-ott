@@ -15,12 +15,12 @@ export default function LazyImage({ src, alt, fallback, className }) {
             <img
                 src={src}
                 alt={alt}
-                className={`transition-opacity duration-700 object-cover aspect-video h-full w-full 
-                    ${loaded ? "opacity-100" : "opacity-0 absolute"} ${className}`}
-                loading="lazy"
+                className={`object-cover w-full h-full transition-opacity duration-500
+          ${loaded ? "opacity-100" : "opacity-0"} ${className}`}
+                {...(!priority && { loading: "lazy" })}   // ✅ key fix
                 onLoad={() => setLoaded(true)}
                 onError={(e) => {
-                    if (fallback) e.target.src = fallback;
+                    if (fallback) e.currentTarget.src = fallback;
                     setLoaded(true);
                 }}
             />
