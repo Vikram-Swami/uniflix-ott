@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/index"
+      "source": "/api/media/:path*",
+      "destination": "/api/media"
     },
     {
       "source": "/api/media2/:path*",
@@ -17,11 +17,11 @@
       "destination": "/api/media4"
     },
     {
-      "source": "/api/media/:path*",
-      "destination": "/api/media"
+      "source": "/api/img/:path*",
+      "destination": "/api/img"
     },
     {
-      "source": "/api/((?!media|img).*)",
+      "source": "/api/:path*",
       "destination": "/api/index"
     },
     {
