@@ -173,15 +173,15 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
 
     const langRefs = useRef([]);
 
-    useEffect(() => {
-        if (selectedLang && langRefs.current[selectedLang]) {
-            langRefs.current[selectedLang].scrollIntoView({
-                behavior: "smooth",
-                inline: "left",
-                block: "nearest"
-            });
-        }
-    }, [selectedLang]);
+    // useEffect(() => {
+    //     if (selectedLang && langRefs.current[selectedLang]) {
+    //         langRefs.current[selectedLang].scrollIntoView({
+    //             behavior: "smooth",
+    //             inline: "left",
+    //             block: "nearest"
+    //         });
+    //     }
+    // }, [selectedLang]);
 
     const bannerImage = `/api/img/c/${movieId}.jpg`;
     const title = movieData?.title || "Unknown Title";
@@ -288,20 +288,20 @@ ${pageUrl}`;
 
     if (!movieId) {
         return (
-            <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center">
+            <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-l-2 border-sky-500"></div>
             </div>
         );
     }
     if (loading) {
         return (
-            <div className="fixed inset-0 z-50 bg-black flex items-center justify-center" />
+            <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center" />
         );
     }
 
     if (!movieData) {
         return (
-            <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center">
+            <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center h-dvh">
                 <div className="text-white text-center">
                     <p className="text-red-500 mb-4">Failed to load movie details</p>
                     <button

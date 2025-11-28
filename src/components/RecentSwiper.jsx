@@ -62,9 +62,9 @@ export default function RecentSwiper() {
                     virtual
                     simulateTouch={false}
                     allowTouchMove={true}
-                    freeModeMomentum={true}
-                    freeModeMomentumRatio={0.5}
-                    freeModeMomentumBounce={false}
+                    // freeModeMomentum={true}
+                    // freeModeMomentumRatio={0.5}
+                    // freeModeMomentumBounce={false}
                     speed={600}
                     onReachEnd={() => setReachEnd(true)}
                     onReachBeginning={() => setReachStart(true)}
