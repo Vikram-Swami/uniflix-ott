@@ -30,6 +30,9 @@ html {
 .movie_details_popup_scroll {
   -webkit-overflow-scrolling: touch;
 }
+.movie_details_popup_scroll::-webkit-scrollbar {
+  width: 0px;
+}
 
 .nav_bg_leaner {
   background: linear-gradient(to bottom, #191e25, rgba(255, 0, 0, 0));
