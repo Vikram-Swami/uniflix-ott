@@ -7,9 +7,9 @@ export default function LazyImage({ src, alt, fallback, className }) {
         <div className="relative w-full h-full overflow-hidden">
 
             {/* Placeholder */}
-            {!loaded && (
+            {/* {!loaded && (
                 <div className="absolute inset-0 aspect-video w-full h-full bg-gray-300/20 shimmer"></div>
-            )}
+            )} */}
 
             {/* Real Image */}
             <img
