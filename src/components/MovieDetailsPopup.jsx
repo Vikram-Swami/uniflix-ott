@@ -183,7 +183,7 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
     //     }
     // }, [selectedLang]);
 
-    const bannerImage = `/api/img/c/${movieId}.jpg`;
+    const bannerImage = `/api/img/${window.innerWidth > 500 ? "c" : "341"}/${movieId}.jpg`;
     const title = movieData?.title || "Unknown Title";
     const description = movieData?.desc || "";
     const rating = movieData?.ua || "";
@@ -333,7 +333,7 @@ ${pageUrl}`;
                                     e.target.src = getImageUrl(movieId);
                                 }}
                             /> */}
-                            <LazyImage src={bannerImage} alt={title} className={"transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"}/>
+                            <LazyImage src={bannerImage} alt={title} className={"transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"} />
                         </div>
                     </div>
 
