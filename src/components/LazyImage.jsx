@@ -8,11 +8,7 @@ export default function LazyImage({ src, alt, fallback, className }) {
 
             {/* Placeholder */}
             {!loaded && (
-                <img
-                    src="https://uniflix-ott.vercel.app/api/img/341/0KUJXI5DQPF6UFFC03R2DZ8FW2.jpg"  // 👈 अपना placeholder
-                    alt="placeholder"
-                    className={`absolute inset-0 h-full w-full object-cover blur-xl scale-105 ${className}`}
-                />
+                <div className="aspect-video w-full h-full bg-gray-300/20 shimmer"></div>
             )}
 
             {/* Real Image */}
