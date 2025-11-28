@@ -23,6 +23,7 @@ function App() {
   };
   const query = useQuery();
   const movieId = query.get("movieId")
+  console.log("isOpen", isOpen)
   // useEffect(() => {
   //   const html = document.querySelector("html");
   //   if (isOpen) {
