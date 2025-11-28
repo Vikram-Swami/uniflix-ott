@@ -1,0 +1,83 @@
+// API service functions
+// Using Vite proxy in development (backend server is optional for video streaming)
+const BASE_URL = import.meta.env.DEV ? "/api" : "https://net51.cc/pv";
+const IMAGE_BASE_URL = "https://imgcdn.kim/pv/341/";
+
+export const fetchHomepage = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/homepage.php`);
+    if (!response.ok) throw new Error("Failed to fetch homepage data");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching homepage:", error);
+    throw error;
+  }
+};
+export const fetchShowpage = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/homepage.php?p=show`);
+    if (!response.ok) throw new Error("Failed to fetch series page");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching series:", error);
+    throw error;
+  }
+};
+export const fetchMoviepage = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/homepage.php?p=movie`);
+    if (!response.ok) throw new Error("Failed to fetch movie page");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching movie page:", error);
+    throw error;
+  }
+};
+
+export const fetchMovieInfo = async (id) => {
+  try {
+    const response = await fetch(`${BASE_URL}/mini-modal-info.php?id=${id}`);
+    if (!response.ok) throw new Error("Failed to fetch movie info");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching movie info:", error);
+    throw error;
+  }
+};
+export const searchMovie = async (query) => {
+  try {
+    const response = await fetch(`${BASE_URL}/search.php?s=${query}`);
+    if (!response.ok) throw new Error("Failed to fetch movie info");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching movie info:", error);
+    throw error;
+  }
+};
+export const getMovieDetails = async (id) => {
+  try {
+    const response = await fetch(`${BASE_URL}/post.php?id=${id}&t=1763834888`);
+    if (!response.ok) throw new Error("Failed to fetch movie details");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching movie details:", error);
+    throw error;
+  }
+};
+export const nextEpisode = async (id, series, page) => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/episodes.php?s=${id}&series=${series}&page=${page}&t=1763848157`
+    );
+    if (!response.ok) throw new Error("Failed to fetch next episode");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching next episode:", error);
+    throw error;
+  }
+};
+
+export const getImageUrl = (id) => {
+  if (!id) return;
+  return `/img/341/${id}.jpg`; // now going through proxy
+};

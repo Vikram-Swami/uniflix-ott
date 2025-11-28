@@ -1,0 +1,266 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-xs: 500px;
+  --breakpoint-sm: 600px;
+  --breakpoint-sm2: 680px;
+  --breakpoint-md2: 880px;
+  --breakpoint-2xl: 1400px;
+  --breakpoint-5xl: 1800px;
+}
+
+* {
+  outline: none;
+  outline-color: transparent;
+}
+body {
+  font-family: "Ubuntu", sans-serif;
+  background-color: #00050d;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+body,
+html {
+  overflow-x: hidden;
+}
+
+.nav_bg_leaner {
+  background: linear-gradient(to bottom, #191e25, rgba(255, 0, 0, 0));
+}
+.nav_bg_leaner2 {
+  background: linear-gradient(to bottom, #191e25cc, #191e25cc);
+  backdrop-filter: blur(10px);
+}
+.hero_bg_leaner {
+  background: linear-gradient(
+    360deg,
+    #00050d 0%,
+    rgba(0, 5, 13, 0.8) 23.58%,
+    rgba(0, 5, 13, 0.6) 45.06%,
+    rgba(0, 5, 13, 0.4) 68.44%,
+    rgba(0, 5, 13, 0.199103) 84.29%,
+    rgba(0, 5, 13, 0) 100%
+  );
+}
+.hero_bg_leaner_2 {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.407) 100%);
+}
+.card_arrow_bg2 {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0), rgb(0, 0, 0) 90%);
+}
+
+.line_clamp_2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hover_inner_black svg path {
+  @apply transition-all duration-300 ease-in-out;
+}
+.hover_inner_black:hover svg path {
+  stroke: black;
+}
+.hover_inner_black2 svg circle,
+.hover_inner_black2 svg line {
+  @apply transition-all duration-300 ease-in-out;
+}
+.hover_inner_black2:hover svg circle,
+.hover_inner_black2:hover svg line {
+  stroke: black;
+}
+
+.slick-dots li {
+  margin: 0 !important;
+}
+
+.slick-dots li button:before {
+  color: white !important;
+  @apply transition-all duration-300 ease-in-out text-[6px]! md:text-[8px]!;
+}
+
+.slick-dots {
+  @apply bottom-0! sm:bottom-4!;
+}
+
+.slick-dots li.slick-active button:before {
+  opacity: 100% !important;
+  @apply transition-all duration-300 ease-in-out text-[8px]! md:text-[13px]!;
+}
+
+.cards_slider:hover .arrow {
+  @apply sm2:flex!;
+}
+.movies_card_arrwos .slick-list {
+  overflow: unset;
+}
+.swiper {
+  overflow: revert !important;
+  z-index: 1;
+}
+
+.swiper-wrapper {
+  overflow: revert !important;
+}
+
+.swiper-slide {
+  overflow: revert !important;
+}
+
+.movie_details_box {
+  display: none;
+}
+
+.movie_details {
+  @apply transition-all duration-300 ease-in-out;
+}
+.movie_details:hover a {
+  @apply sm:rounded-b-none!;
+}
+.movie_details:hover img {
+  @apply sm:rounded-b-none!;
+}
+
+.number2 {
+  animation: swip1 300ms forwards linear;
+  transform: translateX(5px);
+  z-index: -10;
+}
+.movie_details .number {
+  animation: swip2 300ms forwards linear;
+  transform: translateX(5px);
+}
+
+@keyframes swip2 {
+  0% {
+    transform: translateX(5px);
+  }
+  50% {
+    transform: translateX(-101%);
+  }
+  100% {
+    transform: translate(5px);
+    z-index: -10;
+  }
+}
+@keyframes swip1 {
+  0% {
+    transform: translateX(5px);
+  }
+  50% {
+    transform: translateX(-101%);
+  }
+  100% {
+    transform: translate(5px);
+    z-index: 10;
+  }
+}
+
+.movie_details:hover {
+  @apply sm:scale-120 sm:-translate-y-[30px];
+}
+
+.movie_details:hover .movie_details_box {
+  @apply transition-all duration-300 ease-in-out sm:block;
+}
+
+.menu_icon:hover path {
+  fill: black;
+}
+
+.menu_icon path {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer2 {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmerMove 1.5s infinite;
+  transform: translateX(-100%);
+}
+
+@keyframes shimmerMove {
+  100% {
+    transform: translateX(100%);
+  }
+}
+.shimmer2::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.44) 0%,
+    rgba(255, 255, 255, 0.44) 20%,
+    rgba(0, 0, 0, 0.44) 40%,
+    rgba(255, 255, 255, 0.44) 80%,
+    rgba(66, 66, 66, 0.44) 100%
+  );
+  width: 100%;
+  animation: shimmerMove2 1.5s linear infinite;
+  transform: translateX(-100%);
+}
+
+@keyframes shimmerMove2 {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.serach_results::-webkit-scrollbar {
+  width: 5px;
+}
+
+.serach_results::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 5px;
+}
+
+.progress_bar_container:hover .progress_bar {
+  @apply md:h-2
+}
+
+.animate_height_loader {
+  animation: animate_height_loader 500ms linear infinite;
+}
+
+@keyframes animate_height_loader {
+  0% {
+    height: 0;
+  }
+  50% {
+    height: 4px;
+  }
+  100% {
+    height: 0;
+  }
+}
+
+.active {
+  @apply bg-white text-black;
+}
+.lang_slider {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(60, 58, 58) #00050d;
+}
