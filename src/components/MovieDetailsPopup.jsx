@@ -326,6 +326,7 @@ ${pageUrl}`;
                             <img
                                 src={bannerImage}
                                 alt={title}
+                                loading="lazy"
                                 className="transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"
                                 onError={(e) => {
                                     e.target.src = getImageUrl(movieId);
@@ -548,6 +549,7 @@ ${pageUrl}`;
                                                                             "https://picsum.photos/220/330 "
                                                                         }
                                                                         alt={episode?.title}
+                                                                        loading="lazy"
                                                                         className="transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-right"
                                                                         onError={(e) => {
                                                                             e.target.src = getImageUrl(episode?.id);
