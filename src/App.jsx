@@ -76,7 +76,7 @@ function App() {
       {playlist && <VideoPlayerPopup movieData={movieData} />}
       <Navbar setIsOpen={setIsOpen} movieDetailsPopupScroll={MovieDetailsPopupScroll} isOpen={isOpen} />
       <SearchPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      {/* {movieId && <MovieDetailsPopup setMovieDetailsPopupScroll={setMovieDetailsPopupScroll} setMovieData={setMovieData} movieData={movieData} />} */}
+      {movieId && <MovieDetailsPopup key={movieId} setMovieDetailsPopupScroll={setMovieDetailsPopupScroll} setMovieData={setMovieData} movieData={movieData} />}
       <Suspense
         fallback={
           <div className="flex justify-center items-end h-[50vh]">
@@ -89,7 +89,6 @@ function App() {
           <Route path="/movies" element={<Movies />} />
           <Route path="/series" element={<TVShows />} />
           <Route path="/watch-list" element={<Watchlist />} />
-          <Route path="/video" element={<MovieDetailsPopup setMovieDetailsPopupScroll={setMovieDetailsPopupScroll} setMovieData={setMovieData} movieData={movieData} />} />
 
           {/* Invalid route → redirect to /home */}
           <Route path="*" element={<Navigate to="/home" replace />} />
