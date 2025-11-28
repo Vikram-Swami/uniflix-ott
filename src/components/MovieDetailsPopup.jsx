@@ -44,7 +44,7 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
     const movieId = query.get("movieId");
     useEffect(() => {
         if (movieData) {
-            let language = Cookies.get("lg") || movieData?.lang.find((item) => item.s === movieData?.d_lang)?.l
+            let language = Cookies.get("lg") || movieData?.lang.find((item) => item?.s === movieData?.d_lang)?.l
             if (language) {
                 setSelectedLang(language)
             }
@@ -185,7 +185,7 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
     //     }
     // }, [selectedLang]);
 
-    const bannerImage = `/api/img/${window.innerWidth > 500 ? "c" : "341"}/${movieId}.jpg`;
+    const bannerImage = `/api/img/c/${movieId}.jpg`;
     const title = movieData?.title || "Unknown Title";
     const description = movieData?.desc || "";
     const rating = movieData?.ua || "";
@@ -335,7 +335,7 @@ ${pageUrl}`;
                                     e.target.src = getImageUrl(movieId);
                                 }}
                             /> */}
-                            {/* <LazyImage src={bannerImage} alt={title} className={"transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"} /> */}
+                            <LazyImage src={bannerImage} alt={title} className={"transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"} />
                         </div>
                     </div>
 
@@ -501,7 +501,7 @@ ${pageUrl}`;
                         </ul>
 
                         {/* Episode Tab */}
-                        {/* {activeTab === "episode" && episodes?.length > 0 && (
+                        {activeTab === "episode" && episodes?.length > 0 && (
                             <div className="max-xs:mx-3 xs:mx-6 sm2:mx-8 md2:mx-11 2xl:mx-[72px]! pb-8" >
                                 {seasons?.length > 0 && (
                                     <div className="flex justify-end max-w-[1500px] mx-auto mb-10">
@@ -624,7 +624,7 @@ ${pageUrl}`;
                                     </button>}
                                 </div> : ""}
                             </div>
-                        )} */}
+                        )}
 
                         {/* Related Tab */}
                         {activeTab === "related" && (
