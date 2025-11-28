@@ -24,7 +24,11 @@ body {
 
 body,
 html {
-  overflow-x: hidden;
+@apply sm:overflow-x-hidden
+}
+
+.movie_details_popup_scroll {
+  -webkit-overflow-scrolling: touch;
 }
 
 .nav_bg_leaner {

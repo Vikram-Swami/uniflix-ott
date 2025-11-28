@@ -26,10 +26,18 @@ function App() {
   useEffect(() => {
     const html = document.querySelector("html");
     if (isOpen) {
-      html.classList.add("overflow-hidden");
+      if (window.innerWidth > 600) {
+        html.classList.add("overflow-hidden");
+      } else {
+        document.body.classList.add("overflow-hidden");
+      }
     } else {
       if (!movieId && !playlist) {
-        html.classList.remove("overflow-hidden");
+        if (window.innerWidth > 600) {
+          html.classList.remove("overflow-hidden");
+        } else {
+          document.body.classList.remove("overflow-hidden");
+        }
       }
     }
   }, [isOpen]);
@@ -37,14 +45,26 @@ function App() {
   useEffect(() => {
     const html = document.querySelector("html");
     if (movieId || playlist) {
-      html.classList.add("overflow-hidden");
+      if (window.innerWidth > 600) {
+        html.classList.add("overflow-hidden");
+      } else {
+        document.body.classList.add("overflow-hidden");
+      }
     } else {
-      html.classList.remove("overflow-hidden");
+      if (window.innerWidth > 600) {
+        html.classList.remove("overflow-hidden");
+      } else {
+        document.body.classList.remove("overflow-hidden");
+      }
     }
     window.scrollTo(0, 0);
     if (!movieId) {
       setPlaylist(null)
-      html.classList.remove("overflow-hidden");
+      if (window.innerWidth > 600) {
+        html.classList.remove("overflow-hidden");
+      } else {
+        document.body.classList.remove("overflow-hidden");
+      }
     }
   }, [movieId]);
 
