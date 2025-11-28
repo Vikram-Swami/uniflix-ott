@@ -314,8 +314,9 @@ ${pageUrl}`;
         );
     }
 
+    // https://net20.cc/mini-modal-info.php?id=70158331&t=1764358516
     return (
-        <div ref={scrollRef} className="fixed inset-0 z-500 bg-[#00050d] overflow-y-auto movie_details_popup_scroll h-dvh serach_results overflow-x-hidden">
+        <div ref={scrollRef} className="fixed inset-0 z-500 bg-[#00050d] overflow-y-auto movie_details_popup_scroll h-[50vh] serac  h_results overflow-x-hidden">
             {/* Hero Banner Section */}
             <section className="relative min-h-auto md:min-h-[75vh] 2xl:min-h-screen! w-full">
                 <div className="relative overflow-hidden z-10 flex min-h-auto md:min-h-[75vh] 2xl:min-h-screen! w-full items-end max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]! pb-5 xs:pb-10 md:pb-20 text-white max-md:flex-col">
@@ -324,16 +325,7 @@ ${pageUrl}`;
                         <div className="max-md:hidden absolute w-full md:w-[50%] h-full bg-linear-to-r from-[#000000cf] via-black/20 to-transparent z-10"></div>
                         <div className="w-full max-xs:-mx-3 xs:-mx-6 sm2:-mx-8 md:mx-0! max-sm:min-w-[calc(100%+24px)] xs:min-w-[calc(100%+48px)] sm2:min-w-[calc(100%+64px)]! md:min-w-full h-10 xs:h-64 hero_bg_leaner absolute -bottom-px left-0 z-10"></div>
                         <div className="group relative transition-all duration-500 ease-in-out opacity-100 w-full h-full max-xs:-mx-3 xs:-mx-6 sm2:-mx-8 md:mx-0! max-sm:min-w-[calc(100%+24px)] xs:min-w-[calc(100%+48px)] sm2:min-w-[calc(100%+64px)]! md:min-w-full">
-                            {/* <img
-                                src={bannerImage}
-                                alt={title}
-                                loading="lazy"
-                                className="transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"
-                                onError={(e) => {   
-                                    e.target.src = getImageUrl(movieId);
-                                }}
-                            /> */}
-                            <LazyImage src={bannerImage} alt={title} className={"transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"}/>
+                            <LazyImage src={bannerImage} alt={title} className={"transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-top-right"} />
                         </div>
                     </div>
 
@@ -545,18 +537,10 @@ ${pageUrl}`;
                                                         <div className="min-w-[110px] xs:min-w-[130px] sm:min-w-[200px] lg:min-w-[250px] xl:min-w-[350px] max-w-[110px] xs:max-w-[130px] sm:max-w-[200px] md:max-w-[350px]">
                                                             <div className="cursor-pointer aspect-video flex-[0_0_300px] overflow-hidden rounded-sm xs:rounded-md lg:rounded-lg xl:rounded-2xl bg-gray-800 shadow-2xl transition-all ease-in-out lg:flex-[0_0_230px] relative">
                                                                 <div className="group relative transition-all duration-500 ease-in-out opacity-100 w-full h-full">
-                                                                    <img
-                                                                        src={
-                                                                            getImageUrl(episode?.id) ||
-                                                                            "https://picsum.photos/220/330 "
-                                                                        }
-                                                                        alt={episode?.title}
-                                                                        loading="lazy"
-                                                                        className="transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-right"
-                                                                        onError={(e) => {
-                                                                            e.target.src = getImageUrl(episode?.id);
-                                                                        }}
-                                                                    />
+                                                                    <LazyImage src={
+                                                                        getImageUrl(episode?.id) ||
+                                                                        "https://picsum.photos/220/330 "
+                                                                    } alt={episode?.title} className="transition-all duration-700 ease-in-out opacity-100 h-full w-full object-cover object-right" />
                                                                 </div>
                                                                 {progressPct2 > 0 && (
                                                                     <div className="w-full absolute bottom-0 left-0">
