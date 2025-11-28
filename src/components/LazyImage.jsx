@@ -17,7 +17,7 @@ export default function LazyImage({ src, alt, fallback, className, priority = fa
                 alt={alt}
                 className={`object-cover w-full h-full transition-opacity duration-500
           ${loaded ? "opacity-100" : "opacity-0"} ${className}`}
-                {...(!priority && { loading: "lazy" })}   // ✅ key fix
+                // {...(!priority && { loading: "lazy" })}   // ✅ key fix
                 onLoad={() => setLoaded(true)}
                 onError={(e) => {
                     if (fallback) e.currentTarget.src = fallback;
