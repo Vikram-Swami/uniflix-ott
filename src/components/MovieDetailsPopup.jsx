@@ -607,7 +607,7 @@ ${pageUrl}`;
                                                         </div>
                                                     </div>
                                                     {episode?.ep_desc && (
-                                                        <p className="text-[#aaa] sm:hidden text-xs mt-2">
+                                                        <p className="text-[#aaa] sm:hidden text-[11px] mt-2">
                                                             {episode?.ep_desc}
                                                         </p>
                                                     )}
