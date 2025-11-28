@@ -176,7 +176,7 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
         if (selectedLang && langRefs.current[selectedLang]) {
             langRefs.current[selectedLang].scrollIntoView({
                 behavior: "smooth",
-                inline: "center",
+                inline: "left",
                 block: "nearest"
             });
         }

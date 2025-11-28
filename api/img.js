@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
     // Convert + compress using Sharp
     const optimizedImage = await sharp(buffer)
-      .jpeg({ quality: 70 }) // ⭐ HD quality + small size
+      .jpeg({ quality: 30 }) // ⭐ HD quality + small size
       .toBuffer();
 
     res.setHeader("Content-Type", "image/webp");
