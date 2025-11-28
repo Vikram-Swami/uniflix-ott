@@ -5,6 +5,10 @@
       "destination": "/api/index"
     },
     {
+      "source": "/api/((?!media|img).*)",
+      "destination": "/api/index"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
