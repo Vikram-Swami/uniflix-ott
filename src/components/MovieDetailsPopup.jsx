@@ -461,7 +461,7 @@ ${pageUrl}`;
                 </div>
             </div>}
             {/* Tabs Section */}
-            <section className="w-full pb-15 xs:pb-10">
+            <section className="w-full pb-10">
                 <div className="sticky md:top-[60px] z-10">
                     <div className="border-none">
                         <ul ref={stickyRef}
@@ -626,7 +626,7 @@ ${pageUrl}`;
 
                         {/* Related Tab */}
                         {activeTab === "related" && (
-                            <div className="relative cards_slider max-xs:ps-3 xs:ps-6 sm2:ps-8 md2:ps-11 2xl:ps-[72px]! pe-6 z-1000000">
+                            <div className="relative cards_slider max-xs:ps-3 xs:ps-6 sm2:ps-8 md2:ps-11 2xl:ps-[72px]! pe-6 z-1000000 max-xs:pb-6">
                                 <button
                                     onClick={() => setReachEnd(false)}
                                     ref={prevRef}
