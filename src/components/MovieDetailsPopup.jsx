@@ -461,7 +461,7 @@ ${pageUrl}`;
                 </div>
             </div>}
             {/* Tabs Section */}
-            <section className="w-full pb-10">
+            <section className="w-full pb-15 xs:pb-10">
                 <div className="sticky md:top-[60px] z-10">
                     <div className="border-none">
                         <ul ref={stickyRef}
