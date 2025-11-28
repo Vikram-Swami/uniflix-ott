@@ -1,7 +1,7 @@
 // API service functions
 // Using Vite proxy in development (backend server is optional for video streaming)
 // my website domian https://uniflix-ott.vercel.app
-const BASE_URL = import.meta.env.DEV ? "/api" : "/api";
+const BASE_URL = import.meta.env.DEV ? "/api" : "/api/proxy";
 
 export const fetchHomepage = async () => {
   try {
