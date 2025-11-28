@@ -24,11 +24,14 @@ body {
 
 body,
 html {
-@apply overflow-x-hidden
+  @apply overflow-x-hidden;
 }
 
 .movie_details_popup_scroll {
   -webkit-overflow-scrolling: touch;
+}
+.movie_details_popup_scroll::-webkit-scrollbar {
+  width: 0px;
 }
 
 .nav_bg_leaner {
@@ -242,7 +245,7 @@ html {
 }
 
 .progress_bar_container:hover .progress_bar {
-  @apply md:h-2
+  @apply md:h-2;
 }
 
 .animate_height_loader {
