@@ -1,6 +1,6 @@
 // API service functions
 // Using Vite proxy in development (backend server is optional for video streaming)
-const BASE_URL = import.meta.env.DEV ? "/api" : "https://net51.cc/pv";
+const BASE_URL = import.meta.env.DEV ? "/api" : "https://uniflix-ott.vercel.app/pv";
 const IMAGE_BASE_URL = "https://imgcdn.kim/pv/341/";
 
 export const fetchHomepage = async () => {
