@@ -63,13 +63,13 @@ export default function Navbar({ setIsOpen, movieDetailsPopupScroll, isOpen }) {
             }} to="/home" className="max-md:hover:bg-white md:border-transparent md:border-b md:hover:border-white max-md:hover:text-black transition-all duration-300 max-md:py-2 max-md:px-3 px-3.5 py-2 rounded-sm">
               Homes
             </NavLink>
-            {/* <NavLink onClick={() => {
+            <NavLink onClick={() => {
               if (window.innerWidth < 768) {
                 setIsOpenDropdown(false)
               }
             }} to="/movies" className="max-md:hover:bg-white md:border-transparent md:border-b md:hover:border-white max-md:hover:text-black transition-all duration-300 max-md:py-2 max-md:px-3 px-3.5 py-2 rounded-sm">
               Movie
-            </NavLink> */}
+            </NavLink>
             <NavLink onClick={() => {
               if (window.innerWidth < 768) {
                 setIsOpenDropdown(false)
