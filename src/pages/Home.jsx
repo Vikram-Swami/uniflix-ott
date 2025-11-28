@@ -5,7 +5,7 @@ import MovieRow from '../components/MovieRow';
 import { fetchHomepage } from '../services/api';
 import { usePlaylist } from '../components/usePlaylist';
 import { useInView } from "react-intersection-observer";
-const Home = () => {
+const Home = ({ setIsOpen }) => {
   const [homepageData, setHomepageData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -86,6 +86,7 @@ const Home = () => {
               key={index}
               title={row.cate}
               movieIds={row.ids}
+              setIsOpen={setIsOpen}
             />
           </LazyRow>
         ))}
