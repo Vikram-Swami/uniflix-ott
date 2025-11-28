@@ -23,50 +23,50 @@ function App() {
   };
   const query = useQuery();
   const movieId = query.get("movieId")
-  useEffect(() => {
-    const html = document.querySelector("html");
-    if (isOpen) {
-      if (window.innerWidth > 600) {
-        html.classList.add("overflow-hidden");
-      } else {
-        document.body.classList.add("overflow-hidden");
-      }
-    } else {
-      if (!movieId && !playlist) {
-        if (window.innerWidth > 600) {
-          html.classList.remove("overflow-hidden");
-        } else {
-          document.body.classList.remove("overflow-hidden");
-        }
-      }
-    }
-  }, [isOpen]);
+  // useEffect(() => {
+  //   const html = document.querySelector("html");
+  //   if (isOpen) {
+  //     if (window.innerWidth > 600) {
+  //       html.classList.add("overflow-hidden");
+  //     } else {
+  //       document.body.classList.add("overflow-hidden");
+  //     }
+  //   } else {
+  //     if (!movieId && !playlist) {
+  //       if (window.innerWidth > 600) {
+  //         html.classList.remove("overflow-hidden");
+  //       } else {
+  //         document.body.classList.remove("overflow-hidden");
+  //       }
+  //     }
+  //   }
+  // }, [isOpen]);
 
-  useEffect(() => {
-    const html = document.querySelector("html");
-    if (movieId || playlist) {
-      if (window.innerWidth > 600) {
-        html.classList.add("overflow-hidden");
-      } else {
-        document.body.classList.add("overflow-hidden");
-      }
-    } else {
-      if (window.innerWidth > 600) {
-        html.classList.remove("overflow-hidden");
-      } else {
-        document.body.classList.remove("overflow-hidden");
-      }
-    }
-    window.scrollTo(0, 0);
-    if (!movieId) {
-      setPlaylist(null)
-      if (window.innerWidth > 600) {
-        html.classList.remove("overflow-hidden");
-      } else {
-        document.body.classList.remove("overflow-hidden");
-      }
-    }
-  }, [movieId]);
+  // useEffect(() => {
+  //   const html = document.querySelector("html");
+  //   if (movieId || playlist) {
+  //     if (window.innerWidth > 600) {
+  //       html.classList.add("overflow-hidden");
+  //     } else {
+  //       document.body.classList.add("overflow-hidden");
+  //     }
+  //   } else {
+  //     if (window.innerWidth > 600) {
+  //       html.classList.remove("overflow-hidden");
+  //     } else {
+  //       document.body.classList.remove("overflow-hidden");
+  //     }
+  //   }
+  //   window.scrollTo(0, 0);
+  //   if (!movieId) {
+  //     setPlaylist(null)
+  //     if (window.innerWidth > 600) {
+  //       html.classList.remove("overflow-hidden");
+  //     } else {
+  //       document.body.classList.remove("overflow-hidden");
+  //     }
+  //   }
+  // }, [movieId]);
 
   return (
     <>
