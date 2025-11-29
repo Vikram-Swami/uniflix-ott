@@ -27,6 +27,9 @@ body,
 html {
   @apply overflow-x-hidden;
 }
+::-webkit-scrollbar {
+  width: 0px;
+}
 
 .movie_details_popup_scroll {
   -webkit-overflow-scrolling: touch;
