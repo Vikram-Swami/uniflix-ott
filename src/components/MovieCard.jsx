@@ -82,7 +82,7 @@ const MovieCard = ({ id, index, ids, isHovering, setIsHovering, activeIndex, onH
                     {OnetoTenIcons ? <span className={`absolute bottom-0 ${isHovering && index === hoveredIndex ? "number" : "number2"}`}><OnetoTenIcons className="w-8 h-8 xs:w-10 md:w-13 md2:w-15 xs:h-10 md:h-13 md2:h-15" /></span> : ""}
                     <LazyImage src={getImageUrl(id) || "https://picsum.photos/220/330"} alt="Movie poster" className="w-full h-full object-cover rounded-lg" />
                     {item && (
-                        <p className="bg-gray-800 text-white text-[10px] sm:text-xs py-0.5 px-1 rounded-sm absolute pb-2 sm:bottom-3 right-2">
+                        <p className="bg-gray-800 text-white text-[10px] sm:text-xs py-0.5 px-1 rounded-sm absolute bottom-2 sm:bottom-3 right-2">
                             {`${formatTime((item.duration || 0) - (item.currentTime || 0))} Left`}
 
                         </p>
