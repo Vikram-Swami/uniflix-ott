@@ -445,7 +445,7 @@ ${pageUrl}`;
                 </div>
             </section>
             {movieData?.lang && <div className="max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]! mb-2 xs:mb-5">
-                <div className="sm:max-w-[500px] overflow-x-scroll flex gap-2 xs:gap-4 pb-2 lang_slider">
+                <div className="md:max-w-[500px] overflow-x-scroll flex gap-2 xs:gap-4 pb-2 lang_slider">
                     {movieData?.lang.map((item, i) => {
                         return (
                             <button ref={(el) => (langRefs.current[item.l] = el)} key={i} onClick={() => languageHandle(item)} type="button" className={`py-1 text-xs xs:text-sm lg:text-base lg:py-2 px-2 rounded-sm cursor-pointer ${selectedLang === item.l || movieData?.lang?.length === 1 ? "text-black bg-white font-medium" : "max-xs:text-white/70"}`}>{item.l}</button>
