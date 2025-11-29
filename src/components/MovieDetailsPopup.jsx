@@ -176,14 +176,20 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
     const langRefs = useRef([]);
 
     useEffect(() => {
-        if (selectedLang && langRefs.current[selectedLang]) {
-            langRefs.current[selectedLang].scrollIntoView({
-                behavior: "smooth",
-                inline: "center",
-                block: "nearest"
-            });
-        }
+        const el = langRefs.current[selectedLang];
+        const container = el?.parentElement;
+
+        if (!el || !container) return;
+
+        const elCenter =
+            el.offsetLeft - container.clientWidth / 2 + el.clientWidth / 2;
+
+        container.scrollTo({
+            left: elCenter,
+            behavior: "smooth",
+        });
     }, [selectedLang]);
+
 
     const bannerImage = `/api/img/c/${movieId}.jpg`;
     const title = movieData?.title || "Unknown Title";
