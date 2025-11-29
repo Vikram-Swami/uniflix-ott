@@ -19,7 +19,10 @@ const PlaylistProvider = ({ children }) => {
 
         try {
             const res = await fetch(
-                `/api/playlist.php?id=${id}`
+                `/api/playlist.php?id=${id}`, {
+                credentials: "include",
+                method: "GET"
+            }
             );
             const data = await res.json();
 
