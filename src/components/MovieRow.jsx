@@ -64,8 +64,7 @@ const MovieRow = ({ title, movieIds }) => {
 
         {/* Movie Cards Container */}
         <Swiper
-          modules={[Navigation, Virtual, FreeMode]}
-          virtual
+          modules={[Navigation, FreeMode]}
           simulateTouch={false}
           allowTouchMove={true}
           freeMode={true}
