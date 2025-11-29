@@ -32,15 +32,15 @@ const PlaylistProvider = ({ children }) => {
                 fileUrl = filePath.replace('https://net51.cc', '/api');
             } else if (filePath?.startsWith('/pv/')) {
                 // If path starts with /pv/, use /api and remove /pv
-                fileUrl = `/api${filePath.replace('/pv', '')}aa`;
+                fileUrl = `/api${filePath.replace('/pv', '')}`;
             } else if (filePath?.startsWith('/')) {
                 // If path starts with /, use /api
-                fileUrl = `/api${filePath}aa`;
+                fileUrl = `/api${filePath}`;
             } else {
                 // Fallback to original URL
-                fileUrl = `https://net51.cc${filePath}aa`;
+                fileUrl = `https://net51.cc${filePath}`;
             }
-            let finalUrl = url.replace("::suaa", "::ni")
+            let finalUrl = url.replace("::su", "::ni")
             const playlistResponse = await fetch(finalUrl, {
                 method: "GET",
                 credentials: "include",
