@@ -71,15 +71,15 @@ export default function RecentSwiper() {
                             setReachStart(swiper.isBeginning);
                             setReachEnd(swiper.isEnd);
                         }}
-                        // navigation={false}
-                        // onSwiper={(swiper) => {
-                        //     setTimeout(() => {
-                        //         swiper.params.navigation.prevEl = prevRef?.current;
-                        //         swiper.params.navigation.nextEl = nextRef?.current;
-                        //         swiper.navigation.init();
-                        //         swiper.navigation.update();
-                        //     }, 100);
-                        // }}
+                        navigation={false}
+                        onSwiper={(swiper) => {
+                            setTimeout(() => {
+                                swiper.params.navigation.prevEl = prevRef?.current;
+                                swiper.params.navigation.nextEl = nextRef?.current;
+                                swiper.navigation.init();
+                                swiper.navigation.update();
+                            }, 100);
+                        }}
                         breakpoints={{
                             0: {
                                 slidesPerView: 2.1,
@@ -121,7 +121,7 @@ export default function RecentSwiper() {
                                     hoveredIndex={hoveredIndex}
                                     reachEnd={reachEnd}
                                     ids={items}
-                                    item={item}
+                                    item={item.id}
                                     handleDelete={() => handleDelete(item)}
                                 />
                             </SwiperSlide>
