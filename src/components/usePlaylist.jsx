@@ -57,22 +57,22 @@ const PlaylistProvider = ({ children }) => {
             if (link1.test(text)) {
                 text = text.replace(
                     link1,
-                    'https://uniflix-ott.vercel.app/api/media/files/'
+                    'http://uniflix-ott.vercel.app/api/media/files/'
                 );
             } else if (link2.test(text)) {
                 text = text.replace(
                     link2,
-                    'https://uniflix-ott.vercel.app/api/media2/files/'
+                    'http://uniflix-ott.vercel.app/api/media2/files/'
                 );
             } else if (link3.test(text)) {
                 text = text.replace(
                     link3,
-                    'https://uniflix-ott.vercel.app/api/media3/files/'
+                    'http://uniflix-ott.vercel.app/api/media3/files/'
                 );
             } else if (link4.test(text)) {
                 text = text.replace(
                     link4,
-                    'https://uniflix-ott.vercel.app/api/media4/files/'
+                    'http://uniflix-ott.vercel.app/api/media4/files/'
                 );
             } else {
                 console.log("No match found!");

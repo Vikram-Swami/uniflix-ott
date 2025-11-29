@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     });
 
     // Response body
-    const data = await response.text();
+    const data = await response.json();
 
     // Set CORS
     res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
