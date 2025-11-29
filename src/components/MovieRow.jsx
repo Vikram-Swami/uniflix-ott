@@ -89,15 +89,12 @@ const MovieRow = ({ title, movieIds }) => {
           breakpoints={{
             0: {
               slidesPerView: 2.1,
-              slidesPerGroup: 1,
             },
             450: {
               slidesPerView: 2.3,
-              slidesPerGroup: 1,
             },
             480: {
               slidesPerView: 2.5,
-              slidesPerGroup: 2,
             },
             680: {
               slidesPerView: 3,
