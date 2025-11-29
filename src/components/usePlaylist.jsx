@@ -19,7 +19,7 @@ const PlaylistProvider = ({ children }) => {
 
         try {
             const res = await fetch(
-                `/api/playlist.php?id=${id}&tm=1763899957`
+                `/api/playlist.php?id=${id}`
             );
             const data = await res.json();
 
