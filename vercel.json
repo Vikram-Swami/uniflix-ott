@@ -25,6 +25,10 @@
       "destination": "/api/index"
     },
     {
+      "source": "/api/play:path*",
+      "destination": "/api/play"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }

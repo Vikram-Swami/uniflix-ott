@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   // Extract path after /api/proxy
-  const path = req.url.replace("/play", "");
+  const path = req.url.replace("/api/play", "");
   const targetUrl = `https://net51.cc/pv${path}`;
 
   try {

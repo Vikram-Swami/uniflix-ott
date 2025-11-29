@@ -29,13 +29,13 @@ const PlaylistProvider = ({ children }) => {
 
             if (filePath?.startsWith('http')) {
                 // If it's already a full URL, replace net51.cc with proxy
-                fileUrl = filePath.replace('https://net51.cc', '/play');
+                fileUrl = filePath.replace('https://net51.cc', '/api/play');
             } else if (filePath?.startsWith('/pv/')) {
                 // If path starts with /pv/, use /api and remove /pv
-                fileUrl = `/play${filePath.replace('/pv', '')}`;
+                fileUrl = `/api/play${filePath.replace('/pv', '')}`;
             } else if (filePath?.startsWith('/')) {
                 // If path starts with /, use /api
-                fileUrl = `/play${filePath}`;
+                fileUrl = `/api/play${filePath}`;
             } else {
                 // Fallback to original URL
                 fileUrl = `https://net51.cc${filePath}`;
