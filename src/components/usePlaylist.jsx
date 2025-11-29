@@ -19,7 +19,7 @@ const PlaylistProvider = ({ children }) => {
 
         try {
             const res = await fetch(
-                `/api/playlist.php?id=${id}`, {
+                `/api/proxy/playlist.php?id=${id}`, {
                 method: "GET",
                 credentials: "include",
                 headers: {
