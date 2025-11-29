@@ -1232,7 +1232,7 @@ const VideoPlayerPopup = ({ movieData }) => {
                         <button
                             onClick={handleNextEpisode}
                             disabled={isNextArrowDisabled}
-                            className={`transition-colors ${isNextArrowDisabled ? 'opacity-50 cursor-default text-gray-500' : 'text-white hover:text-gray-300 cursor-pointer'}`}
+                            className={`transition-colors ${isNextArrowDisabled ? 'max-md:hidden md:opacity-50 cursor-default text-gray-500' : 'text-white hover:text-gray-300 cursor-pointer'}`}
                         >
                             <SkipForward className="w-6 lg:w-7 h-6 lg:h-7" />
                         </button>
@@ -1255,7 +1255,7 @@ const VideoPlayerPopup = ({ movieData }) => {
                             </button>
                             <div
                                 ref={volumeBarRef}
-                                className={`h-1 bg-white/30 cursor-pointer hover:h-1.5 transition-all relative overflow-hidden ${showVolumeBar ? 'w-20 opacity-100' : 'w-0 opacity-0'}`}
+                                className={`h-1 max-xs:hidden bg-white/30 cursor-pointer hover:h-1.5 transition-all relative overflow-hidden ${showVolumeBar ? 'w-20 opacity-100' : 'w-0 opacity-0'}`}
                                 onClick={handleVolumeClick}
                             >
                                 <div
