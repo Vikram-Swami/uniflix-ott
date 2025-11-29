@@ -78,7 +78,7 @@ const SearchPopup = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* Results Container */}
-                <div className="serach_results mt-5 max-h-[calc(100vh-200px)] overflow-y-auto grid grid-cols-2 px-6 bg-[#191e25]">
+                <div className="serach_results mt-5 max-h-[calc(100dvh-200px)] overflow-y-auto grid grid-cols-2 px-6 bg-[#191e25]">
                     {/* Loader */}
                     {loading && (
                         <p className="text-zinc-400 text-center col-span-full py-10 text-lg font-medium">Loading...</p>
