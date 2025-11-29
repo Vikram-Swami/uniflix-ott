@@ -1,6 +1,6 @@
 // ==========================================
 // FILE: api/img.js (Optimized Image CDN)
-// ==========================================
+// ======================================
 import sharp from "sharp";
 
 export default async function handler(req, res) {
