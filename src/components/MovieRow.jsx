@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import MovieCard from "./MovieCard";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Virtual, Navigation } from "swiper/modules";
+import { Virtual, Navigation, FreeMode } from "swiper/modules";
 import {
   ArrowIcon,
   EightIcon,
@@ -64,13 +64,11 @@ const MovieRow = ({ title, movieIds }) => {
 
         {/* Movie Cards Container */}
         <Swiper
-          modules={[Navigation, Virtual]}
+          modules={[Navigation, Virtual, FreeMode]}
           virtual
           simulateTouch={false}
           allowTouchMove={true}
-          // freeModeMomentum={true}
-          // freeModeMomentumRatio={0.5}
-          // freeModeMomentumBounce={false}
+          freeMode={true}
           speed={600}
           onReachEnd={() => setReachEnd(true)}
           onReachBeginning={() => setReachStart(true)}
