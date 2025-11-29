@@ -64,7 +64,7 @@ const Watchlist = () => {
                 hoveredIndex={hoveredIndex}
                 buttonName="Play"
                 isHovering={isHovering}
-                item={window.innerWidth > 600 ? false : true}
+                item2={window.innerWidth > 600 ? false : true}
                 setIsHovering={setIsHovering}
                 handleWatchlist={removeFromWatchlist} />
             ))}
