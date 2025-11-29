@@ -588,7 +588,7 @@ const VideoPlayerPopup = ({ movieData }) => {
             if (audio && audioTracks.length > 0) {
                 audio.pause();
             }
-        } else {
+        } else if (!isLoading) {
             video.play();
             if (audio && audioTracks.length > 0) {
                 audio.play().catch(e => console.log("Audio play error:", e));
