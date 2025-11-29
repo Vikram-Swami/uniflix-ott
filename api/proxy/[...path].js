@@ -3,37 +3,36 @@ export const config = {
 };
 
 export default async function handler(req) {
+  const url = new URL(req.url);
+
+  // VERY IMPORTANT
+  const path = url.pathname.replace("/api/proxy", "");
+
+  if (!path || path === "/") {
+    return new Response("Invalid proxy path", { status: 400 });
+  }
+
+  const targetUrl = `https://net51.cc/pv${path}${url.search}`;
+
   try {
-    const { pathname, search } = new URL(req.url);
-
-    // /api/proxy/...  →  /pv/...
-    const forwardPath = pathname.replace("/api/proxy", "");
-    const targetUrl = `https://net51.cc/pv${forwardPath}${search}`;
-
-    const res = await fetch(targetUrl, {
-      method: req.method,
+    const response = await fetch(targetUrl, {
       headers: {
-        // ✅ browser-like headers (MOST IMPORTANT)
         "user-agent": req.headers.get("user-agent") || "Mozilla/5.0",
-        accept: req.headers.get("accept") || "*/*",
-        "accept-language": req.headers.get("accept-language") || "en-US,en;q=0.9",
-        origin: "https://net51.cc",
+        accept: "*/*",
+        "accept-language": "en-US,en;q=0.9",
         referer: "https://net51.cc/",
+        origin: "https://net51.cc",
       },
-      credentials: "include",
     });
 
-    return new Response(res.body, {
-      status: res.status,
+    return new Response(response.body, {
+      status: response.status,
       headers: {
-        "content-type": res.headers.get("content-type") || "text/plain",
+        "content-type": response.headers.get("content-type") || "application/vnd.apple.mpegurl",
         "access-control-allow-origin": "*",
-        "access-control-allow-credentials": "true",
       },
     });
   } catch (err) {
-    return new Response(JSON.stringify({ error: "Edge Proxy Failed", message: err.message }), {
-      status: 500,
-    });
+    return new Response(err.message, { status: 500 });
   }
 }
