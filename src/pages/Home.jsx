@@ -81,13 +81,13 @@ const Home = () => {
       {/* Movie Rows */}
       <div className="pb-16">
         {homepageData?.post?.map((row, index) => (
-          <LazyRow key={index}>
-            <MovieRow
-              key={index}
-              title={row.cate}
-              movieIds={row.ids}
-            />
-          </LazyRow>
+          // <LazyRow key={index}>
+          <MovieRow
+            key={index}
+            title={row.cate}
+            movieIds={row.ids}
+          />
+          // </LazyRow>
         ))}
       </div>
     </div>
