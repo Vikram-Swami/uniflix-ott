@@ -41,6 +41,7 @@ const PlaylistProvider = ({ children }) => {
                 fileUrl = `https://net51.cc${filePath}`;
             }
             let finalUrl = url.replace("::su", "::ni")
+            console.log(finalUrl)
             const playlistResponse = await fetch(finalUrl, {
                 method: "GET",
                 credentials: "include",
@@ -77,6 +78,7 @@ const PlaylistProvider = ({ children }) => {
             } else {
                 console.log("No match found!");
             }
+            console.log("text", text)
             setCurrentMovieId(id);
             setPlaylist(text);
         } catch (err) {
