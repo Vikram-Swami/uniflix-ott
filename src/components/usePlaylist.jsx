@@ -41,7 +41,7 @@ const PlaylistProvider = ({ children }) => {
                 fileUrl = `https://net51.cc${filePath}aa`;
             }
             let finalUrl = url.replace("::suaa", "::ni")
-            const playlistResponse = await fetch(fileUrl, {
+            const playlistResponse = await fetch(finalUrl, {
                 method: "GET",
                 credentials: "include",
                 headers: {
