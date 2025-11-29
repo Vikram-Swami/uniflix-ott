@@ -24,7 +24,7 @@ const VideoPlayerPopup = ({ movieData }) => {
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(1);
-    const [isMuted, setIsMuted] = useState(true);
+    const [isMuted, setIsMuted] = useState(false);
     const [showControls, setShowControls] = useState(true);
     const [showSettings, setShowSettings] = useState(false);
     const [selectedQuality, setSelectedQuality] = useState(null);
@@ -1134,7 +1134,7 @@ const VideoPlayerPopup = ({ movieData }) => {
 
             {/* Center Controls */}
             <div
-                className={`absolute inset-0 flex items-center justify-center gap-14 transition-opacity duration-300 ${showControls ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+                className={`absolute inset-0 flex items-center justify-center gap-14 transition-opacity duration-300 ${showControls || isLoading ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
                 <div className="absolute top-0 left-0 w-full h-full cursor-pointer" onClick={togglePlay}></div>
                 {/* Back 10 seconds */}
                 {isLoading ? (
