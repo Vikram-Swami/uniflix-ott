@@ -16,7 +16,7 @@ export default function LazyImage({ src, alt, fallback, className }) {
                 src={src}
                 alt={alt}
                 className={`object-cover w-full h-full transition-opacity duration-500
-          ${loaded ? "opacity-100" : "opacity-0 absolute top-0 left-0"} ${className}`}
+          ${loaded ? "opacity-100" : "opacity-0 absolute top-0 left-0"} ${className} aspect-video`}
                 onLoad={() => setLoaded(true)}
                 onError={(e) => {
                     if (fallback) e.currentTarget.src = fallback;

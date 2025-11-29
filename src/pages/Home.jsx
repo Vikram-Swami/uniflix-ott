@@ -39,16 +39,16 @@ const Home = () => {
     loadData();
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      const slides = document.querySelectorAll(".swiper");
-      const count = slides.length;
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     const slides = document.querySelectorAll(".swiper");
+  //     const count = slides.length;
 
-      slides.forEach((slide, index) => {
-        slide.style.zIndex = count - index;
-      });
-    }, 1000);
-  }, []);
+  //     slides.forEach((slide, index) => {
+  //       slide.style.zIndex = count - index;
+  //     });
+  //   }, 1000);
+  // }, []);
 
   if (loading) return null;
 
@@ -81,13 +81,13 @@ const Home = () => {
       {/* Movie Rows */}
       <div className="pb-16">
         {homepageData?.post?.map((row, index) => (
-          // <LazyRow key={index}>
-          <MovieRow
-            key={index}
-            title={row.cate}
-            movieIds={row.ids}
-          />
-          // </LazyRow>
+          <LazyRow key={index}>
+            <MovieRow
+              key={index}
+              title={row.cate}
+              movieIds={row.ids}
+            />
+          </LazyRow>
         ))}
       </div>
     </div>
