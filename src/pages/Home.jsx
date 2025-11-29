@@ -69,7 +69,7 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen sm:pb-36 md:pb-52">
       {/* Hero Slider */}
       {homepageData?.slider && (
         <HeroSlider slides={homepageData.slider} />

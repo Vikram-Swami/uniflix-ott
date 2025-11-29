@@ -1096,7 +1096,7 @@ const VideoPlayerPopup = ({ movieData }) => {
     return (
         <div
             ref={containerRef}
-            className="w-full fixed h-screen z-[1000000000000000000000000000000] bg-black group"
+            className="w-full fixed h-dvh z-[1000000000000000000000000000000] bg-black group"
         >
             <button ref={closeButtonRef} className={`cursor-pointer outline-0 p-2 z-10 absolute top-3 right-2 ${showControls ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} onClick={() => setPlaylist(null)}><X className="w-9 lg:w-11 h-9 lg:h-11 stroke-3 fill-white stroke-white" /></button>
             <div
@@ -1421,7 +1421,7 @@ const VideoPlayerPopup = ({ movieData }) => {
                         {/* Fullscreen */}
                         <button
                             onClick={toggleFullscreen}
-                            className="max-md:hidden text-white hover:text-gray-300 transition-colors cursor-pointer"
+                            className="text-white hover:text-gray-300 transition-colors cursor-pointer"
                         >
                             {isFullscreen ? <MinimizeIcon className="w-6 lg:w-8 h-6 lg:h-8" /> : <MaximizeIcon className="w-6 lg:w-8 h-6 lg:h-8" />}
                         </button>
