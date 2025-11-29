@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Virtual } from 'swiper/modules';
-import { ChevronLeft, X } from 'lucide-react';
+import { Navigation, Virtual, FreeMode } from 'swiper/modules';
 import { getSwiperItems, removeRecent } from '../utils/recentPlays';
 import MovieCard from "./MovieCard";
 import { usePlaylist } from "./usePlaylist";
@@ -59,13 +58,11 @@ export default function RecentSwiper() {
                 {/* Swiper Container */}
                 <div className="sm:pe-6">
                     <Swiper
-                        modules={[Navigation, Virtual]}
+                        modules={[Navigation, Virtual, FreeMode]}
                         virtual
                         simulateTouch={false}
                         allowTouchMove={true}
-                        // freeModeMomentum={true}
-                        // freeModeMomentumRatio={0.5}
-                        // freeModeMomentumBounce={false}
+                        freeMode={true}
                         speed={600}
                         onReachEnd={() => setReachEnd(true)}
                         onReachBeginning={() => setReachStart(true)}
@@ -86,15 +83,12 @@ export default function RecentSwiper() {
                         breakpoints={{
                             0: {
                                 slidesPerView: 2.1,
-                                slidesPerGroup: 1,
                             },
                             450: {
                                 slidesPerView: 2.3,
-                                slidesPerGroup: 1,
                             },
                             480: {
                                 slidesPerView: 2.5,
-                                slidesPerGroup: 2,
                             },
                             680: {
                                 slidesPerView: 3,

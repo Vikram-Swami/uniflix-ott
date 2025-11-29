@@ -5,9 +5,9 @@ import SearchPopup from "./components/SearchPopup";
 import MovieDetailsPopup from "./components/MovieDetailsPopup";
 import VideoPlayerPopup from "./components/VideoPlayerPopup";
 import { usePlaylist } from "./components/usePlaylist";
-
 // 🔥 Lazy-loaded pages
-const Home = lazy(() => import("./pages/Home"));
+import Home from "./pages/Home"
+// const Home = lazy(() => import("./pages/Home"));
 const Movies = lazy(() => import("./pages/Movies"));
 const TVShows = lazy(() => import("./pages/TVShows"));
 const Watchlist = lazy(() => import("./pages/Watchlist"));

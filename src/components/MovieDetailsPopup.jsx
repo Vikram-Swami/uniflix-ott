@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Check, Plus, Share2 } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import MovieCard from "./MovieCard";
-import { Virtual, Navigation } from "swiper/modules";
+import { Virtual, Navigation,FreeMode } from "swiper/modules";
 import { usePlaylist } from "./usePlaylist";
 import { loadRecp } from "../utils/recentPlays";
 import { ArrowIcon } from "../assets/icons";
@@ -642,9 +642,11 @@ ${pageUrl}`;
                                 </button>
                                 {/* Movie Cards Container */}
                                 <Swiper
-                                    modules={[Navigation, Virtual]}
+                                    modules={[Navigation, Virtual,FreeMode]}
                                     virtual
-                                    grabCursor={true}
+                                    simulateTouch={false}
+                                    allowTouchMove={true}
+                                    freeMode={true}
                                     speed={600}
                                     onSlideChange={(swiper) => {
                                         setActiveIndex(swiper.activeIndex);
