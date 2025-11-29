@@ -7,9 +7,7 @@ export default async function handler(req, res) {
     const response = await fetch(targetUrl, {
       method: req.method,
       headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-        "Accept": "*/*",
-        "Referer": "https://net51.cc/",
+        ...req.headers, // 👈 सभी headers forward करें (cookies भी)
       },
       body: req.method !== "GET" && req.method !== "HEAD" ? JSON.stringify(req.body) : undefined,
     });
@@ -32,9 +30,6 @@ export default async function handler(req, res) {
     res.status(response.status).send(data);
   } catch (error) {
     console.error("Proxy error:", error);
-    res.status(500).json({
-      error: "Proxy failed",
-      message: error.message
-    });
+    res.status(500).json({ error: "Proxy failed", message: error.message });
   }
 }
