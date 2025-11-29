@@ -86,31 +86,31 @@ export default function RecentSwiper() {
                         breakpoints={{
                             0: {
                                 slidesPerView: 2.1,
-                                slidesPerGroup: 1
+                                slidesPerGroup: 1,
                             },
                             450: {
                                 slidesPerView: 2.3,
-                                slidesPerGroup: 1
+                                slidesPerGroup: 1,
                             },
                             480: {
                                 slidesPerView: 2.5,
-                                slidesPerGroup: 2
+                                slidesPerGroup: 2,
                             },
                             680: {
-                                slidesPerView: 3.2,
-                                slidesPerGroup: 2
+                                slidesPerView: 3,
+                                slidesPerGroup: 2,
                             },
                             1150: {
-                                slidesPerView: 4.2,
-                                slidesPerGroup: 3
+                                slidesPerView: 4.05,
+                                slidesPerGroup: 3,
                             },
                             1400: {
-                                slidesPerView: 5.2,
-                                slidesPerGroup: 4
+                                slidesPerView: 5.1,
+                                slidesPerGroup: 4,
                             },
                             1800: {
                                 slidesPerGroup: 5,
-                                slidesPerView: 6.2,
+                                slidesPerView: 6.1,
                             },
                         }}>
                         {items.map((item, i) => (
