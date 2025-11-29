@@ -1,5 +1,4 @@
 exports.handler = async (event) => {
-  // OPTIONS request handle karo (CORS preflight)
   if (event.httpMethod === "OPTIONS") {
     return {
       statusCode: 200,
@@ -13,30 +12,30 @@ exports.handler = async (event) => {
     };
   }
 
-  const path = event.path.replace("/.netlify/functions/api", "");
+  // ✅ Correct path extraction
+  const pathMatch = event.path.match(/\.netlify\/functions\/api(\/.*)?$/);
+  const path = pathMatch ? pathMatch[1] || "" : "";
   const queryString = event.rawQuery ? `?${event.rawQuery}` : "";
   const targetUrl = `https://net51.cc/pv${path}${queryString}`;
 
-  console.log("Proxying to:", targetUrl);
+  console.log("API Request:", event.path);
+  console.log("Target URL:", targetUrl);
 
   try {
     const response = await fetch(targetUrl, {
       method: event.httpMethod,
       headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         Accept: "application/json, text/plain, */*",
-        "Accept-Language": "en-US,en;q=0.9",
         Referer: "https://net51.cc/",
         Origin: "https://net51.cc",
         Cookie: event.headers.cookie || "",
-        ...(event.httpMethod !== "GET" &&
-          event.httpMethod !== "HEAD" && {
-            "Content-Type": event.headers["content-type"] || "application/json",
-          }),
+        ...(event.httpMethod !== "GET" && {
+          "Content-Type": "application/json",
+        }),
       },
       ...(event.httpMethod !== "GET" &&
-        event.httpMethod !== "HEAD" && {
+        event.body && {
           body: event.body,
         }),
     });
@@ -58,7 +57,15 @@ exports.handler = async (event) => {
     console.error("Proxy error:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Proxy failed", message: error.message }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        error: "Proxy failed",
+        message: error.message,
+        path: event.path,
+        targetUrl,
+      }),
     };
   }
 };
