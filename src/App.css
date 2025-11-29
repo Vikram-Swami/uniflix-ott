@@ -29,6 +29,7 @@ html {
 }
 ::-webkit-scrollbar {
   width: 0px;
+  /* height: 0px; */
 }
 
 .movie_details_popup_scroll {

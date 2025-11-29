@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import Navbar from "./components/Navbar";
 import SearchPopup from "./components/SearchPopup";
 import MovieDetailsPopup from "./components/MovieDetailsPopup";
@@ -17,6 +17,7 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [MovieDetailsPopupScroll, setMovieDetailsPopupScroll] = useState(0);
   const [movieData, setMovieData] = useState(null);
+  const popupRef = useRef(null);
   const { playlist, holePageLoading, setPlaylist } = usePlaylist();
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -49,14 +50,29 @@ function App() {
     }
   }, [movieId]);
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (popupRef.current && !popupRef.current.contains(e.target)) {
+        setIsOpen(false)
+        console.log("firstget", popupRef.current && !popupRef.current.contains(e.target))
+      }
+      console.log("firstget2", popupRef.current && !popupRef.current.contains(e.target))
+    };
+    if (isOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
+
   return (
     <>
       {holePageLoading && <div className="fixed inset-0 bg-black/50 z-100000">
         <div className="shimmer2 h-1 w-full bg-sky-500"></div>
       </div>}
       {playlist && <VideoPlayerPopup movieData={movieData} />}
-      <Navbar setIsOpen={setIsOpen} movieDetailsPopupScroll={MovieDetailsPopupScroll} isOpen={isOpen} />
-      <SearchPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      {isOpen && <div className="bg-[#00050d]/80 fixed inset-0 z-50"></div>}
+      <div ref={popupRef}>
+        <Navbar setIsOpen={setIsOpen} movieDetailsPopupScroll={MovieDetailsPopupScroll} isOpen={isOpen} />
+        <SearchPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      </div>
       {movieId && <MovieDetailsPopup setMovieDetailsPopupScroll={setMovieDetailsPopupScroll} setMovieData={setMovieData} movieData={movieData} />}
       <Suspense
         fallback={

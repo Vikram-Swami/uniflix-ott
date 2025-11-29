@@ -1,0 +1,59 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "18"
+  
+# IMPORTANT: Order matters - specific routes pehle
+[[redirects]]
+  from = "/api/playlist.php"
+  to = "/.netlify/functions/playlist"
+  query = {id = ":id", tm = ":tm"}
+  status = 200
+
+[[redirects]]
+  from = "/api/media4/*"
+  to = "/.netlify/functions/media4/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/media3/*"
+  to = "/.netlify/functions/media3/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/media2/*"
+  to = "/.netlify/functions/media2/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/media/*"
+  to = "/.netlify/functions/media/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/img/*"
+  to = "/.netlify/functions/img/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# SPA fallback - last me
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# CORS headers
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Credentials = "true"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Cookie"

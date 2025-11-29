@@ -47,6 +47,7 @@ export default function Navbar({ setIsOpen, movieDetailsPopupScroll, isOpen }) {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  
 
   return (
     <nav className={`fixed left-1/2 -translate-x-1/2 w-full md:px-[23px] 2xl:px-[51px]! md:rounded-b-xl z-5000 transition-all duration-300 ease-in-out`}>
@@ -88,8 +89,8 @@ export default function Navbar({ setIsOpen, movieDetailsPopupScroll, isOpen }) {
           <Link to="/home" className="2xl:text-3xl text-2xl max-xs:text-xl md:hidden xs:absolute xs:left-1/2 xs:-translate-x-1/2">UniFlix</Link>
         </div>
         <div className="flex items-center gap-3">
-          <button className={`cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all duration-300 ease-in-out ${isOpen ? "bg-white text-black" : "bg-transparent text-white"}`} onClick={() => setIsOpen(true)}><Search size={19} /></button>
-          <button className={`cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all duration-300 ease-in-out menu_icon`} onClick={() => setIsOpen(true)}><MenuIcon className="w-5 h-5" /></button>
+          <button className={`cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all duration-300 ease-in-out ${isOpen ? "bg-white text-black" : "bg-transparent text-white"}`} onClick={() => setIsOpen(prev => !prev)}><Search size={19} /></button>
+          <button className={`cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all duration-300 ease-in-out menu_icon`}><MenuIcon className="w-5 h-5" /></button>
           <button><img src={UserProfile} alt="User Profile" className="w-[28px] h-[28px] lg:w-[33px] lg:h-[33px] max-xs:w-6 max-xs:h-6 rounded-full" /></button>
         </div>
       </div>

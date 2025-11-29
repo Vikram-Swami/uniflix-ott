@@ -7,18 +7,6 @@ const SearchPopup = ({ isOpen, onClose }) => {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]); // Dummy data for testing
     const [loading, setLoading] = useState(false);
-    const popupRef = useRef(null);
-
-    // Close when clicking outside popup
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (popupRef.current && !popupRef.current.contains(e.target)) {
-                onClose();
-            }
-        };
-        if (isOpen) document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [isOpen, onClose]);
 
     // Close on ESC key
     useEffect(() => {
@@ -55,15 +43,12 @@ const SearchPopup = ({ isOpen, onClose }) => {
 
     return (
         <div
-            className="fixed inset-0 bg-[#00050d]/80 z-5000 flex justify-center items-start pt-20"
-            role="dialog"
-        >
+            className="fixed left-1/2 -translate-x-1/2 w-full sm2:w-[82%] max-w-[1400px] z-500 flex justify-center items-start pt-14 sm2:pt-20"
+            role="dialog">
             <div
-                ref={popupRef}
-                className="w-[82%] max-w-[1400px] pt-6 pb-0 bg-[#191e25e6] rounded-xl overflow-hidden"
-            >
+                className="w-full pt-6 pb-0 bg-[#191e25e6] rounded-t-lg sm2:rounded-xl overflow-hidden">
                 {/* Search Box */}
-                <div className="relative flex items-center bg-zinc-700 rounded-xl mx-6">
+                <div className="relative flex items-center bg-zinc-700 rounded-xl mx-3 xs:mx-6">
                     <div className="absolute left-4 text-white text-2xl">
                         <Search />
                     </div>
@@ -73,12 +58,12 @@ const SearchPopup = ({ isOpen, onClose }) => {
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder="Search movies..."
-                        className="w-full h-16 bg-zinc-700 text-white text-xl pl-14 rounded-xl outline-none"
+                        className="w-full h-10 md:h-16 bg-zinc-700 text-white text-sm xs:text-base md:text-lg lg:text-xl! pl-14 rounded-md xs:rounded-lg lg:rounded-xl outline-none"
                     />
                 </div>
 
                 {/* Results Container */}
-                <div className="serach_results mt-5 max-h-[calc(100dvh-200px)] overflow-y-auto grid grid-cols-2 px-6 bg-[#191e25]">
+                <div className="serach_results mt-5 max-h-[calc(100dvh-140px)] sm2:max-h-[calc(100dvh-200px)] overflow-y-auto grid grid-cols-1 lg:grid-cols-2 px-3 xs:px-6 bg-[#191e25]">
                     {/* Loader */}
                     {loading && (
                         <p className="text-zinc-400 text-center col-span-full py-10 text-lg font-medium">Loading...</p>
@@ -94,11 +79,11 @@ const SearchPopup = ({ isOpen, onClose }) => {
                         <Link onClick={() => {
                             onClose()
                             setQuery("")
-                        }} key={movie?.id} to={`/home?movieId=${movie?.id}`} className="cursor-pointer p-4 flex items-center rounded-md shadow-md text-white" type="button">
-                            <img className="max-w-[250px] rounded-[10px]" src={getImageUrl(movie?.id)} alt={movie?.t} />
+                        }} key={movie?.id} to={`/home?movieId=${movie?.id}`} className="cursor-pointer py-2 xs:p-4 flex items-center rounded-md shadow-md text-white" type="button">
+                            <img className="max-w-[90px] xs:max-w-[150px] xl:max-w-[200px] 2xl:max-w-[250px] rounded-md lg:rounded-[10px]" src={getImageUrl(movie?.id)} alt={movie?.t} />
                             <div className="ps-4">
-                                <div className="text-2xl max-md:text-[16px] leading-[1.2] font-bold">{movie?.t}</div>
-                                <div className="max-md:text-[14px]">{movie?.y} {movie?.r}</div>
+                                <div className="text-sm xs:text-base md:text-lg xl:text-xl 2xl:text-2xl max-md:text-[16px] leading-[1.2] font-medium xs:font-bold">{movie?.t}</div>
+                                <div className="max-md:text-[12px]">{movie?.y} {movie?.r}</div>
                             </div>
                         </Link>
                     ))}
