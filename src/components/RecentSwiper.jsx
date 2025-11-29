@@ -122,7 +122,7 @@ export default function RecentSwiper() {
                                     reachEnd={reachEnd}
                                     ids={items}
                                     ct={item ? item.currentTime : 0}
-                                    du={item ? item?.duration : 0}
+                                    du={item ? item.duration : 0}
                                     item={item.id}
                                     handleDelete={() => handleDelete(item)}
                                 />

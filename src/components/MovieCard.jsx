@@ -97,7 +97,7 @@ const MovieCard = ({ id, index, ids, isHovering, setIsHovering, activeIndex, onH
                         <div
                             className="h-full bg-sky-500 transition-all duration-300 rounded-full"
                             style={{
-                                width: du ? `${Math.min(100, (ct / item.duration) * 100)}%` : '0%',
+                                width: du ? `${Math.min(100, (ct / du) * 100)}%` : '0%',
                             }}
                         />
                     </div>}
