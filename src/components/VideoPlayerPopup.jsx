@@ -617,6 +617,14 @@ const VideoPlayerPopup = ({ movieData }) => {
 
         // Loader will be hidden by seeked event
     };
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (isLoading) {
+            audio.pause();
+        } else {
+            audio.play()
+        }
+    }, [isLoading])
 
     // Handle progress bar hover
     const handleProgressHover = (e) => {
