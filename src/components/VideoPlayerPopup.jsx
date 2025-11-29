@@ -19,9 +19,6 @@ const VideoPlayerPopup = ({ movieData }) => {
     const closeButtonRef = useRef(null);
     const isInitializedRef = useRef(false);
     const isChangingAudioRef = useRef(false);
-    const isIOS =
-        /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-        !window.MSStream;
 
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -375,10 +372,11 @@ const VideoPlayerPopup = ({ movieData }) => {
         }
 
         // Only mute video if we have separate audio tracks
-        if (parsedAudioTracks.length > 0 && !isIOS) {
+        if (parsedAudioTracks.length > 0) {
             video.muted = true;
             video.volume = 0;
         } else {
+            // Use video's embedded audio
             video.muted = false;
             video.volume = volume;
         }
@@ -389,8 +387,8 @@ const VideoPlayerPopup = ({ movieData }) => {
             // Sync audio with video time
             if (audioRef.current && !isChangingAudioRef.current && parsedAudioTracks.length > 0) {
                 const diff = Math.abs(audioRef.current.currentTime - video.currentTime);
-                if (diff > 0.3 && !video.paused && video.readyState >= 3) {
-                    audio.currentTime = video.currentTime;
+                if (diff > 0.1) {
+                    audioRef.current.currentTime = video.currentTime;
                 }
             }
         };
@@ -783,31 +781,29 @@ const VideoPlayerPopup = ({ movieData }) => {
     const changeQuality = (track) => {
         if (!hlsRef.current || !videoRef.current) return;
         if (selecedQuality === track.height) return;
-
+        else {
+            setSelecedQuality(track.height);
+            setSettingsView('main');
+            setShowSettings(false);
+        }
         setIsLoading(true);
-        setSelecedQuality(track.height);
-        setSettingsView("main");
-        setShowSettings(false);
-
         const video = videoRef.current;
         const audio = audioRef.current;
-
-        const savedTime = video.currentTime;
+        const currentTime = video.currentTime;
         const wasPlaying = !video.paused;
 
-        // ✅ STEP 1: Stop everything
+        // Pause video and audio immediately to prevent playback from start
         video.pause();
         if (audio) audio.pause();
 
-        // ✅ STEP 2: Destroy old HLS
+        // Destroy current HLS instance
         try {
             hlsRef.current.destroy();
         } catch (e) {
             console.error("Error destroying HLS:", e);
         }
-        hlsRef.current = null;
 
-        // ✅ STEP 3: Create new HLS
+        // Create new HLS instance with new quality
         const hls = new Hls({
             enableWorker: true,
             lowLatencyMode: false,
@@ -816,39 +812,32 @@ const VideoPlayerPopup = ({ movieData }) => {
             maxBufferSize: 60 * 1000 * 1000,
             maxBufferHole: 0.5,
         });
+
         hlsRef.current = hls;
 
-        // ✅ STEP 4: Load new stream
-        hls.attachMedia(video);
         hls.loadSource(track.url);
+        hls.attachMedia(video);
 
-        // ✅ STEP 5: Wait for video to be ready
+        // Set current time immediately when source is loaded, before playing
         hls.once(Hls.Events.MANIFEST_PARSED, () => {
-            // Set time immediately
-            video.currentTime = savedTime;
+            // Set time before any playback can start
+            video.currentTime = currentTime;
+            if (audio) {
+                audio.currentTime = currentTime;
+            }
 
-            const handleCanPlay = () => {
-                // ✅ VIDEO FIRST
+            // Small delay to ensure time is set before play
+            setTimeout(() => {
                 if (wasPlaying) {
-                    video.play().catch(() => { });
-                }
-
-                // ✅ AUDIO ONLY AFTER VIDEO (NON-iOS)
-                if (!isIOS && audio && audioTracks.length > 0) {
-                    audio.currentTime = savedTime;
-                    if (wasPlaying) {
-                        audio.play().catch(() => { });
+                    video.play().catch(e => console.log("Play error:", e));
+                    if (audio && audioTracks.length > 0) {
+                        audio.play().catch(e => console.log("Audio play error:", e));
                     }
                 }
-
                 setIsLoading(false);
-                video.removeEventListener("canplay", handleCanPlay);
-            };
-
-            video.addEventListener("canplay", handleCanPlay, { once: true });
+            }, 100);
         });
 
-        // ✅ STEP 6: Error handling
         hls.on(Hls.Events.ERROR, (event, data) => {
             if (data.fatal) {
                 switch (data.type) {
@@ -867,6 +856,8 @@ const VideoPlayerPopup = ({ movieData }) => {
         });
 
         setSelectedQuality(track);
+        setSettingsView('main');
+        setShowSettings(false);
     };
 
     // Change audio track
@@ -883,7 +874,6 @@ const VideoPlayerPopup = ({ movieData }) => {
         const currentTime = video.currentTime;
         video.pause();
         if (audio) audio.pause();
-        if (isIOS) return
 
         // Cleanup previous audio HLS if exists
         if (audio._hls) {
