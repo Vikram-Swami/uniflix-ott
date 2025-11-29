@@ -19,11 +19,13 @@ const PlaylistProvider = ({ children }) => {
 
         try {
             const res = await fetch(
-                `https://net51.cc/pv/playlist.php?id=${id}&tm=1763899957`,
-                {
-                    mode: 'cors',
-                    credentials: 'include',
+                `/api/playlist.php?id=${id}`, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
                 }
+            }
             );
             const data = await res.json();
 
