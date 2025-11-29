@@ -432,7 +432,7 @@ ${pageUrl}`;
                                 </div>
                             </div>
                         </div>
-                        <p className="text-[11px] xs:text-sm md:text-base flex gap-2 xs:pb-3 items-center mt-4 font-medium">
+                        <p className="text-[11px] xs:text-sm md:text-base flex gap-2 xs:pb-3 items-center mt-3 xs:mt-4 font-medium">
                             <svg
                                 stroke="currentColor"
                                 fill="currentColor"
@@ -443,6 +443,34 @@ ${pageUrl}`;
                             </svg>
                             Included with Prime
                         </p>
+                        <div className="flex items-center gap-3 xs:hidden">
+                            <div className="group relative inline-block cursor-pointer text-center">
+                                <button onClick={handleWatchlistToggle} className="h-11 md:h-14 flex items-center justify-center w-11 md:w-14 rounded-full bg-white/30 cursor-pointer text-center transition-all duration-300 sm:hover:text-black ease-in-out sm:hover:bg-white">
+                                    {isInWatchlist(movieId) ? <Check className="w-5 md:w-7 h-5 md:h-7" /> : <Plus className="w-5 md:w-7 h-5 md:h-7" />}
+                                </button>
+                                <div className="pointer-events-none absolute left-1/2 top-[calc(100%+20px)] z-10 -translate-x-1/2 rounded-xl bg-white px-3 py-2 text-center text-[#232323] opacity-0 transition-all ease-out group-hover:opacity-100 font-medium">
+                                    Watchlist
+                                    <svg
+                                        className="absolute bottom-full left-1/2 h-2 w-full -translate-x-1/2 rotate-180 transform text-white"
+                                        viewBox="0 0 255 255">
+                                        <polygon className="fill-current" points="0,0 127.5,127.5 255,0"></polygon>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div className="group relative inline-block cursor-pointer text-center">
+                                <button onClick={handleShare} className="h-11 md:h-14 flex items-center justify-center w-11 md:w-14 rounded-full bg-white/30 cursor-pointer text-center transition-all duration-300 sm:hover:text-black ease-in-out sm:hover:bg-white">
+                                    <Share2 className="w-5 md:w-7 h-5 md:h-7" />
+                                </button>
+                                <div className="pointer-events-none absolute left-1/2 top-[calc(100%+20px)] z-10 -translate-x-1/2 rounded-xl bg-white px-3 py-2 text-center text-[#232323] opacity-0 transition-all ease-out group-hover:opacity-100 font-medium">
+                                    Share
+                                    <svg
+                                        className="absolute bottom-full left-1/2 h-2 w-full -translate-x-1/2 rotate-180 transform text-white"
+                                        viewBox="0 0 255 255">
+                                        <polygon className="fill-current" points="0,0 127.5,127.5 255,0"></polygon>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
