@@ -77,7 +77,7 @@ const MovieRow = ({ title, movieIds }) => {
             setReachStart(swiper.isBeginning);
             setReachEnd(swiper.isEnd);
           }}
-          navigation={false}
+          // navigation={false}
           onSwiper={(swiper) => {
             setTimeout(() => {
               swiper.params.navigation.prevEl = prevRef.current;

@@ -48,55 +48,6 @@ const VideoPlayerPopup = ({ movieData }) => {
     };
     const query = useQuery();
     const movieId = query.get("movieId")
-    // Video player mount hone par landscape mode trigger karna
-    // useEffect(() => {
-    //     const requestLandscape = async () => {
-    //         try {
-    //             const container = containerRef.current;
-    //             if (!container) return;
-
-    //             // Method 1: Fullscreen request (works in development too)
-    //             if (!document.fullscreenElement) {
-    //                 await container.requestFullscreen().catch(err => {
-    //                     console.log('Fullscreen not available:', err);
-    //                 });
-    //                 setIsFullscreen(true);
-    //             }
-
-    //             // Method 2: CSS transform for visual rotation (fallback)
-    //             // Detect if device is in portrait mode
-    //             if (window.innerHeight > window.innerWidth) {
-    //                 // Add rotation hint class
-    //                 document.body.classList.add('request-landscape');
-    //             }
-
-    //         } catch (error) {
-    //             console.log('Landscape request error:', error);
-    //         }
-    //     };
-
-    //     // Small delay to ensure container is ready
-    //     const timer = setTimeout(requestLandscape, 1000);
-
-    //     // Listen for orientation changes
-    //     const handleOrientationChange = () => {
-    //         if (window.innerHeight > window.innerWidth) {
-    //             document.body.classList.add('request-landscape');
-    //         } else {
-    //             document.body.classList.remove('request-landscape');
-    //         }
-    //     };
-
-    //     window.addEventListener('resize', handleOrientationChange);
-    //     window.addEventListener('orientationchange', handleOrientationChange);
-
-    //     return () => {
-    //         clearTimeout(timer);
-    //         document.body.classList.remove('request-landscape');
-    //         window.removeEventListener('resize', handleOrientationChange);
-    //         window.removeEventListener('orientationchange', handleOrientationChange);
-    //     };
-    // }, []);
 
     // Parse HLS playlist
     function parseHlsPlaylist() {
