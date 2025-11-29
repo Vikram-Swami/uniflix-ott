@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useWatchlist } from "../hooks/useWatchlist";
 import LazyImage from "./LazyImage";
 
-const MovieCard = ({ id, index, ids, isHovering, setIsHovering, activeIndex, onHoverStart, onHoverEnd, hoveredIndex, Icons, buttonName, item, handleDelete, className, handleWatchlist, item2 }) => {
+const MovieCard = ({ id, index, ids, isHovering, setIsHovering, activeIndex, onHoverStart, onHoverEnd, hoveredIndex, Icons, buttonName, item, handleDelete, className, handleWatchlist, item2, ct, du }) => {
     const [hoverInfo, setHoverInfo] = useState(null);
     const [hoverInfoList, setHoverInfoList] = useState([]);
     const { addToWatchlist, removeFromWatchlist, isInWatchlist, isTouchDevice } = useWatchlist();
@@ -47,7 +47,6 @@ const MovieCard = ({ id, index, ids, isHovering, setIsHovering, activeIndex, onH
     };
 
     const formatTime = (sec) => {
-        console.log("second", sec)
         if (!sec && sec !== 0) return "00:00";
 
         sec = Math.floor(sec);
@@ -90,7 +89,7 @@ const MovieCard = ({ id, index, ids, isHovering, setIsHovering, activeIndex, onH
                     <LazyImage src={getImageUrl(id) || "https://picsum.photos/220/330"} alt="Movie poster" className="w-full h-full object-cover rounded-sm xs:rounded-lg" />
                     {item && (
                         <p className="bg-gray-800 text-white text-[10px] sm:text-xs py-0.5 px-1 rounded-sm absolute bottom-2 sm:bottom-3 right-2">
-                            {`${formatTime((item.duration || 0) - (item.currentTime || 0))} Left`}
+                            {`${formatTime((du || 0) - (ct || 0))} Left`}
 
                         </p>
                     )}
@@ -98,7 +97,7 @@ const MovieCard = ({ id, index, ids, isHovering, setIsHovering, activeIndex, onH
                         <div
                             className="h-full bg-sky-500 transition-all duration-300 rounded-full"
                             style={{
-                                width: item.duration ? `${Math.min(100, (item.currentTime / item.duration) * 100)}%` : '0%',
+                                width: du ? `${Math.min(100, (ct / item.duration) * 100)}%` : '0%',
                             }}
                         />
                     </div>}
