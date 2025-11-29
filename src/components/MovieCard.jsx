@@ -78,9 +78,9 @@ const MovieCard = ({ id, index, ids, isHovering, setIsHovering, activeIndex, onH
             onMouseLeave={handleMouseLeave}>
             <div className={`relative [box-shadow:0px_20px_20px_0px_#000000b5] w-full aspect-auto rounded-2xl transition-transform duration-300  ${isHovering && index === hoveredIndex && !isTouchDevice ? "movie_details" : ""} ${index === activeIndex ? "origin-left" : index === (ids?.length - 1) ? "origin-right" : "origin-center"}`}>
                 {item && <button onClick={() => handleDelete()} className={`absolute top-[3px] xs:top-2 right-[3px] xs:right-2 transition-all duration-200 cursor-pointer z-10 ${isHovering && index === hoveredIndex ? "opacity-100" : "sm:opacity-0"}`} type="button"><X className="w-[23px] xs:w-7 h-[23px] xs:h-7 filter-[drop-shadow(0px_0px_10px_black)]" /></button>}
-                <Link to={`/home?movieId=${id}`} className={`${OnetoTenIcons ? "" : "overflow-hidden"} relative block rounded-lg`}>
+                <Link to={`/home?movieId=${id}`} className={`${OnetoTenIcons ? "" : "overflow-hidden"} relative block rounded-sm xs:rounded-lg`}>
                     {OnetoTenIcons ? <span className={`absolute bottom-0 ${isHovering && index === hoveredIndex ? "number" : "number2"}`}><OnetoTenIcons className="w-8 h-8 xs:w-10 md:w-13 md2:w-15 xs:h-10 md:h-13 md2:h-15" /></span> : ""}
-                    <LazyImage src={getImageUrl(id) || "https://picsum.photos/220/330"} alt="Movie poster" className="w-full h-full object-cover rounded-lg" />
+                    <LazyImage src={getImageUrl(id) || "https://picsum.photos/220/330"} alt="Movie poster" className="w-full h-full object-cover rounded-sm xs:rounded-lg" />
                     {item && (
                         <p className="bg-gray-800 text-white text-[10px] sm:text-xs py-0.5 px-1 rounded-sm absolute bottom-2 sm:bottom-3 right-2">
                             {`${formatTime((item.duration || 0) - (item.currentTime || 0))} Left`}
