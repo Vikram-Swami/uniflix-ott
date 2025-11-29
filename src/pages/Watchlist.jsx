@@ -52,7 +52,7 @@ const Watchlist = () => {
             Add <Link className="underline" to="/movies"> Movies</Link> and <Link className="underline" to="/series"> TV shows</Link> that you want to watch later by clicking Add to Watchlist.
           </p>
         ) : (
-          <div className="grid grid-cols-2 xs:grid-cols-3 md2:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6! gap-y-3 ms-2.5">
+          <div className="grid grid-cols-2 xs:grid-cols-3 md2:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6! gap-y-3">
             {watchlistItems.map((item, i) => (
               <MovieCard
                 className="hover:z-50"
