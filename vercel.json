@@ -21,10 +21,6 @@
       "destination": "/api/img"
     },
     {
-      "source": "/api/play:path*",
-      "destination": "/api/play"
-    },
-    {
       "source": "/api/:path*",
       "destination": "/api/index"
     },
