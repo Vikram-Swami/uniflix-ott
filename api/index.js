@@ -1,24 +1,40 @@
-export const config = {
-  runtime: "edge",
-};
+export default async function handler(req, res) {
+  // Extract path after /api/proxy
+  const path = req.url.replace("/api", "");
+  const targetUrl = `https://net51.cc/pv${path}`;
 
-export default async function handler(req) {
-  const url = new URL(req.url);
-  const target = `https://net51.cc/pv${url.pathname}${url.search}`;
+  try {
+    const response = await fetch(targetUrl, {
+      method: req.method,
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        "Accept": "*/*",
+        "Referer": "https://net51.cc/",
+      },
+      body: req.method !== "GET" && req.method !== "HEAD" ? JSON.stringify(req.body) : undefined,
+    });
 
-  const res = await fetch(target, {
-    headers: {
-      "User-Agent": "Mozilla/5.0",
-      Accept: "*/*",
-      Referer: "https://net51.cc/",
-    },
-  });
+    // Response body
+    const data = await response.text();
 
-  const text = await res.text();
+    // Set CORS
+    res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true"); // 👈 IMPORTANT
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Cookies");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 
-  return new Response(text, {
-    headers: {
-      "Content-Type": res.headers.get("content-type") || "text/plain",
-    },
-  });
+    // Pass cookies back to client (set-cookie header)
+    const setCookie = response.headers.get("set-cookie");
+    if (setCookie) {
+      res.setHeader("Set-Cookie", setCookie);
+    }
+
+    res.status(response.status).send(data);
+  } catch (error) {
+    console.error("Proxy error:", error);
+    res.status(500).json({
+      error: "Proxy failed",
+      message: error.message
+    });
+  }
 }
