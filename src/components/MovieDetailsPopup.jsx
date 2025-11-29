@@ -619,7 +619,7 @@ ${pageUrl}`;
 
                         {/* Related Tab */}
                         {activeTab === "related" && (
-                            <div className="relative sm:mb-40 md:mb-56 cards_slider max-xs:ps-3 xs:ps-6 sm2:ps-8 md2:ps-11 2xl:ps-[72px]! pe-6 z-1000000 max-xs:pb-6">
+                            <div className="relative sm:mb-40 md:mb-56 cards_slider max-xs:ps-3 xs:ps-6 sm2:ps-8 md2:ps-11 2xl:ps-[72px]! xs:pe-6 z-1000000 max-xs:pb-6">
                                 <button
                                     onClick={() => setReachEnd(false)}
                                     ref={prevRef}

@@ -41,7 +41,7 @@ const MovieRow = ({ title, movieIds }) => {
   ];
 
   return (
-    <div className="mt-6 md2:mt-9 2xl:mt-12 max-xs:ps-3 xs:ps-6 sm2:ps-8 md2:ps-11 2xl:ps-[72px]! pe-6">
+    <div className="mt-6 md2:mt-9 2xl:mt-12 max-xs:ps-3 xs:ps-6 sm2:ps-8 md2:ps-11 2xl:ps-[72px]! xs:pe-6">
       <h2 className="text-[16px] 6xl:text-sky-500 sm:text-lg xl:text-xl font-semibold mb-2 sm:mb-[11px] 2xl:mb-4 relative -z-10">
         {title}
       </h2>
