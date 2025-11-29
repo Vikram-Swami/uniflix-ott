@@ -47,6 +47,7 @@ const MovieCard = ({ id, index, ids, isHovering, setIsHovering, activeIndex, onH
     };
 
     const formatTime = (sec) => {
+        console.log("second", sec)
         if (!sec && sec !== 0) return "00:00";
 
         sec = Math.floor(sec);
