@@ -44,6 +44,7 @@ function App() {
     window.scrollTo(0, 0);
     if (!movieId) {
       setPlaylist(null)
+      setMovieDetailsPopupScroll(0)
       html.classList.remove("overflow-hidden");
     }
   }, [movieId]);

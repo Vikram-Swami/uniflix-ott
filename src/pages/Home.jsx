@@ -39,17 +39,6 @@ const Home = () => {
     loadData();
   }, []);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     const slides = document.querySelectorAll(".swiper");
-  //     const count = slides.length;
-
-  //     slides.forEach((slide, index) => {
-  //       slide.style.zIndex = count - index;
-  //     });
-  //   }, 1000);
-  // }, []);
-
   if (loading) return null;
 
   if (error) {

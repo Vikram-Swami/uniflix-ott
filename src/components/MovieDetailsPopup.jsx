@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { getImageUrl, getMovieDetails, nextEpisode } from "../services/api";
 import { useWatchlist } from "../hooks/useWatchlist";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Check, Plus, Share2 } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import MovieCard from "./MovieCard";
-import { Virtual, Navigation,FreeMode } from "swiper/modules";
+import { Virtual, Navigation, FreeMode } from "swiper/modules";
 import { usePlaylist } from "./usePlaylist";
 import { loadRecp } from "../utils/recentPlays";
 import { ArrowIcon } from "../assets/icons";
@@ -14,7 +14,7 @@ import LazyImage from "./LazyImage";
 
 // Continue Watching
 export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovieData, movieData }) {
-    const [activeTab, setActiveTab] = useState("episode");
+    const [activeTab, setActiveTab] = useState("");
     const [loading, setLoading] = useState(true);
     const [episodesLoading, setEpisodesLoading] = useState(false);
     const [seasonLoading, setSeasonLoading] = useState(false);
@@ -126,43 +126,27 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
         }
     };
 
-    useEffect(() => {
-        const timer1 = setTimeout(() => {
-            const el = stickyRef.current;
-            if (!el) return;
+    // useLayoutEffect(() => {
+    //     const container = scrollRef.current;
+    //     const el = stickyRef.current;
+    //     console.log("first1")
+    //     if (!container || !el) return;
+    //     console.log("first2")
+    //     const handleScroll = () => {
+    //         const top = el.getBoundingClientRect().top;
+    //         if (top <= 70) {
+    //             setIsSticky(true);
+    //         } else {
+    //             setIsSticky(false);
+    //         }
+    //     };
 
-            const handleScroll = () => {
-                const top = el.getBoundingClientRect().top;
-                setIsSticky(top <= 70);
-            };
-            scrollRef.current?.addEventListener("scroll", handleScroll);
-            handleScroll();
+    //     container.addEventListener("scroll", handleScroll);
+    //     handleScroll();
 
-            return () =>
-                scrollRef.current?.removeEventListener("scroll", handleScroll);
-        }, 1000);
+    //     return () => container.removeEventListener("scroll", handleScroll);
+    // }, [activeTab]);
 
-        return () => clearTimeout(timer1);
-    }, [movieId]);
-
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            const el = scrollRef.current;
-            if (!el) return;
-
-            const handleScroll = () => {
-                const y = el.scrollTop;
-                setMovieDetailsPopupScroll(y > 70);
-            };
-
-            el.addEventListener("scroll", handleScroll);
-
-            return () => el.removeEventListener("scroll", handleScroll);
-        }, 1000);
-
-        return () => clearTimeout(timer);
-    }, []);
 
     const handleWatchlistToggle = () => {
         if (isInWatchlist(movieId)) {
@@ -323,7 +307,19 @@ ${pageUrl}`;
     }
 
     return (
-        <div ref={scrollRef} className="fixed inset-0 z-500 bg-[#00050d] overflow-y-auto movie_details_popup_scroll h-dvh xs:h-screen overflow-x-hidden">
+        <div ref={scrollRef} onScroll={(e) => {
+            const y = e.currentTarget.scrollTop;
+            const el = stickyRef.current;
+            if (el) {
+                const top = el.getBoundingClientRect().top;
+                if (top <= 70) {
+                    setIsSticky(true)
+                } else {
+                    setIsSticky(false)
+                }
+            }
+            setMovieDetailsPopupScroll(y >= 70);
+        }} className="fixed inset-0 z-500 bg-[#00050d] overflow-y-auto movie_details_popup_scroll h-dvh xs:h-screen overflow-x-hidden">
             {/* Hero Banner Section */}
             <section className="relative min-h-auto md:min-h-[75vh] 2xl:min-h-screen! w-full">
                 <div className="relative overflow-hidden z-10 flex min-h-auto md:min-h-[75vh] 2xl:min-h-screen! w-full items-end max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]! pb-5 xs:pb-10 md:pb-20 text-white max-md:flex-col">
@@ -464,7 +460,7 @@ ${pageUrl}`;
                 <div className="sticky md:top-[60px] z-10">
                     <div className="border-none">
                         <ul ref={stickyRef}
-                            className={`sticky-tab md:ms-[23px] 2xl:ms-[51px]! md:me-[18px] 2xl:me-[47px]! sticky mb-5 md:mb-7 lg::mb-10 flex items-center gap-4 md:gap-6 md:top-[60px] px-3 sm:px-6 md:px-2 md:rounded-b-xl md:backdrop-blur-lg ${isSticky && episodes?.length > 0 ? "md:bg-[#33373dcc]" : ""} transition-all duration-300 ease-in-out z-60 text-sm md:text-base 2xl:text-lg font-medium pt-2`}
+                            className={`sticky-tab md:mx-[23px] 2xl:mx-[51px]! sticky mb-5 md:mb-7 lg::mb-10 flex items-center gap-4 md:gap-6 md:top-[60px] px-3 sm:px-6 md:px-2 md:rounded-b-xl md:backdrop-blur-lg ${isSticky && episodes?.length > 0 ? "md:bg-[#33373dcc]" : ""} transition-all duration-300 ease-in-out z-60 text-sm md:text-base 2xl:text-lg font-medium pt-2`}
                             role="tablist">
                             {movieData?.episodes[0] !== null && (
                                 <li
@@ -642,7 +638,7 @@ ${pageUrl}`;
                                 </button>
                                 {/* Movie Cards Container */}
                                 <Swiper
-                                    modules={[Navigation, Virtual,FreeMode]}
+                                    modules={[Navigation, Virtual, FreeMode]}
                                     virtual
                                     simulateTouch={false}
                                     allowTouchMove={true}

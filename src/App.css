@@ -103,6 +103,9 @@ html {
 .cards_slider:hover .arrow {
   @apply sm2:flex!;
 }
+.arrow:hover span {
+  @apply scale-150;
+}
 .movies_card_arrwos .slick-list {
   overflow: unset;
 }

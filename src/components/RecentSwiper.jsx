@@ -35,22 +35,22 @@ export default function RecentSwiper() {
 
 
     return (
-        <div className="mt-6 md2:mt-9 2xl:mt-12 max-xs:ps-3 xs:ps-6 sm2:ps-8 md2:ps-11 2xl:ps-[72px]!">
+        <div className="mt-6 md2:mt-9 2xl:mt-12 max-xs:ps-3 xs:ps-6 sm2:ps-8 md2:ps-11 2xl:ps-[72px]! group">
             <h2 className="text-[16px] sm:text-lg xl:text-xl font-semibold pb-2 sm:pb-[11px] 2xl:mb-4 relative -z-10">
                 Continue Watching
             </h2>
-            <div className="relative cards_slider">
+            <div className="relative cards_slider group-hover:z-50">
                 <button
                     onClick={() => setReachEnd(false)}
                     ref={prevRef}
-                    className={`arrow absolute max-sm2:hidden group -left-8 md2:-left-11 2xl:-left-[72px] top-1/2 -translate-y-1/2 
+                    className={`arrow absolute max-sm2:hidden -left-8 md2:-left-11 2xl:-left-[72px] top-1/2 -translate-y-1/2 
                            rounded-r-lg w-10 2xl:w-12 h-[calc(100%+2px)] bg-black/60 z-20 hidden items-center justify-center
                            transition-opacity duration-500 cursor-pointer
                            ${reachStart || activeIndex === hoveredIndex
                             ? "opacity-0 pointer-events-none"
                             : "opacity-100"
                         }`}>
-                    <span className="rotate-180 scale-120 group-hover:scale-150 transition-all duration-300">
+                    <span className="rotate-180 scale-120 transition-all duration-300">
                         <ArrowIcon className="" />
                     </span>
                 </button>
@@ -132,11 +132,11 @@ export default function RecentSwiper() {
                 {/* Right Arrow */}
                 <button
                     ref={nextRef}
-                    className={`arrow group max-sm2:hidden absolute right-0 top-1/2 -translate-y-1/2 
+                    className={`arrow max-sm2:hidden absolute right-0 top-1/2 -translate-y-1/2 
                     rounded-l-md w-10 2xl:w-14 5xl:w-14 h-[calc(100%+2px)] bg-black/60 hidden items-center z-20             justify-center
                     transition-opacity duration-200 cursor-pointer
                     ${reachEnd ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
-                    <span className="scale-120 group-hover:scale-150 transition-all duration-300">
+                    <span className="scale-120 transition-all duration-300">
                         <ArrowIcon />
                     </span>
                 </button>
