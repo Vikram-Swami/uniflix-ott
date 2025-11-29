@@ -619,10 +619,12 @@ const VideoPlayerPopup = ({ movieData }) => {
     };
     useEffect(() => {
         const audio = audioRef.current;
-        if (isLoading) {
-            audio.pause();
-        } else {
-            audio.play()
+        if (audio) {
+            if (isLoading) {
+                audio.pause();
+            } else {
+                audio.play()
+            }
         }
     }, [isLoading])
 
