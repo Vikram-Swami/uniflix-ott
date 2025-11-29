@@ -1,6 +1,29 @@
 {
-  "routes": [{ "src": "/api/(.*)", "dest": "/api/proxy/$1" }],
   "rewrites": [
+    {
+      "source": "/api/media/:path*",
+      "destination": "/api/media"
+    },
+    {
+      "source": "/api/media2/:path*",
+      "destination": "/api/media2"
+    },
+    {
+      "source": "/api/media3/:path*",
+      "destination": "/api/media3"
+    },
+    {
+      "source": "/api/media4/:path*",
+      "destination": "/api/media4"
+    },
+    {
+      "source": "/api/img/:path*",
+      "destination": "/api/img"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "/api/index"
+    },
     {
       "source": "/(.*)",
       "destination": "/"
