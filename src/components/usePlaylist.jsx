@@ -96,7 +96,6 @@ const PlaylistProvider = ({ children }) => {
             } else {
                 console.log("No match found!");
             }
-            console.log(text)
             setCurrentMovieId(id);
             setPlaylist(text);
             setPlaylistUrl("");

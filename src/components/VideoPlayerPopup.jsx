@@ -3,7 +3,7 @@ import videojs from "video.js";
 import "video.js/dist/video-js.css";
 import { usePlaylist } from "./usePlaylist";
 import { X } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // Detect iOS/Safari
 const isIOS = () => {
@@ -17,14 +17,62 @@ const VideoPlayerPopup = () => {
     const playerRef = useRef(null);
     const blobUrlRef = useRef(null);
     const containerRef = useRef(null);
-    const [showControls, setShowControls] = useState(true);
     const controlsTimeoutRef = useRef(null);
+    const [showControls, setShowControls] = useState(true);
     const isIOSDevice = isIOS();
+
     const useQuery = () => {
         return new URLSearchParams(useLocation().search);
     };
     const query = useQuery();
     const movieId = query.get("movieId")
+    const navigate = useNavigate()
+
+    const resetControlsTimeout = () => {
+        // Clear existing timeout
+        if (controlsTimeoutRef.current) {
+            clearTimeout(controlsTimeoutRef.current);
+        }
+
+        // Show controls
+        setShowControls(true);
+
+        // Hide after 2 seconds
+        controlsTimeoutRef.current = setTimeout(() => {
+            setShowControls(false);
+        }, 2000);
+    };
+
+    // Handle mouse movement
+    const handleMouseMove = () => {
+        resetControlsTimeout();
+    };
+
+    // Handle mouse enter
+    const handleMouseEnter = () => {
+        resetControlsTimeout();
+    };
+
+    // Setup mouse event listeners
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        container.addEventListener('mousemove', handleMouseMove);
+        container.addEventListener('mouseenter', handleMouseEnter);
+
+        // Start the initial timeout
+        resetControlsTimeout();
+
+        return () => {
+            container.removeEventListener('mousemove', handleMouseMove);
+            container.removeEventListener('mouseenter', handleMouseEnter);
+            if (controlsTimeoutRef.current) {
+                clearTimeout(controlsTimeoutRef.current);
+            }
+        };
+    }, []);
+
     useEffect(() => {
         if (!playlist || !videoRef.current) return;
 
@@ -125,20 +173,6 @@ const VideoPlayerPopup = () => {
                 const error = playerRef.current.error();
                 console.error('Video.js error:', error);
             });
-
-            // Listen to fullscreen changes
-            playerRef.current.on('fullscreenchange', () => {
-                if (playerRef.current.isFullscreen()) {
-                    // In fullscreen, start hiding controls on inactivity
-                    resetControlsTimeout();
-                } else {
-                    // Not in fullscreen, show controls
-                    setShowControls(true);
-                    if (controlsTimeoutRef.current) {
-                        clearTimeout(controlsTimeoutRef.current);
-                    }
-                }
-            });
         } else {
             // Update source
             playerRef.current.src({
@@ -157,69 +191,28 @@ const VideoPlayerPopup = () => {
                 URL.revokeObjectURL(blobUrlRef.current);
                 blobUrlRef.current = null;
             }
-            if (controlsTimeoutRef.current) {
-                clearTimeout(controlsTimeoutRef.current);
-            }
         };
     }, [playlist, isIOSDevice]);
 
-    // Auto-hide controls on mouse inactivity (only in fullscreen)
-    const resetControlsTimeout = () => {
-        // Clear existing timeout
-        if (controlsTimeoutRef.current) {
-            clearTimeout(controlsTimeoutRef.current);
-        }
-
-        // Show controls
-        setShowControls(true);
-
-        // Only hide controls if we're in fullscreen
-        if (playerRef.current && playerRef.current.isFullscreen()) {
-            controlsTimeoutRef.current = setTimeout(() => {
-                setShowControls(false);
-            }, 3000); // Hide after 3 seconds of inactivity
-        }
-    };
-
-    // Handle mouse movement
-    const handleMouseMove = () => {
-        resetControlsTimeout();
-    };
-
-    // Handle mouse enter (when cursor enters video area)
-    const handleMouseEnter = () => {
-        resetControlsTimeout();
-    };
-
-    useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
-
-        container.addEventListener('mousemove', handleMouseMove);
-        container.addEventListener('mouseenter', handleMouseEnter);
-
-        return () => {
-            container.removeEventListener('mousemove', handleMouseMove);
-            container.removeEventListener('mouseenter', handleMouseEnter);
-        };
-    }, []);
     return (
-        <div
-            ref={containerRef}
-            className="fixed inset-0 w-full h-full z-[99999000000000000000000000000000000000000000000000000000000000] bg-black"
+        <div ref={containerRef}
+            className="fixed inset-0 max-h-screen h-full w-full z-[99999000000000000000000000000000000000000000000000000000000000] bg-black"
             data-vjs-player
         >
             {!isIOSDevice && <button
                 className={`absolute z-100 right-4 top-4 cursor-pointer text-white hover:text-gray-300 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'
                     }`}
-                onClick={() => setPlaylist(null)}
+                onClick={() => {
+                    setPlaylist(null);
+                    navigate(`/home?movieId=${movieId}`);
+                }}
             >
-                <X className="w-8 h-8" />
+                <X className="w-10 h-10" />
             </button>}
             <video
                 ref={videoRef}
                 poster={`https://imgcdn.kim/pv/c/${movieId}.jpg`}
-                className={isIOSDevice ? "fixed z-50000000 pt-0 h-full w-full object-contain" : "video-js vjs-big-play-centered fixed! z-50000000! pt-0! h-full! w-full!"}
+                className={isIOSDevice ? "fixed z-50000000 pt-0 h-full w-full object-contain" : "video-js pt-0! z-50000000! absolute h-dvh! w-full"}
                 playsInline
                 webkit-playsinline="true"
                 x-webkit-airplay="allow"

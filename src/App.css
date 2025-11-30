@@ -279,3 +279,12 @@ html {
   scrollbar-width: thin;
   scrollbar-color: rgb(60, 58, 58) #00050d;
 }
+
+.video-js video {
+  height: 100dvh !important;
+  font-size: 20px !important;
+}
+
+.video-js {
+  @apply min-h-[40px]! text-sm! md:text-[15px]! 2xl:text-[17px]!;
+}
