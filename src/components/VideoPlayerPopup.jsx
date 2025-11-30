@@ -198,20 +198,20 @@ const VideoPlayerPopup = () => {
             container.removeEventListener('mouseenter', handleMouseEnter);
         };
     }, []);
-
+    console.log("first", showControls)
     return (
         <div
             ref={containerRef}
             className="fixed inset-0 w-full h-full z-[99999000000000000000000000000000000000000000000000000000000000] bg-black"
             data-vjs-player
         >
-            <button
+            {!isIOSDevice && <button
                 className={`absolute z-100 right-4 top-4 cursor-pointer text-white hover:text-gray-300 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'
                     }`}
                 onClick={() => setPlaylist(null)}
             >
                 <X className="w-8 h-8" />
-            </button>
+            </button>}
             <video
                 ref={videoRef}
                 poster="https://imgcdn.kim/pv/341/0JT3KJGOROW81TECJ1GGQZQTB4.jpg"

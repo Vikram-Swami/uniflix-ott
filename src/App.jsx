@@ -24,6 +24,7 @@ function App() {
   };
   const query = useQuery();
   const movieId = query.get("movieId")
+  const p = query.get("p")
   useEffect(() => {
     const html = document.querySelector("html");
     if (isOpen) {
@@ -48,7 +49,12 @@ function App() {
       setMovieDetailsPopupScroll(0)
       html.classList.remove("overflow-hidden");
     }
-  }, [movieId]);
+    if (!p) {
+      setPlaylist(null)
+      setMovieDetailsPopupScroll(0)
+      html.classList.remove("overflow-hidden");
+    }
+  }, [movieId, p]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {

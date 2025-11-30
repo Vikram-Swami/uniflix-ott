@@ -126,28 +126,6 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
         }
     };
 
-    // useLayoutEffect(() => {
-    //     const container = scrollRef.current;
-    //     const el = stickyRef.current;
-    //     console.log("first1")
-    //     if (!container || !el) return;
-    //     console.log("first2")
-    //     const handleScroll = () => {
-    //         const top = el.getBoundingClientRect().top;
-    //         if (top <= 70) {
-    //             setIsSticky(true);
-    //         } else {
-    //             setIsSticky(false);
-    //         }
-    //     };
-
-    //     container.addEventListener("scroll", handleScroll);
-    //     handleScroll();
-
-    //     return () => container.removeEventListener("scroll", handleScroll);
-    // }, [activeTab]);
-
-
     const handleWatchlistToggle = () => {
         if (isInWatchlist(movieId)) {
             removeFromWatchlist(movieId);
@@ -198,7 +176,7 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
         recentEntry = (recp.M || []).find(m => String(m.id) === String(movieId)) || null;
     }
     const progressPct = recentEntry && recentEntry?.duration ? Math.min(100, (recentEntry.currentTime / recentEntry.duration) * 100) : 0;
-    const resumeText = recentEntry && recentEntry?.episodeId ? `Resume Season ${recentEntry?.season?.split("S")[1]}, Episode ${recentEntry?.episodeIndex?.split("E")[1]}` : recentEntry && recentEntry.id ? ("Resume") : (movieData?.episodes[0] !== null ? `Play Season ${movieData?.episodes[0].s}, Episode ${movieData?.episodes[0].ep}` : 'Play');
+    const resumeText = recentEntry && recentEntry?.episodeId ? `Resume Season ${recentEntry?.season?.split("S")[1]}, Episode ${recentEntry?.episodeIndex?.split("E")[1]}` : recentEntry && recentEntry?.id ? ("Resume") : (movieData?.season?.length > 0 ? `Play Season ${movieData?.episodes[0]?.s}, Episode ${movieData?.episodes[0]?.ep}` : 'Play');
     const didApplyRecentSeason = useRef(false);
 
     useEffect(() => {
@@ -490,7 +468,7 @@ ${pageUrl}`;
                         <ul ref={stickyRef}
                             className={`sticky-tab md:mx-[23px] 2xl:mx-[51px]! sticky mb-5 md:mb-7 lg::mb-10 flex items-center gap-4 md:gap-6 md:top-[60px] px-3 sm:px-6 md:px-2 md:rounded-b-xl md:backdrop-blur-lg ${isSticky && episodes?.length > 0 ? "md:bg-[#33373dcc]" : ""} transition-all duration-300 ease-in-out z-60 text-sm md:text-base 2xl:text-lg font-medium pt-2`}
                             role="tablist">
-                            {movieData?.episodes[0] !== null && (
+                            {movieData?.episodes?.length > 0 && (
                                 <li
                                     role="tab"
                                     onClick={() => setActiveTab("episode")}

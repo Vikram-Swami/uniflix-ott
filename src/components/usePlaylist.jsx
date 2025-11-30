@@ -1,4 +1,5 @@
 import React, { useState, createContext, useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const PlaylistContext = createContext();
 
@@ -11,8 +12,12 @@ const PlaylistProvider = ({ children }) => {
     const [currentMovieId, setCurrentMovieId] = useState(null);
     const [error, setError] = useState(null);
     const [holePageLoading, setHolePageLoading] = useState(false);
-
-
+    const navigate = useNavigate()
+    const useQuery = () => {
+        return new URLSearchParams(useLocation().search);
+    };
+    const query = useQuery();
+    const movieId = query.get("movieId")
     const fetchPlaylist = async (id) => {
         setLoading(true);
         setError(null);
@@ -97,7 +102,11 @@ const PlaylistProvider = ({ children }) => {
 
             setCurrentMovieId(id);
             setPlaylist(text);
-            setPlaylistUrl(""); // Not used anymore, but keep for compatibility
+            setPlaylistUrl("");
+            if (text) {
+                navigate(`?movieId=${movieId}&p=1`)
+            }
+            // Not used anymore, but keep for compatibility
         } catch (err) {
             setError(err);
             console.error("Fetch Error:", err);
