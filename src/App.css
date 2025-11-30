@@ -279,3 +279,13 @@ html {
   scrollbar-width: thin;
   scrollbar-color: rgb(60, 58, 58) #00050d;
 }
+/* Allow controls interaction in fullscreen */
+.vjs-fullscreen .vjs-control-bar {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Stop overlays from blocking controls */
+.vjs-fullscreen {
+  z-index: 999999 !important;
+}

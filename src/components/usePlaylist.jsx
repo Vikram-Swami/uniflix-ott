@@ -6,6 +6,7 @@ export const usePlaylist = () => useContext(PlaylistContext);
 
 const PlaylistProvider = ({ children }) => {
     const [playlist, setPlaylist] = useState("");
+    const [playlistUrl, setPlaylistUrl] = useState("");
     const [loading, setLoading] = useState(false);
     const [currentMovieId, setCurrentMovieId] = useState(null);
     const [error, setError] = useState(null);
@@ -59,32 +60,41 @@ const PlaylistProvider = ({ children }) => {
             const link2 = /https:\/\/s10\.nm-cdn7\.top\/files\//g;
             const link3 = /https:\/\/s13\.freecdn2\.top\/files\//g;
             const link4 = /https:\/\/s14\.freecdn2\.top\/files\//g;
+            const link5 = /https:\/\/s15\.freecdn13\.top\/files\//g;
 
             if (link1.test(text)) {
                 text = text.replace(
                     link1,
-                    'https://uniflix-ott.vercel.app/api/media/files/'
+                    'http://localhost:5173/api/media/files/'
                 );
             } else if (link2.test(text)) {
                 text = text.replace(
                     link2,
-                    'https://uniflix-ott.vercel.app/api/media2/files/'
+                    'http://localhost:5173/api/media2/files/'
                 );
             } else if (link3.test(text)) {
                 text = text.replace(
                     link3,
-                    'https://uniflix-ott.vercel.app/api/media3/files/'
+                    'http://localhost:5173/api/media3/files/'
                 );
             } else if (link4.test(text)) {
                 text = text.replace(
                     link4,
-                    'https://uniflix-ott.vercel.app/api/media4/files/'
+                    'http://localhost:5173/api/media4/files/'
+                );
+
+            } else if (link5.test(text)) {
+                text = text.replace(
+                    link5,
+                    'http://localhost:5173/api/media5/files/'
                 );
             } else {
                 console.log("No match found!");
             }
+
             setCurrentMovieId(id);
             setPlaylist(text);
+            setPlaylistUrl(""); // Not used anymore, but keep for compatibility
         } catch (err) {
             setError(err);
             console.error("Fetch Error:", err);
@@ -96,7 +106,7 @@ const PlaylistProvider = ({ children }) => {
 
     return (
         <PlaylistContext.Provider
-            value={{ playlist, loading, error, fetchPlaylist, setPlaylist, currentMovieId, setHolePageLoading, holePageLoading }}
+            value={{ playlist, playlistUrl, loading, error, fetchPlaylist, setPlaylist, currentMovieId, setHolePageLoading, holePageLoading }}
         >
             {children}
         </PlaylistContext.Provider>

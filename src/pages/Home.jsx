@@ -63,7 +63,6 @@ const Home = () => {
       {homepageData?.slider && (
         <HeroSlider slides={homepageData.slider} />
       )}
-
       {/* Recent Swiper */}
       <RecentSwiper />
 

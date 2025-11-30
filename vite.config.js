@@ -43,6 +43,17 @@ export default defineConfig({
           });
         },
       },
+      "/api/media5": {
+        target: "https://s15.freecdn13.top",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/media5/, ""),
+        configure: (proxy, _options) => {
+          proxy.on("proxyReq", (proxyReq, req, _res) => {
+            proxyReq.setHeader("Referer", "https://net51.cc/");
+            proxyReq.setHeader("Origin", "https://net51.cc");
+          });
+        },
+      },
       "/api/media": {
         target: "https://s11.nm-cdn8.top",
         changeOrigin: true,
