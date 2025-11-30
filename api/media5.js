@@ -1,5 +1,5 @@
 // ==========================================
-// FILE: api/media4.js (Media CDN 4)
+// FILE: api/media5.js (Media CDN 5)
 // ==========================================
 export default async function handler(req, res) {
   const path = req.url.replace("/api/media5", "");
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
 
     res.status(response.status).send(Buffer.from(data));
   } catch (error) {
-    console.error("Media4 proxy error:", error);
+    console.error("Media5 proxy error:", error);
     res.status(500).json({ error: "Media fetch failed" });
   }
 }
