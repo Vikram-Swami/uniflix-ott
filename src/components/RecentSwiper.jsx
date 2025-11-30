@@ -58,8 +58,7 @@ export default function RecentSwiper() {
                 {/* Swiper Container */}
                 <div className="sm:pe-6">
                     <Swiper
-                        modules={[Navigation, Virtual, FreeMode]}
-                        virtual
+                        modules={[Navigation, FreeMode]}
                         simulateTouch={false}
                         allowTouchMove={true}
                         freeMode={true}
