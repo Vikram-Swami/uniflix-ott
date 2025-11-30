@@ -43,7 +43,7 @@ const SearchPopup = ({ isOpen, onClose }) => {
 
     return (
         <div
-            className="fixed left-1/2 -translate-x-1/2 w-full sm2:w-[82%] max-w-[1400px] z-500 flex justify-center items-start pt-14 sm2:pt-20"
+            className="fixed left-1/2 -translate-x-1/2 w-full sm2:w-[82%] max-w-[1400px] z-50000 flex justify-center items-start pt-14 sm2:pt-20"
             role="dialog">
             <div
                 className="w-full pt-6 pb-0 bg-[#191e25e6] rounded-t-lg sm2:rounded-xl overflow-hidden">
