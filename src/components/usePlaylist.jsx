@@ -91,11 +91,6 @@ const PlaylistProvider = ({ children }) => {
                     `${currentOrigin}/api/media4/files/`
                 );
 
-            } else if (link5.test(text)) {
-                text = text.replace(
-                    link5,
-                    `${currentOrigin}/api/media5/files/`
-                );
             } else {
                 console.log("No match found!");
             }

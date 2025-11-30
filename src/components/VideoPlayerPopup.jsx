@@ -11,7 +11,7 @@ const isIOS = () => {
         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 };
 
-const VideoPlayerPopup = ({ movieData }) => {
+const VideoPlayerPopup = () => {
     const { playlist, setPlaylist } = usePlaylist();
     const videoRef = useRef(null);
     const playerRef = useRef(null);
