@@ -3,6 +3,7 @@ import videojs from "video.js";
 import "video.js/dist/video-js.css";
 import { usePlaylist } from "./usePlaylist";
 import { X } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 // Detect iOS/Safari
 const isIOS = () => {
@@ -10,7 +11,7 @@ const isIOS = () => {
         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 };
 
-const VideoPlayerPopup = () => {
+const VideoPlayerPopup = ({ movieData }) => {
     const { playlist, setPlaylist } = usePlaylist();
     const videoRef = useRef(null);
     const playerRef = useRef(null);
@@ -19,7 +20,11 @@ const VideoPlayerPopup = () => {
     const [showControls, setShowControls] = useState(true);
     const controlsTimeoutRef = useRef(null);
     const isIOSDevice = isIOS();
-
+    const useQuery = () => {
+        return new URLSearchParams(useLocation().search);
+    };
+    const query = useQuery();
+    const movieId = query.get("movieId")
     useEffect(() => {
         if (!playlist || !videoRef.current) return;
 
@@ -198,7 +203,6 @@ const VideoPlayerPopup = () => {
             container.removeEventListener('mouseenter', handleMouseEnter);
         };
     }, []);
-    console.log("first", showControls)
     return (
         <div
             ref={containerRef}
@@ -214,7 +218,7 @@ const VideoPlayerPopup = () => {
             </button>}
             <video
                 ref={videoRef}
-                poster="https://imgcdn.kim/pv/341/0JT3KJGOROW81TECJ1GGQZQTB4.jpg"
+                poster={`https://imgcdn.kim/pv/c/${movieId}.jpg`}
                 className={isIOSDevice ? "fixed z-50000000 pt-0 h-full w-full object-contain" : "video-js vjs-big-play-centered fixed! z-50000000! pt-0! h-full! w-full!"}
                 playsInline
                 webkit-playsinline="true"
