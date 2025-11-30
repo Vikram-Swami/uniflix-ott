@@ -4,7 +4,54 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    {
+      name: "playlist-middleware",
+      configureServer(server) {
+        // Store for playlists (in-memory, will be populated by client)
+        const playlistStore = new Map();
+
+        server.middlewares.use("/api/playlist-modified", (req, res, next) => {
+          // Extract playlist ID from URL
+          const playlistId = req.url.split("/").pop()?.replace(".m3u8", "");
+
+          if (playlistId && playlistStore.has(playlistId)) {
+            const playlistContent = playlistStore.get(playlistId);
+            res.setHeader("Content-Type", "application/vnd.apple.mpegurl");
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.setHeader("Cache-Control", "no-cache");
+            res.end(playlistContent);
+          } else {
+            res.status(404).end("Playlist not found");
+          }
+        });
+
+        // Endpoint to store playlist (called from client)
+        server.middlewares.use("/api/store-playlist", (req, res, next) => {
+          if (req.method === "POST") {
+            let body = "";
+            req.on("data", (chunk) => {
+              body += chunk.toString();
+            });
+            req.on("end", () => {
+              try {
+                const { id, content } = JSON.parse(body);
+                playlistStore.set(id, content);
+                res.setHeader("Access-Control-Allow-Origin", "*");
+                res.end(JSON.stringify({ success: true }));
+              } catch (e) {
+                res.status(400).end("Invalid request");
+              }
+            });
+          } else {
+            next();
+          }
+        });
+      },
+    },
+  ],
   optimizeDeps: {
     include: ["swiper/react", "swiper/modules"],
   },

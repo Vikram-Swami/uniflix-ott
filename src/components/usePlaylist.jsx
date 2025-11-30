@@ -62,31 +62,34 @@ const PlaylistProvider = ({ children }) => {
             const link4 = /https:\/\/s14\.freecdn2\.top\/files\//g;
             const link5 = /https:\/\/s15\.freecdn13\.top\/files\//g;
 
+            // Get current origin for URL replacement (works in both dev and production)
+            const currentOrigin = window.location.origin;
+
             if (link1.test(text)) {
                 text = text.replace(
                     link1,
-                    'https://uniflix-ott.vercel.app/api/media/files/'
+                    `${currentOrigin}/api/media/files/`
                 );
             } else if (link2.test(text)) {
                 text = text.replace(
                     link2,
-                    'https://uniflix-ott.vercel.app/api/media2/files/'
+                    `${currentOrigin}/api/media2/files/`
                 );
             } else if (link3.test(text)) {
                 text = text.replace(
                     link3,
-                    'https://uniflix-ott.vercel.app/api/media3/files/'
+                    `${currentOrigin}/api/media3/files/`
                 );
             } else if (link4.test(text)) {
                 text = text.replace(
                     link4,
-                    'https://uniflix-ott.vercel.app/api/media4/files/'
+                    `${currentOrigin}/api/media4/files/`
                 );
 
             } else if (link5.test(text)) {
                 text = text.replace(
                     link5,
-                    'https://uniflix-ott.vercel.app/api/media5/files/'
+                    `${currentOrigin}/api/media5/files/`
                 );
             } else {
                 console.log("No match found!");
