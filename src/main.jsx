@@ -12,6 +12,7 @@ import WatchlistProvider from "./hooks/useWatchlist.jsx";
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
+    <video controls src="https://s15.freecdn13.top/files/0OQLX86W1PXLU0CRSWPE7L2UL1/480p/480p.m3u8?in=::788151f1a99ba4302d561e7a4c200198::1764497222::ni"></video>
     <PlaylistProvider>
       <WatchlistProvider>
         <App />
