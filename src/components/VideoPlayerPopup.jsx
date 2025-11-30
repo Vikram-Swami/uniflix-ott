@@ -31,30 +31,24 @@ const VideoPlayerPopup = () => {
             if (playlist.startsWith('http://') || playlist.startsWith('https://')) {
                 finalUrl = playlist;
             } else {
-                // Store playlist on server and get HTTP URL
-                // iOS Safari requires HTTP/HTTPS URLs for HLS, not Blob or Data URLs
-                const playlistId = `playlist_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                // For iOS, create HTTP URL with playlist content as query parameter
+                // This works in both dev and production
+                try {
+                    // Encode playlist content as base64 for URL
+                    const base64Playlist = btoa(unescape(encodeURIComponent(playlist)));
+                    const playlistId = `playlist_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-                // Store playlist on server
-                fetch('/api/store-playlist', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        id: playlistId,
-                        content: playlist
-                    })
-                }).then(() => {
-                    // Use the HTTP URL
-                    finalUrl = `/api/playlist-modified/${playlistId}.m3u8`;
+                    // Create URL with content as query parameter
+                    // This works in serverless functions (Vercel)
+                    finalUrl = `/api/playlist-modified/${playlistId}.m3u8?content=${encodeURIComponent(base64Playlist)}`;
+
                     if (videoRef.current) {
                         videoRef.current.src = finalUrl;
                         videoRef.current.load();
                     }
-                }).catch(err => {
-                    console.error('Error storing playlist for iOS:', err);
-                    // Fallback to data URL if server storage fails
+                } catch (e) {
+                    console.error('Error creating playlist URL for iOS:', e);
+                    // Fallback to data URL if encoding fails
                     try {
                         const base64Playlist = btoa(unescape(encodeURIComponent(playlist)));
                         finalUrl = `data:application/vnd.apple.mpegurl;base64,${base64Playlist}`;
@@ -62,10 +56,10 @@ const VideoPlayerPopup = () => {
                             videoRef.current.src = finalUrl;
                             videoRef.current.load();
                         }
-                    } catch (e) {
-                        console.error('Error creating fallback data URL for iOS:', e);
+                    } catch (e2) {
+                        console.error('Error creating fallback data URL for iOS:', e2);
                     }
-                });
+                }
             }
 
             if (finalUrl && !finalUrl.startsWith('/api/playlist-modified')) {

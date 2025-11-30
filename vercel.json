@@ -21,6 +21,10 @@
       "destination": "/api/img"
     },
     {
+      "source": "/api/playlist-modified/:path*",
+      "destination": "/api/playlist-modified/[id]"
+    },
+    {
       "source": "/api/:path*",
       "destination": "/api/index"
     },

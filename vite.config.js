@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import { setPlaylist, getPlaylist, hasPlaylist } from "./api/playlist-store.js";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -11,20 +10,38 @@ export default defineConfig({
     {
       name: "playlist-middleware",
       configureServer(server) {
-        // Use shared store for dev environment
-        server.middlewares.use("/api/playlist-modified", (req, res, next) => {
-          // Extract playlist ID from URL
-          const playlistId = req.url.split("/").pop()?.replace(".m3u8", "");
+        // Store for playlists (in-memory, will be populated by client)
+        const playlistStore = new Map();
 
-          if (playlistId && hasPlaylist(playlistId)) {
-            const playlistContent = getPlaylist(playlistId);
+        server.middlewares.use("/api/playlist-modified", (req, res, next) => {
+          // Parse URL to get query parameters
+          const url = new URL(req.url, `http://${req.headers.host}`);
+          const playlistId = url.pathname.split("/").pop()?.replace(".m3u8", "");
+          const content = url.searchParams.get("content");
+
+          // If content is passed as query parameter (works in production)
+          if (content) {
+            try {
+              const playlistContent = Buffer.from(content, "base64").toString("utf-8");
+              res.setHeader("Content-Type", "application/vnd.apple.mpegurl");
+              res.setHeader("Access-Control-Allow-Origin", "*");
+              res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+              return res.end(playlistContent);
+            } catch (e) {
+              return res.status(400).end("Invalid playlist content");
+            }
+          }
+
+          // Fallback to in-memory store (dev only)
+          if (playlistId && playlistStore.has(playlistId)) {
+            const playlistContent = playlistStore.get(playlistId);
             res.setHeader("Content-Type", "application/vnd.apple.mpegurl");
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.setHeader("Cache-Control", "no-cache");
-            res.end(playlistContent);
-          } else {
-            res.status(404).end("Playlist not found");
+            return res.end(playlistContent);
           }
+
+          res.status(404).end("Playlist not found");
         });
 
         // Endpoint to store playlist (called from client)
@@ -37,7 +54,7 @@ export default defineConfig({
             req.on("end", () => {
               try {
                 const { id, content } = JSON.parse(body);
-                setPlaylist(id, content);
+                playlistStore.set(id, content);
                 res.setHeader("Access-Control-Allow-Origin", "*");
                 res.end(JSON.stringify({ success: true }));
               } catch (e) {

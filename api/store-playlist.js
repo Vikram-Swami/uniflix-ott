@@ -1,15 +1,12 @@
-// Store playlist for iOS playback (production serverless function)
-import { setPlaylist } from "./playlist-store.js";
-
+// API endpoint to store playlist (for production)
+// Uses query parameter to pass playlist content (base64 encoded)
 export default async function handler(req, res) {
-  // Handle CORS
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
+  // Handle CORS preflight
   if (req.method === "OPTIONS") {
-    res.status(200).end();
-    return;
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    return res.status(200).end();
   }
 
   if (req.method === "POST") {
@@ -17,19 +14,21 @@ export default async function handler(req, res) {
       const { id, content } = req.body;
 
       if (!id || !content) {
-        res.status(400).json({ error: "Missing id or content" });
-        return;
+        return res.status(400).json({ error: "Missing id or content" });
       }
 
-      // Store playlist
-      setPlaylist(id, content);
-
-      res.status(200).json({ success: true });
+      // In production, we'll use the id to create a URL that serves the content
+      // For now, we'll return success and the client will use the content directly
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader("Content-Type", "application/json");
+      return res.status(200).json({ success: true, id });
     } catch (error) {
-      console.error("Error storing playlist:", error);
-      res.status(500).json({ error: "Failed to store playlist" });
+      console.error("Store playlist error:", error);
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      return res.status(500).json({ error: "Failed to store playlist" });
     }
-  } else {
-    res.status(405).json({ error: "Method not allowed" });
   }
+
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  return res.status(405).json({ error: "Method not allowed" });
 }
