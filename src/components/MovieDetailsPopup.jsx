@@ -297,7 +297,7 @@ ${pageUrl}`;
                 }
             }
             setMovieDetailsPopupScroll(y >= 70);
-        }} className="fixed inset-0 z-500 bg-[#00050d] overflow-y-auto movie_details_popup_scroll h-dvh xs:h-screen overflow-x-hidden">
+        }} className="fixed inset-0 z-500 bg-[#00050d] overflow-y-auto movie_details_popup_scroll h-vh xs:h-screen overflow-x-hidden">
             {/* Hero Banner Section */}
             <section className="relative min-h-auto md:min-h-[75vh] 2xl:min-h-screen! w-full">
                 <div className="relative overflow-hidden z-10 flex min-h-auto md:min-h-[75vh] 2xl:min-h-screen! w-full items-end max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]! pb-5 xs:pb-10 md:pb-20 text-white max-md:flex-col">
@@ -424,7 +424,7 @@ ${pageUrl}`;
                         <div className="flex items-center gap-3 xs:hidden mt-3">
                             <div className="group relative inline-block cursor-pointer text-center">
                                 <button onClick={handleWatchlistToggle} className="h-8 md:h-14 flex items-center justify-center w-8 md:w-14 rounded-full bg-white/30 cursor-pointer text-center transition-all duration-300 sm:hover:text-black ease-in-out sm:hover:bg-white">
-                                    {isInWatchlist(movieId) ? <Check className="w-3 md:w-7 h-3 md:h-7" /> : <Plus className="w-3 md:w-7 h-3 md:h-7" />}
+                                    {isInWatchlist(movieId) ? <Check className="w-4 md:w-7 h-4 md:h-7" /> : <Plus className="w-4 md:w-7 h-4 md:h-7" />}
                                 </button>
                                 <div className="pointer-events-none absolute left-1/2 top-[calc(100%+20px)] z-10 -translate-x-1/2 rounded-xl bg-white px-3 py-2 text-center text-[#232323] opacity-0 transition-all ease-out group-hover:opacity-100 font-medium">
                                     Watchlist
@@ -532,7 +532,7 @@ ${pageUrl}`;
                                         </div>
                                     </div>
                                 )}
-                                <div className="flex flex-col max-w-[1500px] mx-auto gap-6 md:gap-8">
+                                <div className="flex flex-col max-w-[1500px] mx-auto gap-4 xs:gap-6 md:gap-8">
                                     {seasonLoading ?
                                         <div className="flex justify-center items-center h-[200px]">
                                             <div className="w-10 md:w-14 h-10 md:h-14 border-5 border-t-black border-white rounded-full animate-spin"></div>
@@ -607,11 +607,11 @@ ${pageUrl}`;
                                                             </p>
                                                         </div>
                                                     </div>
-                                                    {episode?.ep_desc && (
+                                                    {/* {episode?.ep_desc && (
                                                         <p className="text-[#aaa] sm:hidden text-[11px] mt-2">
                                                             {episode?.ep_desc}
                                                         </p>
-                                                    )}
+                                                    )} */}
                                                 </div>
                                             )
                                         })

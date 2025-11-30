@@ -15,6 +15,7 @@
     "@tailwindcss/vite": "^4.1.17",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "firebase": "^12.6.0",
     "hls.js": "^1.6.15",
     "http-proxy-middleware": "^3.0.5",
     "js-cookie": "^3.0.5",
