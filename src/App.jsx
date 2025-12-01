@@ -5,6 +5,8 @@ import SearchPopup from "./components/SearchPopup";
 import MovieDetailsPopup from "./components/MovieDetailsPopup";
 import VideoPlayerPopup from "./components/VideoPlayerPopup";
 import { usePlaylist } from "./components/usePlaylist";
+import { ToastContainer } from "react-toastify";
+import ProtectedRoute from "./authentication/ProtectedRoute";
 
 // 🔥 Lazy-loaded pages
 const Home = lazy(() => import("./pages/Home"));
@@ -88,15 +90,17 @@ function App() {
         }>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/movies" element={<Movies />} />
-          <Route path="/series" element={<TVShows />} />
-          <Route path="/watch-list" element={<Watchlist />} />
+          <Route path="/signup" element={<Login />} />
+          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
+          <Route path="/series" element={<ProtectedRoute><TVShows /></ProtectedRoute>} />
+          <Route path="/watch-list" element={<ProtectedRoute><Watchlist /></ProtectedRoute>} />
 
           {/* Invalid route → redirect to /home */}
           <Route path="*" element={<Navigate to="/home" replace />} />
         </Routes>
-      </Suspense >
+      </Suspense>
+      <ToastContainer theme="dark" position="top-center" />
     </>
   );
 }

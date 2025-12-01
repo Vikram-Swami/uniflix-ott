@@ -26,6 +26,7 @@
     "react-intersection-observer": "^10.0.0",
     "react-router-dom": "^7.9.6",
     "react-slick": "^0.31.0",
+    "react-toastify": "^11.0.5",
     "shaka-player": "^4.16.9",
     "sharp": "^0.34.5",
     "slick-carousel": "^1.8.1",

@@ -9,13 +9,16 @@ import "swiper/css/navigation";
 import 'swiper/css/free-mode';
 import PlaylistProvider from "./components/usePlaylist.jsx";
 import WatchlistProvider from "./hooks/useWatchlist.jsx";
+import { AuthProvider } from "./hooks/useAuth.jsx";
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <PlaylistProvider>
-      <WatchlistProvider>
-        <App />
-      </WatchlistProvider>
-    </PlaylistProvider>
+    <AuthProvider>
+      <PlaylistProvider>
+        <WatchlistProvider>
+          <App />
+        </WatchlistProvider>
+      </PlaylistProvider>
+    </AuthProvider>
   </BrowserRouter>
 )
