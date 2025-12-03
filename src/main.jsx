@@ -7,17 +7,17 @@ import "slick-carousel/slick/slick-theme.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import 'swiper/css/free-mode';
-import PlaylistProvider from "./components/usePlaylist.jsx";
 import WatchlistProvider from "./hooks/useWatchlist.jsx";
 import { AuthProvider } from "./hooks/useAuth.jsx";
+import PlaylistProvider from "./components/usePlaylist.jsx";
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <AuthProvider>
       <PlaylistProvider>
-        <WatchlistProvider>
-          <App />
-        </WatchlistProvider>
+          <WatchlistProvider>
+            <App />
+          </WatchlistProvider>
       </PlaylistProvider>
     </AuthProvider>
   </BrowserRouter>

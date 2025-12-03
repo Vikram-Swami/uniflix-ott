@@ -62,13 +62,12 @@ function App() {
     const handleClickOutside = (e) => {
       if (popupRef.current && !popupRef.current.contains(e.target)) {
         setIsOpen(false)
-        console.log("firstget", popupRef.current && !popupRef.current.contains(e.target))
       }
-      console.log("firstget2", popupRef.current && !popupRef.current.contains(e.target))
     };
     if (isOpen) document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
+
 
   return (
     <>
@@ -101,6 +100,8 @@ function App() {
         </Routes>
       </Suspense>
       <ToastContainer theme="dark" position="top-center" />
+
+
     </>
   );
 }

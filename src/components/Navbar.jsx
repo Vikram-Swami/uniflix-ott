@@ -58,7 +58,7 @@ export default function Navbar({ setIsOpen, movieDetailsPopupScroll, isOpen }) {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [isOpenDropdown])
-  console.log(isOpenDropdown, isUser)
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 70);

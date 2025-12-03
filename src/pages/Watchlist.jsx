@@ -35,7 +35,7 @@ const Watchlist = () => {
   if (loading) {
     return;
   }
-//ok
+  //ok
   return (
     <div className="pt-16 xs:pt-20 xl:pt-24 sm:pb-36 md:pb-60 min-h-dvh">
       <div className="max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]!">
@@ -43,7 +43,7 @@ const Watchlist = () => {
           My watchlist
         </h1>
         {watchlistItems.length === 0 ? (
-          <p className="text-white text-xl text-center  py-16">
+          <p className="text-white max-xs:text-sm text-base 2xl:text-xl text-center  py-16">
             Your Watchlist is currently empty
             <br />
             Add <Link className="underline" to="/movies"> Movies</Link> and <Link className="underline" to="/series"> TV shows</Link> that you want to watch later by clicking Add to Watchlist.

@@ -44,7 +44,7 @@ export default function MovieDetailsPopup({ setMovieDetailsPopupScroll, setMovie
     const movieId = query.get("movieId");
     useEffect(() => {
         if (movieData) {
-            let language = Cookies.get("lg") || movieData?.lang.find((item) => item?.s === movieData?.d_lang)?.l
+            let language = Cookies.get("lg") || movieData?.lang?.find((item) => item?.s === movieData?.d_lang)?.l
             if (language) {
                 setSelectedLang(language)
             }
