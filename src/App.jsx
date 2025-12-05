@@ -77,7 +77,7 @@ function App() {
       navigate("/home")
     }
   }, [isUser])
-  // 
+
   return (
     <>
       <InstallPWA />
