@@ -71,7 +71,7 @@ export default function Navbar({ setIsOpen, movieDetailsPopupScroll, isOpen }) {
 
 
   return (
-    <nav className={`fixed left-1/2 -translate-x-1/2 w-full md:px-[23px] 2xl:px-[51px]! md:rounded-b-xl z-5000 transition-all duration-300 ease-in-out`}>
+    <nav className={`fixed left-1/2 -translate-x-1/2 w-full md:px-[23px] 2xl:px-[51px]! md:rounded-b-xl z-5000000 transition-all duration-300 ease-in-out`}>
       <div className={`flex relative items-center justify-between h-[50px] md:h-[60px] 2xl:h-[70px] px-3 xs:px-[21px] md:rounded-b-xl transition-all duration-300 ease-in-out ${isScrolled || movieDetailsPopupScroll ? "nav_bg_leaner2" : "nav_bg_leaner"
         }`}>
         <div ref={menuRef} className="flex items-center xs:gap-17 gap-4">
