@@ -76,7 +76,7 @@ function App() {
       navigate("/home")
     }
   }, [isUser])
-
+// 
   return (
     <>
       {holePageLoading && <div className="fixed inset-0 bg-black/50 z-50000000">
