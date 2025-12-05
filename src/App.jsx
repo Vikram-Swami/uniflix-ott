@@ -109,7 +109,7 @@ function App() {
           <Route path="*" element={<Navigate to="/home" replace />} />
         </Routes>
       </Suspense>
-      {!holePageLoading && <InstallPWA />}
+      {!holePageLoading && pathname !== "/login" && pathname !== "/signup" && <InstallPWA />}
       <ToastContainer theme="dark" position="top-center" />
     </>
   );

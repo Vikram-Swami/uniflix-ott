@@ -24,6 +24,7 @@ const InstallPWA = () => {
     }, []);
 
     const handleInstallClick = async () => {
+        console.log("first")
         if (!deferredPrompt) {
             return;
         }
@@ -56,7 +57,7 @@ const InstallPWA = () => {
                     <img className="w-30 sm:w-40 [box-shadow:0px_0px_22px_1px_#ffffff73] rounded-lg" src={Appstore} alt="Appstore-btn" />
                 </button>
             </div>
-            <p className="flex items-center justify-center gap-3 text-lg py-2"><Copyright className="w-5 h-5"/> 2025 uniflix.fun - Inc.</p>
+            <p className="flex items-center justify-center gap-3 text-lg py-2"><Copyright className="w-5 h-5" /> 2025 uniflix.fun - Inc.</p>
         </div>
     );
 };
