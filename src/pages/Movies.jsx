@@ -4,6 +4,8 @@ import MovieRow from '../components/MovieRow';
 import { fetchMoviepage } from '../services/api';
 import { useWatchlist } from '../hooks/useWatchlist';
 import { usePlaylist } from '../components/usePlaylist';
+import { Helmet } from 'react-helmet-async';
+
 const Movies = () => {
   const [homepageData, setHomepageData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -58,24 +60,37 @@ const Movies = () => {
   }
 
   return (
-    <div className="min-h-screen sm:pb-36 md:pb-52">
-      {/* Hero Slider */}
-      {homepageData?.slider && (
-        <HeroSlider slides={homepageData.slider} />
-      )}
+    <>
+      <Helmet>
+        <title>Movies - Uniflix</title>
+        <meta name="description" content="Browse unlimited movies on Uniflix. Watch latest Hollywood, Bollywood movies online." />
+        <meta name="keywords" content="watch movies online, bollywood movies, hollywood movies" />
+        <meta property="og:title" content="Movies - Uniflix" />
+        <meta property="og:description" content="Browse unlimited movies on Uniflix" />
+        <meta property="og:url" content="https://uniflix.fun/movies" />
+        <meta property="og:description" content="Browse unlimited movies and series on Uniflix" />
+        <link rel="canonical" href="https://uniflix.fun/movies" />
+      </Helmet>
 
-      {/* Movie Rows */}
-      <div className="pb-16">
-        {homepageData?.post?.map((row, index) => (
-          <MovieRow
-            key={index}
-            title={row.cate}
-            movieIds={row.ids}
-            onAddToWatchlist={addToWatchlist}
-          />
-        ))}
+      <div className="min-h-screen sm:pb-36 md:pb-52">
+        {/* Hero Slider */}
+        {homepageData?.slider && (
+          <HeroSlider slides={homepageData.slider} />
+        )}
+
+        {/* Movie Rows */}
+        <div className="pb-16">
+          {homepageData?.post?.map((row, index) => (
+            <MovieRow
+              key={index}
+              title={row.cate}
+              movieIds={row.ids}
+              onAddToWatchlist={addToWatchlist}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

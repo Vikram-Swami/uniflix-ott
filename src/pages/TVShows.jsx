@@ -4,6 +4,8 @@ import MovieRow from '../components/MovieRow';
 import { fetchShowpage } from '../services/api';
 import { useWatchlist } from '../hooks/useWatchlist';
 import { usePlaylist } from '../components/usePlaylist';
+import { Helmet } from 'react-helmet-async';
+
 const TVShows = () => {
   const [homepageData, setHomepageData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -58,24 +60,37 @@ const TVShows = () => {
   }
 
   return (
-    <div className="min-h-screen sm:pb-36 md:pb-52">
-      {/* Hero Slider */}
-      {homepageData?.slider && (
-        <HeroSlider slides={homepageData.slider} />
-      )}
+    <>
+      <Helmet>
+        <title>Series - Uniflix</title>
+        <meta name="description" content="Browse unlimited series on Uniflix. Watch latest Hollywood, Bollywood series online." />
+        <meta name="keywords" content="watch series online, bollywood series, hollywood series" />
+        <meta property="og:title" content="Series - Uniflix" />
+        <meta property="og:description" content="Browse unlimited series on Uniflix" />
+        <meta property="og:url" content="https://uniflix.fun/series" />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://uniflix.fun/series" />
+      </Helmet>
 
-      {/* Movie Rows */}
-      <div className="pb-16">
-        {homepageData?.post?.map((row, index) => (
-          <MovieRow
-            key={index}
-            title={row.cate}
-            movieIds={row.ids}
-            onAddToWatchlist={addToWatchlist}
-          />
-        ))}
+      <div className="min-h-screen sm:pb-36 md:pb-52">
+        {/* Hero Slider */}
+        {homepageData?.slider && (
+          <HeroSlider slides={homepageData.slider} />
+        )}
+
+        {/* Movie Rows */}
+        <div className="pb-16">
+          {homepageData?.post?.map((row, index) => (
+            <MovieRow
+              key={index}
+              title={row.cate}
+              movieIds={row.ids}
+              onAddToWatchlist={addToWatchlist}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

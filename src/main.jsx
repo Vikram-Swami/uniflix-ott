@@ -10,14 +10,17 @@ import 'swiper/css/free-mode';
 import WatchlistProvider from "./hooks/useWatchlist.jsx";
 import { AuthProvider } from "./hooks/useAuth.jsx";
 import PlaylistProvider from "./components/usePlaylist.jsx";
+import { HelmetProvider } from 'react-helmet-async';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <AuthProvider>
       <PlaylistProvider>
-          <WatchlistProvider>
+        <WatchlistProvider>
+          <HelmetProvider>
             <App />
-          </WatchlistProvider>
+          </HelmetProvider>
+        </WatchlistProvider>
       </PlaylistProvider>
     </AuthProvider>
   </BrowserRouter>

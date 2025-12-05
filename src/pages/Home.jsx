@@ -5,6 +5,8 @@ import MovieRow from '../components/MovieRow';
 import { fetchHomepage } from '../services/api';
 import { usePlaylist } from '../components/usePlaylist';
 import { useInView } from "react-intersection-observer";
+import { Helmet } from 'react-helmet-async';
+
 const Home = () => {
   const [homepageData, setHomepageData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -58,27 +60,40 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen sm:pb-36 md:pb-52">
-      {/* Hero Slider */}
-      {homepageData?.slider && (
-        <HeroSlider slides={homepageData.slider} />
-      )}
-      {/* Recent Swiper */}
-      <RecentSwiper />
+    <>
+      <Helmet>
+        <title>Home - Uniflix</title>
+        <meta name="description" content="Browse unlimited movies and series on Uniflix. Watch latest Hollywood, Bollywood movies and series online." />
+        <meta name="keywords" content="watch movies online, bollywood movies, hollywood movies, watch series online, bollywood series, hollywood series" />
+        <meta property="og:title" content="Home - Uniflix" />
+        <meta property="og:description" content="Browse unlimited movies and series on Uniflix" />
+        <meta property="og:url" content="https://uniflix.fun/home" />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://uniflix.fun/home" />
+      </Helmet>
 
-      {/* Movie Rows */}
-      <div className="pb-16">
-        {homepageData?.post?.map((row, index) => (
-          <LazyRow key={index}>
-            <MovieRow
-              key={index}
-              title={row.cate}
-              movieIds={row.ids}
-            />
-          </LazyRow>
-        ))}
+      <div className="min-h-screen sm:pb-36 md:pb-52">
+        {/* Hero Slider */}
+        {homepageData?.slider && (
+          <HeroSlider slides={homepageData.slider} />
+        )}
+        {/* Recent Swiper */}
+        <RecentSwiper />
+
+        {/* Movie Rows */}
+        <div className="pb-16">
+          {homepageData?.post?.map((row, index) => (
+            <LazyRow key={index}>
+              <MovieRow
+                key={index}
+                title={row.cate}
+                movieIds={row.ids}
+              />
+            </LazyRow>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
