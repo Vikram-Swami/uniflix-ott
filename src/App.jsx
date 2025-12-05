@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate, useNavigate } from "react-router-dom";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import Navbar from "./components/Navbar";
 import SearchPopup from "./components/SearchPopup";
@@ -7,6 +7,7 @@ import VideoPlayerPopup from "./components/VideoPlayerPopup";
 import { usePlaylist } from "./components/usePlaylist";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./authentication/ProtectedRoute";
+import Cookies from "js-cookie"
 
 // 🔥 Lazy-loaded pages
 const Home = lazy(() => import("./pages/Home"));
@@ -20,12 +21,15 @@ function App() {
   const [MovieDetailsPopupScroll, setMovieDetailsPopupScroll] = useState(0);
   const [movieData, setMovieData] = useState(null);
   const popupRef = useRef(null);
+  const isUser = Cookies.get("vk")
+  const navigate = useNavigate()
   const { playlist, holePageLoading, setPlaylist } = usePlaylist();
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
   };
   const query = useQuery();
   const movieId = query.get("movieId")
+  const { pathname } = useLocation()
   const p = query.get("p")
   useEffect(() => {
     const html = document.querySelector("html");
@@ -67,7 +71,11 @@ function App() {
     if (isOpen) document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
-
+  useEffect(() => {
+    if (isUser && (pathname === "/login" || pathname === "/signup")) {
+      navigate("/home")
+    }
+  }, [isUser])
 
   return (
     <>
@@ -100,8 +108,6 @@ function App() {
         </Routes>
       </Suspense>
       <ToastContainer theme="dark" position="top-center" />
-
-
     </>
   );
 }
