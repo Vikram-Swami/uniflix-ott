@@ -4,7 +4,6 @@ import RecentSwiper from '../components/RecentSwiper';
 import MovieRow from '../components/MovieRow';
 import { fetchHomepage } from '../services/api';
 import { usePlaylist } from '../components/usePlaylist';
-import { useInView } from "react-intersection-observer";
 import { Helmet } from 'react-helmet-async';
 
 const Home = () => {
