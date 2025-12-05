@@ -96,6 +96,7 @@ function App() {
           </div>
         }>
         <Routes>
+          <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Login />} />
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
