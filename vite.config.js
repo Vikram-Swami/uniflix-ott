@@ -162,7 +162,4 @@ export default defineConfig({
       },
     },
   },
-  server: {
-    historyApiFallback: true,
-  },
 });

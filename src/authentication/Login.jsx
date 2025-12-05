@@ -12,44 +12,45 @@ export default function Login() {
   const location = useLocation()
   const { sendEmailLink, signInWithGoogle, loading, completeEmailLinkSignIn } = useAuth()
   const isSignup = location.pathname === "/signup"
-  // const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   // Listen for install prompt
-  // useEffect(() => {
-  //   const handler = (e) => {
-  //     e.preventDefault();
-  //     setDeferredPrompt(e);
-  //   };
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
 
-  //   window.addEventListener('beforeinstallprompt', handler);
+    window.addEventListener('beforeinstallprompt', handler);
 
-  //   return () => {
-  //     window.removeEventListener('beforeinstallprompt', handler);
-  //   };
-  // }, []);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+    };
+  }, []);
 
   // Install app function
-  // const handleInstallApp = async () => {
-  //   if (!deferredPrompt) {
-  //     alert('App already installed or install not available on this device');
-  //     return;
-  //   }
+  const handleInstallApp = async () => {
+    if (!deferredPrompt) {
+      // If no install prompt, show message
+      alert('App already installed or install not available on this device');
+      return;
+    }
 
     // Show install prompt
-    // deferredPrompt.prompt();
+    deferredPrompt.prompt();
 
     // Wait for user response
-    // const { outcome } = await deferredPrompt.userChoice;
+    const { outcome } = await deferredPrompt.userChoice;
 
-    // if (outcome === 'accepted') {
-    //   console.log('User accepted the install');
-    // } else {
-    //   console.log('User dismissed the install');
-    // }
+    if (outcome === 'accepted') {
+      console.log('User accepted the install');
+    } else {
+      console.log('User dismissed the install');
+    }
 
     // Clear the prompt
-  //   setDeferredPrompt(null);
-  // };
+    setDeferredPrompt(null);
+  };
 
   // Jab user email link se wapas aaye, to yahan se login complete hoga
   useEffect(() => {
@@ -125,14 +126,14 @@ export default function Login() {
           </p>
         </div>
       </form>
-      {/* <div className="flex relative z-10 items-center gap-10 mt-5">
+      <div className="flex relative z-10 items-center gap-10 mt-5">
         <button onClick={handleInstallApp} type="button" className="cursor-pointer">
           <img className="w-40 [box-shadow:0px_0px_22px_1px_#ffffff73] rounded-lg" src={Playstore} alt="playstore-btn" />
         </button>
         <button onClick={handleInstallApp} type="button" className="cursor-pointer">
           <img className="w-40 [box-shadow:0px_0px_22px_1px_#ffffff73] rounded-lg" src={Appstore} alt="Appstore-btn" />
         </button>
-      </div> */}
+      </div>
     </div>
   )
 }
