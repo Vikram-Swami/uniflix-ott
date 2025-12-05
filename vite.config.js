@@ -68,6 +68,16 @@ export default defineConfig({
       },
     },
   ],
+  base: "/",
+  build: {
+    outDir: "dist",
+    assetsDir: "assets",
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
   optimizeDeps: {
     include: ["swiper/react", "swiper/modules"],
   },
