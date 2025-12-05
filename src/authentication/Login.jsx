@@ -14,12 +14,10 @@ export default function Login() {
   const isSignup = location.pathname === "/signup"
   const [deferredPrompt, setDeferredPrompt] = useState(null);
 
+  // Listen for install prompt
   useEffect(() => {
-    // Listen for the beforeinstallprompt event
     const handler = (e) => {
-      // Prevent the default browser install prompt
       e.preventDefault();
-      // Save the event for later use
       setDeferredPrompt(e);
     };
 
@@ -29,25 +27,31 @@ export default function Login() {
       window.removeEventListener('beforeinstallprompt', handler);
     };
   }, []);
-  const handleInstallClick = async () => {
+
+  // Install app function
+  const handleInstallApp = async () => {
     if (!deferredPrompt) {
+      // If no install prompt, show message
+      alert('App already installed or install not available on this device');
       return;
     }
-    // Show the install prompt
+
+    // Show install prompt
     deferredPrompt.prompt();
 
-    // Wait for the user's response
+    // Wait for user response
     const { outcome } = await deferredPrompt.userChoice;
 
     if (outcome === 'accepted') {
-      console.log('User accepted the install prompt');
+      console.log('User accepted the install');
     } else {
-      console.log('User dismissed the install prompt');
+      console.log('User dismissed the install');
     }
 
-    // Clear the deferredPrompt
+    // Clear the prompt
     setDeferredPrompt(null);
   };
+
   // Jab user email link se wapas aaye, to yahan se login complete hoga
   useEffect(() => {
     completeEmailLinkSignIn()
@@ -123,10 +127,10 @@ export default function Login() {
         </div>
       </form>
       <div className="flex relative z-10 items-center gap-10 mt-5">
-        <button onClick={handleInstallClick} type="button" className="cursor-pointer">
+        <button onClick={handleInstallApp} type="button" className="cursor-pointer">
           <img className="w-40 [box-shadow:0px_0px_22px_1px_#ffffff73] rounded-lg" src={Playstore} alt="playstore-btn" />
         </button>
-        <button onClick={handleInstallClick} type="button" className="cursor-pointer">
+        <button onClick={handleInstallApp} type="button" className="cursor-pointer">
           <img className="w-40 [box-shadow:0px_0px_22px_1px_#ffffff73] rounded-lg" src={Appstore} alt="Appstore-btn" />
         </button>
       </div>
