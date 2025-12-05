@@ -13,16 +13,6 @@ const Home = () => {
   const [error, setError] = useState(null);
   const { setHolePageLoading } = usePlaylist();
 
-
-  const LazyRow = ({ children }) => {
-    const { ref, inView } = useInView({
-      threshold: 0.1,
-      triggerOnce: true,
-    });
-
-    return <div ref={ref}>{inView ? children : null}</div>;
-  };
-
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -83,13 +73,11 @@ const Home = () => {
         {/* Movie Rows */}
         <div className="pb-16">
           {homepageData?.post?.map((row, index) => (
-            <LazyRow key={index}>
               <MovieRow
                 key={index}
                 title={row.cate}
                 movieIds={row.ids}
               />
-            </LazyRow>
           ))}
         </div>
       </div>

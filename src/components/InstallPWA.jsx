@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import React, { useState, useEffect } from 'react';
 
 const InstallPWA = () => {
@@ -23,7 +24,6 @@ const InstallPWA = () => {
     }, []);
 
     const handleInstallClick = async () => {
-        console.log("first")
         if (!deferredPrompt) {
             return;
         }
@@ -68,13 +68,13 @@ const InstallPWA = () => {
                     onClick={handleInstallClick}
                     className="font-semibold text-lg"
                 >
-                    Install UniFlix App
+                   
                 </button>
                 <button
                     onClick={() => setShowInstallButton(false)}
                     className="ml-2 text-white/80 hover:text-white"
                 >
-                    ✕
+                    <X />
                 </button>
             </div>
         </div>

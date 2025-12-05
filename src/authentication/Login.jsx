@@ -4,13 +4,50 @@ import { Link, useLocation } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useAuth } from "../hooks/useAuth"
 import { toast } from "react-toastify"
+import Playstore from "../assets/images/playstore.png"
+import Appstore from "../assets/images/apple.png"
 
 export default function Login() {
   const [email, setEmail] = useState("")
   const location = useLocation()
   const { sendEmailLink, signInWithGoogle, loading, completeEmailLinkSignIn } = useAuth()
   const isSignup = location.pathname === "/signup"
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
+  useEffect(() => {
+    // Listen for the beforeinstallprompt event
+    const handler = (e) => {
+      // Prevent the default browser install prompt
+      e.preventDefault();
+      // Save the event for later use
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handler);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+    };
+  }, []);
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) {
+      return;
+    }
+    // Show the install prompt
+    deferredPrompt.prompt();
+
+    // Wait for the user's response
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === 'accepted') {
+      console.log('User accepted the install prompt');
+    } else {
+      console.log('User dismissed the install prompt');
+    }
+
+    // Clear the deferredPrompt
+    setDeferredPrompt(null);
+  };
   // Jab user email link se wapas aaye, to yahan se login complete hoga
   useEffect(() => {
     completeEmailLinkSignIn()
@@ -47,7 +84,7 @@ export default function Login() {
       {/* <h1 className="text-4xl 3xl:text-5xl font-semibold text-center mb-7 relative z-10">UniFlix</h1> */}
       <form onSubmit={handleSubmit} className="max-w-[490px] w-full relative z-10 flex flex-col gap-4 sm:border-2 sm:border-red-700 sm:rounded-lg p-3 py-10 sm:px-5 sm:backdrop-blur-sm">
         <div>
-          <label htmlFor="email" className=" text-center text-3xl font-medium pb-4 block">{isSignup?"Create account":"Log in"}</label>
+          <label htmlFor="email" className=" text-center text-3xl font-medium pb-4 block">{isSignup ? "Create account" : "Log in"}</label>
           <div className="flex items-center gap-3 rounded-md px-3 bg-zinc-700 text-sm sm:text-base 3xl:text-lg">
             <Mail />
             <input
@@ -85,6 +122,14 @@ export default function Login() {
           </p>
         </div>
       </form>
+      <div className="flex relative z-10 items-center gap-10 mt-5">
+        <button onClick={handleInstallClick} type="button" className="cursor-pointer">
+          <img className="w-40 [box-shadow:0px_0px_22px_1px_#ffffff73] rounded-lg" src={Playstore} alt="playstore-btn" />
+        </button>
+        <button onClick={handleInstallClick} type="button" className="cursor-pointer">
+          <img className="w-40 [box-shadow:0px_0px_22px_1px_#ffffff73] rounded-lg" src={Appstore} alt="Appstore-btn" />
+        </button>
+      </div>
     </div>
   )
 }
