@@ -61,7 +61,7 @@ const Home = () => {
         <link rel="canonical" href="https://uniflix.fun/home" />
       </Helmet>
 
-      <div className="min-h-screen sm:pb-36 md:pb-52">
+      <div className="min-h-screen">
         {/* Hero Slider */}
         {homepageData?.slider && (
           <HeroSlider slides={homepageData.slider} />

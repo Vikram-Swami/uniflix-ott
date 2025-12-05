@@ -1,9 +1,10 @@
-import { X } from "lucide-react";
+import { Copyright, X } from "lucide-react";
 import React, { useState, useEffect } from 'react';
+import Playstore from "../assets/images/playstore.png"
+import Appstore from "../assets/images/apple.png"
 
 const InstallPWA = () => {
     const [deferredPrompt, setDeferredPrompt] = useState(null);
-    const [showInstallButton, setShowInstallButton] = useState(true);
 
     useEffect(() => {
         // Listen for the beforeinstallprompt event
@@ -13,7 +14,6 @@ const InstallPWA = () => {
             // Save the event for later use
             setDeferredPrompt(e);
             // Show install button
-            setShowInstallButton(true);
         };
 
         window.addEventListener('beforeinstallprompt', handler);
@@ -41,42 +41,22 @@ const InstallPWA = () => {
 
         // Clear the deferredPrompt
         setDeferredPrompt(null);
-        setShowInstallButton(false);
     };
 
-    if (!showInstallButton) {
-        return null;
-    }
-
     return (
-        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-500000000000">
-            <div className="bg-linear-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-3 animate-bounce">
-                <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                    />
-                </svg>
-                <button
-                    onClick={handleInstallClick}
-                    className="font-semibold text-lg"
-                >
-                   
+        <div className="flex items-center flex-col h-full justify-end">
+            <p className="text-xs xs:text-sm md:text-base">Uniflix is a copy of Prime Video and Lions Gate Play</p>
+            <p className="my-2 text-xs xs:text-sm md:text-base">Stay connect with us and share with your friends and family</p>
+            <p className="text-xs xs:text-sm md:text-base">You can download our Uniflix app for a better experience.</p>
+            <div className="flex relative z-10 items-center gap-10 mt-5 mb-7 sm:mb-10">
+                <button onClick={handleInstallClick} type="button" className="cursor-pointer">
+                    <img className="w-30 sm:w-40 [box-shadow:0px_0px_22px_1px_#ffffff73] rounded-lg" src={Playstore} alt="playstore-btn" />
                 </button>
-                <button
-                    onClick={() => setShowInstallButton(false)}
-                    className="ml-2 text-white/80 hover:text-white"
-                >
-                    <X />
+                <button onClick={handleInstallClick} type="button" className="cursor-pointer">
+                    <img className="w-30 sm:w-40 [box-shadow:0px_0px_22px_1px_#ffffff73] rounded-lg" src={Appstore} alt="Appstore-btn" />
                 </button>
             </div>
+            <p className="flex items-center justify-center gap-3 text-lg py-2"><Copyright className="w-5 h-5"/> 2025 uniflix.fun - Inc.</p>
         </div>
     );
 };

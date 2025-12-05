@@ -80,7 +80,6 @@ function App() {
 
   return (
     <>
-      <InstallPWA />
       {holePageLoading && <div className="fixed inset-0 bg-black/50 z-50000000">
         <div className="shimmer2 h-1 w-full bg-sky-500"></div>
       </div>}
@@ -110,6 +109,7 @@ function App() {
           <Route path="*" element={<Navigate to="/home" replace />} />
         </Routes>
       </Suspense>
+      {!holePageLoading && <InstallPWA />}
       <ToastContainer theme="dark" position="top-center" />
     </>
   );
