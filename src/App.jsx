@@ -77,7 +77,7 @@ function App() {
     if (!p) {
       setPlaylist(null)
     }
-  }, [p])
+  }, [p, movieId])
 
   useEffect(() => {
     const handleClickOutside = (e) => {
