@@ -69,6 +69,17 @@ function App() {
   }, [movieId, p]);
 
   useEffect(() => {
+    if (!p && !movieId) {
+      setPlaylist(null)
+      setMovieDetailsPopupScroll(0)
+      html.classList.remove("overflow-hidden");
+    }
+    if (!p) {
+      setPlaylist(null)
+    }
+  }, [p])
+
+  useEffect(() => {
     const handleClickOutside = (e) => {
       if (popupRef.current && !popupRef.current.contains(e.target)) {
         setIsOpen(false)
