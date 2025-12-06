@@ -11,6 +11,39 @@ const isIOS = () => {
         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 };
 
+// Detect mobile device
+const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
+// Lock screen orientation
+const lockOrientation = (orientation = 'landscape') => {
+    if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock(orientation).catch(err => {
+            console.log('Orientation lock failed:', err);
+        });
+    } else if (screen.lockOrientation) {
+        screen.lockOrientation(orientation);
+    } else if (screen.mozLockOrientation) {
+        screen.mozLockOrientation(orientation);
+    } else if (screen.msLockOrientation) {
+        screen.msLockOrientation(orientation);
+    }
+};
+
+// Unlock screen orientation
+const unlockOrientation = () => {
+    if (screen.orientation && screen.orientation.unlock) {
+        screen.orientation.unlock();
+    } else if (screen.unlockOrientation) {
+        screen.unlockOrientation();
+    } else if (screen.mozUnlockOrientation) {
+        screen.mozUnlockOrientation();
+    } else if (screen.msUnlockOrientation) {
+        screen.msUnlockOrientation();
+    }
+};
+
 const VideoPlayerPopup = () => {
     const { playlist, setPlaylist } = usePlaylist();
     const videoRef = useRef(null);
@@ -20,6 +53,8 @@ const VideoPlayerPopup = () => {
     const controlsTimeoutRef = useRef(null);
     const [showControls, setShowControls] = useState(true);
     const isIOSDevice = isIOS();
+    const isMobileDevice = isMobile();
+    const orientationLockedRef = useRef(false);
 
     const useQuery = () => {
         return new URLSearchParams(useLocation().search);
@@ -72,6 +107,72 @@ const VideoPlayerPopup = () => {
             }
         };
     }, []);
+
+    // Handle fullscreen and orientation lock
+    useEffect(() => {
+        if (!isMobileDevice) return;
+
+        const handleFullscreenChange = () => {
+            const isFullscreen = !!(
+                document.fullscreenElement ||
+                document.webkitFullscreenElement ||
+                document.mozFullScreenElement ||
+                document.msFullscreenElement ||
+                (videoRef.current && videoRef.current.webkitDisplayingFullscreen)
+            );
+
+            if (isFullscreen) {
+                // Entering fullscreen - lock to landscape
+                if (!orientationLockedRef.current) {
+                    lockOrientation('landscape');
+                    orientationLockedRef.current = true;
+                }
+            } else {
+                // Exiting fullscreen - unlock orientation
+                if (orientationLockedRef.current) {
+                    unlockOrientation();
+                    orientationLockedRef.current = false;
+                }
+            }
+        };
+
+        // Listen for fullscreen changes
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+        document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+        // For iOS native video fullscreen
+        if (videoRef.current) {
+            videoRef.current.addEventListener('webkitbeginfullscreen', () => {
+                lockOrientation('landscape');
+                orientationLockedRef.current = true;
+            });
+
+            videoRef.current.addEventListener('webkitendfullscreen', () => {
+                unlockOrientation();
+                orientationLockedRef.current = false;
+            });
+        }
+
+        return () => {
+            document.removeEventListener('fullscreenchange', handleFullscreenChange);
+            document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+            document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+            document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+
+            if (videoRef.current) {
+                videoRef.current.removeEventListener('webkitbeginfullscreen', handleFullscreenChange);
+                videoRef.current.removeEventListener('webkitendfullscreen', handleFullscreenChange);
+            }
+
+            // Unlock orientation on cleanup
+            if (orientationLockedRef.current) {
+                unlockOrientation();
+                orientationLockedRef.current = false;
+            }
+        };
+    }, [isMobileDevice]);
 
     useEffect(() => {
         if (!playlist || !videoRef.current) return;
@@ -173,6 +274,26 @@ const VideoPlayerPopup = () => {
                 const error = playerRef.current.error();
                 console.error('Video.js error:', error);
             });
+
+            // Handle fullscreen events for video.js player
+            if (isMobileDevice) {
+                playerRef.current.on('fullscreenchange', () => {
+                    const isFullscreen = playerRef.current.isFullscreen();
+                    if (isFullscreen) {
+                        // Entering fullscreen - lock to landscape
+                        if (!orientationLockedRef.current) {
+                            lockOrientation('landscape');
+                            orientationLockedRef.current = true;
+                        }
+                    } else {
+                        // Exiting fullscreen - unlock orientation
+                        if (orientationLockedRef.current) {
+                            unlockOrientation();
+                            orientationLockedRef.current = false;
+                        }
+                    }
+                });
+            }
         } else {
             // Update source
             playerRef.current.src({
