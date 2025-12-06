@@ -1,4 +1,4 @@
-import { HelpCircle, LogOut, Search, TextAlignJustify, User2 } from "lucide-react";
+import { HelpCircle, LogOut, Search, TextAlignJustify, User2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import UserProfile from "../assets/images/prime-user.png";
@@ -110,7 +110,7 @@ export default function Navbar({ setIsOpen, movieDetailsPopupScroll, isOpen }) {
           <Link to="/home" className={`2xl:text-3xl text-2xl max-xs:text-xl md:hidden ${isUser ? "xs:absolute xs:left-1/2 xs:-translate-x-1/2" : ""}`}>UniFlix</Link>
         </div>
         <div className="flex items-center gap-3">
-          {isUser && <button className={`cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all duration-300 ease-in-out ${isOpen ? "bg-white text-black" : "bg-transparent text-white"}`} onClick={() => setIsOpen(prev => !prev)}><Search size={19} /></button>}
+          {isUser && <button className={`cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all duration-300 ease-in-out ${isOpen ? "bg-white text-black" : "bg-transparent text-white"}`} onClick={() => setIsOpen(prev => !prev)}>{!isOpen ? <Search size={19} /> : <X size={22} />}</button>}
           {isUser && <button className={`cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all duration-300 ease-in-out menu_icon`}><MenuIcon className="w-5 h-5" /></button>}
           <div ref={menuRef2} className="relative w-[28px] h-[28px] lg:w-[33px] lg:h-[33px] max-xs:w-6 max-xs:h-6">
             <button onClick={() => setUserDropdown(isUser ? !userDropdown : false)}><img src={UserProfile} style={{ border: userDropdown ? "2px solid white" : "" }} alt="User Profile" className="w-[28px] h-[28px] lg:w-[33px] lg:h-[33px] max-xs:w-6 max-xs:h-6 rounded-full cursor-pointer" /></button>
@@ -119,7 +119,7 @@ export default function Navbar({ setIsOpen, movieDetailsPopupScroll, isOpen }) {
                 <User2 className="min-w-5 h-5" />
                 <p className="text-xs xs:text-sm whitespace-nowrap! overflow-hidden text-ellipsis!">{userName ? userName : useremil}</p>
               </div>
-              <button onClick={signOut} className="max-xs:mb-3 text-sm lg:text-base! flex items-center gap-2 xs:gap-3 xs:py-1 mt-1 cursor-pointer hover:xs:bg-white hover:xs:text-black w-full rounded-sm transition-all duration-300 px-2"><HelpCircle className="w-5 h-5" /> Help center</button>
+              <button className="max-xs:mb-3 text-sm lg:text-base! flex items-center gap-2 xs:gap-3 xs:py-1 mt-1 cursor-pointer hover:xs:bg-white hover:xs:text-black w-full rounded-sm transition-all duration-300 px-2"><HelpCircle className="w-5 h-5" /> Help center</button>
               <button onClick={signOut} className="text-sm lg:text-base! flex items-center gap-2 xs:gap-3 xs:py-1 mt-1 cursor-pointer hover:xs:bg-white hover:xs:text-black w-full rounded-sm transition-all duration-300 px-2"><LogOut className="w-5 h-5" /> Log out</button>
             </div>}
           </div>

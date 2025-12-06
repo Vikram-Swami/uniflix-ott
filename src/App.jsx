@@ -45,23 +45,27 @@ function App() {
   }, [isOpen]);
 
   useEffect(() => {
-    const html = document.querySelector("html");
-    if (movieId || playlist) {
-      html.classList.add("overflow-hidden");
-    } else {
-      html.classList.remove("overflow-hidden");
+    function handleOverflow() {
+      const html = document.querySelector("html");
+      if (movieId || playlist) {
+        html.classList.add("overflow-hidden");
+        return;
+      }
+      window.scrollTo(0, 0);
+      if (!movieId) {
+        setPlaylist(null)
+        setMovieDetailsPopupScroll(0)
+        html.classList.remove("overflow-hidden");
+        return;
+      }
+      if (!p) {
+        setPlaylist(null)
+        setMovieDetailsPopupScroll(0)
+        html.classList.remove("overflow-hidden");
+        return;
+      }
     }
-    window.scrollTo(0, 0);
-    if (!movieId) {
-      setPlaylist(null)
-      setMovieDetailsPopupScroll(0)
-      html.classList.remove("overflow-hidden");
-    }
-    if (!p) {
-      setPlaylist(null)
-      setMovieDetailsPopupScroll(0)
-      html.classList.remove("overflow-hidden");
-    }
+    handleOverflow()
   }, [movieId, p]);
 
   useEffect(() => {
