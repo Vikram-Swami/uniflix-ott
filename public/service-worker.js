@@ -1,5 +1,5 @@
 // Service Worker for UniFlix PWA
-const CACHE_NAME = "uniflix-v1";
+const CACHE_NAME = "uniflix-v2";
 
 // Only cache essential files
 const urlsToCache = ["/", "/manifest.json"];
