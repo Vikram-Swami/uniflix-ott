@@ -468,7 +468,7 @@ ${pageUrl}`;
                         <ul ref={stickyRef}
                             className={`sticky-tab md:mx-[23px] 2xl:mx-[51px]! sticky mb-5 md:mb-7 lg::mb-10 flex items-center gap-4 md:gap-6 md:top-[60px] px-3 sm:px-6 md:px-2 md:rounded-b-xl md:backdrop-blur-lg ${isSticky && episodes?.length > 0 ? "md:bg-[#33373dcc]" : ""} transition-all duration-300 ease-in-out z-60 text-sm md:text-base 2xl:text-lg font-medium pt-2`}
                             role="tablist">
-                            {movieData?.episodes?.length > 0 && (
+                            {Array.isArray(episodes) && movieData?.episodes[0] !== null && (
                                 <li
                                     role="tab"
                                     onClick={() => setActiveTab("episode")}
@@ -500,7 +500,7 @@ ${pageUrl}`;
                         </ul>
 
                         {/* Episode Tab */}
-                        {activeTab === "episode" && episodes?.length > 0 && (
+                        {activeTab === "episode" && Array.isArray(episodes) && episodes[0] !== null && (
                             <div className="max-xs:mx-3 xs:mx-6 sm2:mx-8 md2:mx-11 2xl:mx-[72px]! pb-8" >
                                 {seasons?.length > 0 && (
                                     <div className="flex justify-end max-w-[1500px] mx-auto mb-10">

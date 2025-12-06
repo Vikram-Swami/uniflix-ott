@@ -47,11 +47,11 @@ function App() {
   useEffect(() => {
     function handleOverflow() {
       const html = document.querySelector("html");
+      window.scrollTo(0, 0);
       if (movieId || playlist) {
         html.classList.add("overflow-hidden");
         return;
       }
-      window.scrollTo(0, 0);
       if (!movieId) {
         setPlaylist(null)
         setMovieDetailsPopupScroll(0)
