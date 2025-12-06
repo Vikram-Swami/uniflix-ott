@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./authentication/ProtectedRoute";
 import Cookies from "js-cookie"
 import InstallPWA from "./components/InstallPWA";
+import DevToolsProtection from "./protection/DevToolsProtection";
 
 // 🔥 Lazy-loaded pages
 const Home = lazy(() => import("./pages/Home"));
@@ -80,6 +81,7 @@ function App() {
 
   return (
     <>
+      <DevToolsProtection />
       {holePageLoading && <div className="fixed inset-0 bg-black/50 z-50000000">
         <div className="shimmer2 h-1 w-full bg-sky-500"></div>
       </div>}
