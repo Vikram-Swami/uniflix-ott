@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /login
 
-Sitemap: https://uniflix.fun/sitemap.xml
+Sitemap: https://www.uniflix.fun/sitemap.xml
