@@ -6,45 +6,14 @@ import { useAuth } from "../hooks/useAuth"
 import { toast } from "react-toastify"
 import Playstore from "../assets/images/playstore.png"
 import Appstore from "../assets/images/apple.png"
+import usePWAInstall from "../hooks/usePWAInstall"
 
 export default function Login() {
   const [email, setEmail] = useState("")
   const location = useLocation()
   const { sendEmailLink, signInWithGoogle, loading, completeEmailLinkSignIn } = useAuth()
   const isSignup = location.pathname === "/signup"
-  // const [deferredPrompt, setDeferredPrompt] = useState(null);
-
-  // useEffect(() => {
-  //   const handler = (e) => {
-  //     e.preventDefault();
-  //     setDeferredPrompt(e);
-  //   };
-
-  //   window.addEventListener('beforeinstallprompt', handler);
-
-  //   return () => {
-  //     window.removeEventListener('beforeinstallprompt', handler);
-  //   };
-  // }, []);
-
-  // const handleInstallApp = async () => {
-  //   if (!deferredPrompt) {
-  //     alert('App already installed or install not available on this device');
-  //     return;
-  //   }
-
-  //   deferredPrompt.prompt();
-
-  //   const { outcome } = await deferredPrompt.userChoice;
-
-  //   if (outcome === 'accepted') {
-  //     console.log('User accepted the install');
-  //   } else {
-  //     console.log('User dismissed the install');
-  //   }
-
-  //   setDeferredPrompt(null);
-  // };
+  const { handlePlayStoreInstall, handleAppStoreInstall } = usePWAInstall();
 
   // Jab user email link se wapas aaye, to yahan se login complete hoga
   useEffect(() => {
@@ -120,14 +89,14 @@ export default function Login() {
           </p>
         </div>
       </form>
-      {/* <div className="flex relative z-10 items-center gap-10 sm:mt-5">
-        <button onClick={handleInstallApp} type="button" className="cursor-pointer">
+      <div className="flex relative z-10 items-center gap-10 sm:mt-5">
+        <button onClick={handlePlayStoreInstall} type="button" className="cursor-pointer">
           <img className="w-30 sm:w-40 [box-shadow:0px_0px_22px_1px_#ffffff73] rounded-lg" src={Playstore} alt="playstore-btn" />
         </button>
-        <button onClick={handleInstallApp} type="button" className="cursor-pointer">
+        <button onClick={handleAppStoreInstall} type="button" className="cursor-pointer">
           <img className="w-30 sm:w-40 [box-shadow:0px_0px_22px_1px_#ffffff73] rounded-lg" src={Appstore} alt="Appstore-btn" />
         </button>
-      </div> */}
+      </div>
     </div>
   )
 }
