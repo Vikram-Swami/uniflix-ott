@@ -4,7 +4,7 @@ import "video.js/dist/video-js.css";
 import { usePlaylist } from "./usePlaylist";
 import { X } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { addRecent, loadRecp } from "../utils/recentPlays";
 // Detect iOS/Safari
 const isIOS = () => {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
@@ -48,8 +48,8 @@ const unlockOrientation = () => {
     }
 };
 
-const VideoPlayerPopup = () => {
-    const { playlist, setPlaylist } = usePlaylist();
+const VideoPlayerPopup = ({ movieData }) => {
+    const { playlist, setPlaylist, currentMovieId } = usePlaylist();
     const videoRef = useRef(null);
     const playerRef = useRef(null);
     const blobUrlRef = useRef(null);
@@ -60,7 +60,9 @@ const VideoPlayerPopup = () => {
     const isMobileDevice = isMobile();
     const orientationLockedRef = useRef(false);
     const videoPlayStateRef = useRef(false);
-
+    const [isPlaying, setIsPlaying] = useState(false);
+    const resumeTimeRef = useRef(null);
+    const hasResumedRef = useRef(false);
     const useQuery = () => {
         return new URLSearchParams(useLocation().search);
     };
@@ -228,10 +230,12 @@ const VideoPlayerPopup = () => {
 
         const handlePlay = () => {
             videoPlayStateRef.current = true;
+            setIsPlaying(true);
         };
 
         const handlePause = () => {
             videoPlayStateRef.current = false;
+            setIsPlaying(false);
         };
 
         videoElement.addEventListener('play', handlePlay);
@@ -399,14 +403,17 @@ const VideoPlayerPopup = () => {
             // Track play state for video.js player
             playerRef.current.on('play', () => {
                 videoPlayStateRef.current = true;
+                setIsPlaying(true);
             });
 
             playerRef.current.on('playing', () => {
                 videoPlayStateRef.current = true;
+                setIsPlaying(true);
             });
 
             playerRef.current.on('pause', () => {
                 videoPlayStateRef.current = false;
+                setIsPlaying(false);
             });
 
             // Handle fullscreen events for video.js player
@@ -475,6 +482,208 @@ const VideoPlayerPopup = () => {
             }
         };
     }, [playlist, isIOSDevice]);
+
+    // Get resume time from recent plays
+    useEffect(() => {
+        if (!movieId || !movieData) return;
+
+        // Reset resume state when movie/episode changes
+        hasResumedRef.current = false;
+        resumeTimeRef.current = null;
+
+        try {
+            const recp = loadRecp();
+            const allItems = [];
+
+            // Get all movies
+            (recp.M || []).forEach(m => allItems.push({ ...m, _type: 'M' }));
+
+            // Get all series episodes
+            Object.entries(recp.S || {}).forEach(([seriesTitle, episodes]) => {
+                (episodes || []).forEach(ep => {
+                    allItems.push({ ...ep, _type: 'S', seriesTitle });
+                });
+            });
+
+            // Find matching item
+            let matchedItem = null;
+
+            if (movieData?.episodes && movieData?.episodes[0] !== null && currentMovieId) {
+                // For series/episodes
+                matchedItem = allItems.find(item =>
+                    item._type === 'S' &&
+                    item.seriesTitle === movieData?.title &&
+                    String(item.episodeId) === String(currentMovieId)
+                );
+            } else {
+                // For movies
+                matchedItem = allItems.find(item =>
+                    item._type === 'M' &&
+                    String(item.id) === String(movieId)
+                );
+            }
+
+            if (matchedItem && matchedItem.currentTime && matchedItem.currentTime > 5) {
+                // Only resume if more than 5 seconds watched
+                resumeTimeRef.current = matchedItem.currentTime;
+            }
+        } catch (e) {
+            console.error('Error loading recent plays:', e);
+        }
+    }, [movieId, currentMovieId, movieData]);
+
+    // Resume video from saved time
+    useEffect(() => {
+        if (!resumeTimeRef.current || hasResumedRef.current) return;
+
+        const resumeVideo = () => {
+            if (hasResumedRef.current) return;
+
+            // For iOS native video
+            if (isIOSDevice) {
+                const video = videoRef.current;
+                if (!video) return;
+
+                // Wait for video to have duration
+                if (video.readyState >= 2 && video.duration) {
+                    const resumeTime = Math.min(resumeTimeRef.current, video.duration - 1);
+                    if (resumeTime > 0 && resumeTime < video.duration) {
+                        video.currentTime = resumeTime;
+                        hasResumedRef.current = true;
+                    }
+                } else {
+                    // Wait for loadedmetadata
+                    const handleLoadedMetadata = () => {
+                        if (hasResumedRef.current) return;
+                        const resumeTime = Math.min(resumeTimeRef.current, video.duration - 1);
+                        if (resumeTime > 0 && resumeTime < video.duration) {
+                            video.currentTime = resumeTime;
+                            hasResumedRef.current = true;
+                        }
+                        video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+                    };
+                    video.addEventListener('loadedmetadata', handleLoadedMetadata);
+                }
+            } else {
+                // For video.js player
+                if (playerRef.current) {
+                    const player = playerRef.current;
+                    const handleReady = () => {
+                        if (hasResumedRef.current) return;
+                        const duration = player.duration();
+                        if (duration && duration > 0) {
+                            const resumeTime = Math.min(resumeTimeRef.current, duration - 1);
+                            if (resumeTime > 0 && resumeTime < duration) {
+                                player.currentTime(resumeTime);
+                                hasResumedRef.current = true;
+                            }
+                        }
+                    };
+
+                    if (player.readyState() >= 2) {
+                        handleReady();
+                    } else {
+                        player.ready(handleReady);
+                        player.on('loadedmetadata', handleReady);
+                    }
+                } else {
+                    // Fallback to native video element
+                    const video = videoRef.current;
+                    if (!video) return;
+
+                    if (video.readyState >= 2 && video.duration) {
+                        const resumeTime = Math.min(resumeTimeRef.current, video.duration - 1);
+                        if (resumeTime > 0 && resumeTime < video.duration) {
+                            video.currentTime = resumeTime;
+                            hasResumedRef.current = true;
+                        }
+                    } else {
+                        const handleLoadedMetadata = () => {
+                            if (hasResumedRef.current) return;
+                            const resumeTime = Math.min(resumeTimeRef.current, video.duration - 1);
+                            if (resumeTime > 0 && resumeTime < video.duration) {
+                                video.currentTime = resumeTime;
+                                hasResumedRef.current = true;
+                            }
+                            video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+                        };
+                        video.addEventListener('loadedmetadata', handleLoadedMetadata);
+                    }
+                }
+            }
+        };
+
+        // Small delay to ensure video is loaded
+        const timeout = setTimeout(() => {
+            resumeVideo();
+        }, 500);
+
+        return () => clearTimeout(timeout);
+    }, [playlist, isIOSDevice]);
+
+    // Save recent play progress periodically
+    useEffect(() => {
+        if (!isPlaying || !movieId) return;
+
+        const interval = setInterval(() => {
+            try {
+                const poster = `https://imgcdn.kim/pv/c/${movieId}.jpg`;
+                let duration = 0;
+                let currentTime = 0;
+
+                // Get video data based on player type
+                if (isIOSDevice) {
+                    // For iOS native video
+                    const video = videoRef.current;
+                    if (!video) return;
+                    duration = video.duration || 0;
+                    currentTime = video.currentTime || 0;
+                } else {
+                    // For video.js player
+                    if (playerRef.current) {
+                        duration = playerRef.current.duration() || 0;
+                        currentTime = playerRef.current.currentTime() || 0;
+                    } else {
+                        const video = videoRef.current;
+                        if (!video) return;
+                        duration = video.duration || 0;
+                        currentTime = video.currentTime || 0;
+                    }
+                }
+
+                if (movieData?.episodes && movieData?.episodes[0] !== null && currentMovieId) {
+                    // For series/episodes
+                    const ep = (movieData?.episodes || []).find(
+                        ep => String(ep?.id) === String(currentMovieId)
+                    ) || {};
+
+                    addRecent({
+                        seriesTitle: movieData?.title || '',
+                        episodeId: currentMovieId,
+                        title: ep?.t || ep?.title || '',
+                        season: ep?.s,
+                        episodeIndex: ep?.ep,
+                        duration: duration,
+                        currentTime: currentTime,
+                        id: movieId
+                    });
+                } else {
+                    // For movies
+                    addRecent({
+                        id: movieId,
+                        title: movieData?.title || '',
+                        duration: duration,
+                        currentTime: currentTime,
+                        poster
+                    });
+                }
+            } catch (e) {
+                console.error('Error saving recent play:', e);
+            }
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [isPlaying, currentMovieId, movieId, movieData, isIOSDevice]);
 
     return (
         <div ref={containerRef}
