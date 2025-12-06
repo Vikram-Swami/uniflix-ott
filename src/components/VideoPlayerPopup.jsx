@@ -18,16 +18,20 @@ const isMobile = () => {
 
 // Lock screen orientation
 const lockOrientation = (orientation = 'landscape') => {
-    if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock(orientation).catch(err => {
-            console.log('Orientation lock failed:', err);
-        });
-    } else if (screen.lockOrientation) {
-        screen.lockOrientation(orientation);
-    } else if (screen.mozLockOrientation) {
-        screen.mozLockOrientation(orientation);
-    } else if (screen.msLockOrientation) {
-        screen.msLockOrientation(orientation);
+    try {
+        if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock(orientation).catch(err => {
+                // Silently fail - orientation lock may not be supported or allowed
+            });
+        } else if (screen.lockOrientation) {
+            screen.lockOrientation(orientation);
+        } else if (screen.mozLockOrientation) {
+            screen.mozLockOrientation(orientation);
+        } else if (screen.msLockOrientation) {
+            screen.msLockOrientation(orientation);
+        }
+    } catch (e) {
+        // Silently fail - orientation lock may not be supported
     }
 };
 
@@ -55,6 +59,7 @@ const VideoPlayerPopup = () => {
     const isIOSDevice = isIOS();
     const isMobileDevice = isMobile();
     const orientationLockedRef = useRef(false);
+    const videoPlayStateRef = useRef(false);
 
     const useQuery = () => {
         return new URLSearchParams(useLocation().search);
@@ -124,17 +129,45 @@ const VideoPlayerPopup = () => {
             if (isFullscreen) {
                 // Entering fullscreen - lock to landscape
                 if (!orientationLockedRef.current) {
-                    lockOrientation('landscape');
-                    orientationLockedRef.current = true;
+                    // Preserve video play state
+                    const wasPlaying = videoPlayStateRef.current;
+
+                    // Use setTimeout to avoid blocking video playback
+                    setTimeout(() => {
+                        lockOrientation('landscape');
+                        orientationLockedRef.current = true;
+
+                        // Resume playback if it was playing
+                        if (wasPlaying && videoRef.current) {
+                            const playPromise = videoRef.current.play();
+                            if (playPromise !== undefined) {
+                                playPromise.catch(() => { });
+                            }
+                        }
+                    }, 150);
                 }
             } else {
                 // Exiting fullscreen - unlock orientation
                 if (orientationLockedRef.current) {
+                    // Preserve video play state
+                    const wasPlaying = videoPlayStateRef.current;
+
                     unlockOrientation();
                     orientationLockedRef.current = false;
+
+                    // Resume playback if it was playing
+                    if (wasPlaying && videoRef.current) {
+                        setTimeout(() => {
+                            const playPromise = videoRef.current.play();
+                            if (playPromise !== undefined) {
+                                playPromise.catch(() => { });
+                            }
+                        }, 150);
+                    }
                 }
             }
         };
+
 
         // Listen for fullscreen changes
         document.addEventListener('fullscreenchange', handleFullscreenChange);
@@ -142,29 +175,43 @@ const VideoPlayerPopup = () => {
         document.addEventListener('mozfullscreenchange', handleFullscreenChange);
         document.addEventListener('MSFullscreenChange', handleFullscreenChange);
 
-        // For iOS native video fullscreen
-        if (videoRef.current) {
-            videoRef.current.addEventListener('webkitbeginfullscreen', () => {
-                lockOrientation('landscape');
-                orientationLockedRef.current = true;
-            });
+        // Handle orientation change to prevent video pause
+        const handleOrientationChange = () => {
+            // Preserve video play state during orientation change
+            const wasPlaying = videoPlayStateRef.current;
 
-            videoRef.current.addEventListener('webkitendfullscreen', () => {
-                unlockOrientation();
-                orientationLockedRef.current = false;
-            });
-        }
+            // Resume playback after orientation change if it was playing
+            setTimeout(() => {
+                if (wasPlaying && videoRef.current && videoRef.current.paused) {
+                    const playPromise = videoRef.current.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(() => { });
+                    }
+                }
+
+                // For video.js player
+                if (wasPlaying && playerRef.current && playerRef.current.paused()) {
+                    const playPromise = playerRef.current.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(() => { });
+                    }
+                }
+            }, 300);
+        };
+
+        window.addEventListener('orientationchange', handleOrientationChange);
+        window.addEventListener('resize', handleOrientationChange);
+
+        // For iOS native video fullscreen - setup listeners
+        // We'll add these in a separate effect that tracks videoRef.current
 
         return () => {
             document.removeEventListener('fullscreenchange', handleFullscreenChange);
             document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
             document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
             document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
-
-            if (videoRef.current) {
-                videoRef.current.removeEventListener('webkitbeginfullscreen', handleFullscreenChange);
-                videoRef.current.removeEventListener('webkitendfullscreen', handleFullscreenChange);
-            }
+            window.removeEventListener('orientationchange', handleOrientationChange);
+            window.removeEventListener('resize', handleOrientationChange);
 
             // Unlock orientation on cleanup
             if (orientationLockedRef.current) {
@@ -173,6 +220,80 @@ const VideoPlayerPopup = () => {
             }
         };
     }, [isMobileDevice]);
+
+    // Track video play state
+    useEffect(() => {
+        const videoElement = videoRef.current;
+        if (!videoElement) return;
+
+        const handlePlay = () => {
+            videoPlayStateRef.current = true;
+        };
+
+        const handlePause = () => {
+            videoPlayStateRef.current = false;
+        };
+
+        videoElement.addEventListener('play', handlePlay);
+        videoElement.addEventListener('playing', handlePlay);
+        videoElement.addEventListener('pause', handlePause);
+
+        return () => {
+            videoElement.removeEventListener('play', handlePlay);
+            videoElement.removeEventListener('playing', handlePlay);
+            videoElement.removeEventListener('pause', handlePause);
+        };
+    }, [playlist]);
+
+    // Setup iOS native fullscreen event listeners
+    useEffect(() => {
+        if (!isMobileDevice || !isIOSDevice || !videoRef.current) return;
+
+        const handleWebkitBeginFullscreen = () => {
+            // Preserve video play state
+            const wasPlaying = videoPlayStateRef.current;
+
+            setTimeout(() => {
+                lockOrientation('landscape');
+                orientationLockedRef.current = true;
+
+                // Resume playback if it was playing
+                if (wasPlaying && videoRef.current) {
+                    const playPromise = videoRef.current.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(() => { });
+                    }
+                }
+            }, 150);
+        };
+
+        const handleWebkitEndFullscreen = () => {
+            // Preserve video play state
+            const wasPlaying = videoPlayStateRef.current;
+
+            unlockOrientation();
+            orientationLockedRef.current = false;
+
+            // Resume playback if it was playing
+            if (wasPlaying && videoRef.current) {
+                setTimeout(() => {
+                    const playPromise = videoRef.current.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(() => { });
+                    }
+                }, 150);
+            }
+        };
+
+        const videoElement = videoRef.current;
+        videoElement.addEventListener('webkitbeginfullscreen', handleWebkitBeginFullscreen);
+        videoElement.addEventListener('webkitendfullscreen', handleWebkitEndFullscreen);
+
+        return () => {
+            videoElement.removeEventListener('webkitbeginfullscreen', handleWebkitBeginFullscreen);
+            videoElement.removeEventListener('webkitendfullscreen', handleWebkitEndFullscreen);
+        };
+    }, [isMobileDevice, isIOSDevice, playlist]);
 
     useEffect(() => {
         if (!playlist || !videoRef.current) return;
@@ -275,6 +396,19 @@ const VideoPlayerPopup = () => {
                 console.error('Video.js error:', error);
             });
 
+            // Track play state for video.js player
+            playerRef.current.on('play', () => {
+                videoPlayStateRef.current = true;
+            });
+
+            playerRef.current.on('playing', () => {
+                videoPlayStateRef.current = true;
+            });
+
+            playerRef.current.on('pause', () => {
+                videoPlayStateRef.current = false;
+            });
+
             // Handle fullscreen events for video.js player
             if (isMobileDevice) {
                 playerRef.current.on('fullscreenchange', () => {
@@ -282,14 +416,41 @@ const VideoPlayerPopup = () => {
                     if (isFullscreen) {
                         // Entering fullscreen - lock to landscape
                         if (!orientationLockedRef.current) {
-                            lockOrientation('landscape');
-                            orientationLockedRef.current = true;
+                            // Preserve video play state
+                            const wasPlaying = videoPlayStateRef.current;
+
+                            // Use setTimeout to avoid blocking video playback
+                            setTimeout(() => {
+                                lockOrientation('landscape');
+                                orientationLockedRef.current = true;
+
+                                // Resume playback if it was playing
+                                if (wasPlaying && playerRef.current.paused()) {
+                                    const playPromise = playerRef.current.play();
+                                    if (playPromise !== undefined) {
+                                        playPromise.catch(() => { });
+                                    }
+                                }
+                            }, 150);
                         }
                     } else {
                         // Exiting fullscreen - unlock orientation
                         if (orientationLockedRef.current) {
+                            // Preserve video play state
+                            const wasPlaying = videoPlayStateRef.current;
+
                             unlockOrientation();
                             orientationLockedRef.current = false;
+
+                            // Resume playback if it was playing
+                            if (wasPlaying && playerRef.current.paused()) {
+                                setTimeout(() => {
+                                    const playPromise = playerRef.current.play();
+                                    if (playPromise !== undefined) {
+                                        playPromise.catch(() => { });
+                                    }
+                                }, 150);
+                            }
                         }
                     }
                 });
