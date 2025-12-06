@@ -69,6 +69,7 @@ function App() {
   }, [movieId, p]);
 
   useEffect(() => {
+    const html = document.querySelector("html");
     if (!p && !movieId) {
       setPlaylist(null)
       setMovieDetailsPopupScroll(0)
