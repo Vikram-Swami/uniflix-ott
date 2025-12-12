@@ -691,7 +691,7 @@ const VideoPlayerPopup = ({ movieData }) => {
             className="fixed inset-0 max-h-screen h-full w-full z-[99999000000000000000000000000000000000000000000000000000000000] bg-black"
             data-vjs-player
         >
-            <div className="fixed top-7 left-0 right-0 z-9999999999 flex items-center gap-3 px-4 py-3 bg-linear-to-b from-black/80 via-black/40 to-transparent pointer-events-auto bg-red-400">
+            <div className="fixed top-7 left-0 right-0 z-9999999999 flex items-center gap-3 px-4 py-3 bg-linear-to-b from-black/80 via-black/40 to-transparent pointer-events-auto">
                 <button
                     className={`cursor-pointer text-white hover:text-gray-300 active:scale-95 transition-all duration-200 shrink-0`}
                     onClick={() => {
@@ -699,9 +699,9 @@ const VideoPlayerPopup = ({ movieData }) => {
                         navigate(`/home?movieId=${movieId}`);
                     }}
                 >
-                    <LeftIcon className="w-7 sm:w-8 h-7 sm:h-8" />
+                    <LeftIcon className="w-6 sm:w-8 h-7 sm:h-8" />
                 </button>
-                <p className="text-base sm:text-xl font-semibold text-white truncate flex-1">{movieData?.title || 'Video Player'}</p>
+                <p className="text-sm sm:text-base md:text-xl font-semibold text-white truncate flex-1">{movieData?.title || 'Video Player'}</p>
             </div>
             <video
                 ref={videoRef}
