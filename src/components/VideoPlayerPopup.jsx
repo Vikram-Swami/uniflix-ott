@@ -83,7 +83,7 @@ const VideoPlayerPopup = ({ movieData }) => {
         // Hide after 2 seconds
         controlsTimeoutRef.current = setTimeout(() => {
             setShowControls(false);
-        }, 2000);
+        }, 4000);
     };
 
     // Handle mouse movement
@@ -692,7 +692,7 @@ const VideoPlayerPopup = ({ movieData }) => {
             data-vjs-player
         >
             <div
-                className={`fixed top-7 left-0 right-0 z-9999999999 flex items-center gap-3 px-4 py-3 bg-linear-to-b from-black/80 via-black/40 to-transparent transition-opacity duration-200 ${showControls ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+                className={`${isIOSDevice ? "top-7 ps-2 pe-4 pt-1 pb-3" : "top-0 ps-3 sm:ps-5 pe-4 py-4"} fixed left-0! right-0! z-9999999999 flex items-center gap-3 sm:gap-5 bg-linear-to-b from-black/80 via-black/40 to-transparent transition-opacity duration-200 ${isIOSDevice && showControls ? 'opacity-100 pointer-events-auto' : isIOSDevice ? 'opacity-0 pointer-events-none' : 'vjs-control-bar bg-transparent! md:h-20!'}`}
             >
                 <button
                     className={`cursor-pointer text-white hover:text-gray-300 active:scale-95 transition-all duration-200 shrink-0`}
@@ -701,9 +701,9 @@ const VideoPlayerPopup = ({ movieData }) => {
                         navigate(`/home?movieId=${movieId}`);
                     }}
                 >
-                    <LeftIcon className="w-6 sm:w-8 h-7 sm:h-8" />
+                    <LeftIcon className="w-4 lg:w-6 lg:h-6" />
                 </button>
-                <p className="text-sm sm:text-base md:text-xl font-semibold text-white truncate flex-1">{movieData?.title || 'Video Player'}</p>
+                <p className="text-sm sm:text-base md:text-xl text-[#D8D8D8] truncate flex-1">{movieData?.title || 'Video Player'}</p>
             </div>
             <video
                 ref={videoRef}
