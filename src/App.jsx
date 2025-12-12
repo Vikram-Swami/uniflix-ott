@@ -116,12 +116,12 @@ function App() {
         }>
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Login />} />
-          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-          <Route path="/movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
-          <Route path="/series" element={<ProtectedRoute><TVShows /></ProtectedRoute>} />
-          <Route path="/watch-list" element={<ProtectedRoute><Watchlist /></ProtectedRoute>} />
+          {/* <Route path="/login" element={<Login />} /> */}
+          {/* <Route path="/signup" element={<Login />} /> */}
+          <Route path="/home" element={<Home />} />
+          <Route path="/movies" element={<Movies />} />
+          <Route path="/series" element={<TVShows />} />
+          <Route path="/watch-list" element={<Watchlist />} />
 
           {/* Invalid route → redirect to /home */}
           <Route path="*" element={<Navigate to="/home" replace />} />
