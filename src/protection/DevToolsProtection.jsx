@@ -1,67 +1,185 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 const DevToolsProtection = () => {
+    const hasRedirected = useRef(false);
+
     useEffect(() => {
-        // Detect if device is mobile or tablet (iPhone/Android)
-        const isMobileDevice = () => {
-            // Check user agent for mobile/tablet patterns
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        // ========================================
+        // MOBILE/TABLET DETECTION - Enhanced Version
+        // ========================================
+        const isMobileOrTablet = () => {
+            // Method 1: User Agent Detection
+            const ua = navigator.userAgent || navigator.vendor || window.opera;
+            const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i;
 
-            // Mobile device patterns
-            const mobilePatterns = [
-                /android/i,
-                /webos/i,
-                /iphone/i,
-                /ipad/i,
-                /ipod/i,
-                /blackberry/i,
-                /windows phone/i,
-                /mobile/i
-            ];
+            // Method 2: Touch Detection
+            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-            // Check if user agent matches mobile patterns
-            const isMobileUA = mobilePatterns.some(pattern => pattern.test(userAgent));
+            // Method 3: Screen Size (mobile typically < 1024px)
+            const isSmallScreen = window.innerWidth < 1024;
 
-            // Check for touch capability (additional check)
-            const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            // Method 4: Check for mobile-specific APIs
+            const hasMobileAPIs = 'orientation' in window || 'onorientationchange' in window;
 
-            // Check screen size (mobile devices typically have smaller screens)
-            const isSmallScreen = window.innerWidth <= 768;
+            // Method 5: Device memory check (mobile devices usually have less memory)
+            const hasLowMemory = navigator.deviceMemory && navigator.deviceMemory <= 4;
 
-            // Return true if it's likely a mobile/tablet device
-            return isMobileUA || (hasTouchScreen && isSmallScreen);
+            // iOS specific detection
+            const isIOS = /iphone|ipad|ipod/i.test(ua);
+
+            // Android specific detection
+            const isAndroid = /android/i.test(ua);
+
+            // Tablet specific detection
+            const isTablet = /(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua);
+
+            // Return true if ANY mobile/tablet indicator is present
+            return mobileRegex.test(ua) ||
+                (hasTouch && isSmallScreen) ||
+                hasMobileAPIs ||
+                isIOS ||
+                isAndroid ||
+                isTablet;
         };
 
-        // If it's a mobile/tablet device, don't run DevTools protection
-        if (isMobileDevice()) {
-            return; // Exit early - no protection needed on mobile devices
+        // Exit early if mobile/tablet detected
+        if (isMobileOrTablet()) {
+            console.log('Mobile/Tablet detected - DevTools protection disabled');
+            return;
         }
 
-        // Helper function to redirect
+        // ========================================
+        // REDIRECT FUNCTION
+        // ========================================
         const redirectToGoogle = () => {
-            // Clear storage
-            localStorage.clear();
-            sessionStorage.clear();
+            if (hasRedirected.current) return;
+            hasRedirected.current = true;
 
-            // Clear cookies
-            document.cookie.split(";").forEach((c) => {
-                document.cookie = c
-                    .replace(/^ +/, "")
-                    .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-            });
+            try {
+                // Clear storage
+                localStorage.clear();
+                sessionStorage.clear();
 
-            // Redirect to Google
-            window.location.href = 'https://www.google.com';
+                // Clear cookies
+                document.cookie.split(";").forEach((c) => {
+                    document.cookie = c
+                        .replace(/^ +/, "")
+                        .replace(/=.*/, "=;expires=" + new Date(0).toUTCString() + ";path=/");
+                });
+            } catch (e) {
+                console.error('Error clearing storage:', e);
+            }
+
+            // Redirect
+            window.location.replace('https://www.google.com');
         };
 
-        // 1. Disable Right Click
-        const disableRightClick = (e) => {
-            e.preventDefault();
+        // ========================================
+        // DETECTION METHOD 1: Console DevTools Check
+        // ========================================
+        const element = new Image();
+        let devtoolsOpen = false;
+
+        Object.defineProperty(element, 'id', {
+            get: function () {
+                devtoolsOpen = true;
+                redirectToGoogle();
+                throw new Error('DevTools detected');
+            }
+        });
+
+        // Trigger detection immediately
+        requestIdleCallback(() => {
+            try {
+                console.log('%c', element);
+                console.clear();
+            } catch (e) {
+                // DevTools detected
+            }
+        });
+
+        // ========================================
+        // DETECTION METHOD 2: Window Size Difference
+        // ========================================
+        const checkWindowSize = () => {
+            const widthDiff = window.outerWidth - window.innerWidth;
+            const heightDiff = window.outerHeight - window.innerHeight;
+
+            // Threshold for detecting devtools (adjust as needed)
+            if (widthDiff > 160 || heightDiff > 160) {
+                redirectToGoogle();
+                return true;
+            }
             return false;
         };
 
-        // 2. Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
-        const disableKeyboardShortcuts = (e) => {
+        // ========================================
+        // DETECTION METHOD 3: Debugger Statement
+        // ========================================
+        const checkDebugger = () => {
+            const start = performance.now();
+            debugger;
+            const end = performance.now();
+
+            // If debugger pauses execution, time difference will be significant
+            if (end - start > 100) {
+                redirectToGoogle();
+                return true;
+            }
+            return false;
+        };
+
+        // ========================================
+        // DETECTION METHOD 4: toString Method
+        // ========================================
+        const checkToString = () => {
+            const div = document.createElement('div');
+            let detected = false;
+
+            Object.defineProperty(div, 'id', {
+                get: function () {
+                    detected = true;
+                    redirectToGoogle();
+                }
+            });
+
+            // This triggers getter if devtools are open
+            console.dir(div);
+            console.clear();
+
+            return detected;
+        };
+
+        // ========================================
+        // DETECTION METHOD 5: Firebug Check
+        // ========================================
+        const checkFirebug = () => {
+            if (window.console && (window.console.firebug || window.console.exception)) {
+                redirectToGoogle();
+                return true;
+            }
+            return false;
+        };
+
+        // ========================================
+        // IMMEDIATE DETECTION ON LOAD
+        // ========================================
+        const runImmediateChecks = () => {
+            if (checkWindowSize()) return;
+            if (checkDebugger()) return;
+            if (checkToString()) return;
+            if (checkFirebug()) return;
+        };
+
+        // Run checks after a small delay to ensure DOM is ready
+        setTimeout(runImmediateChecks, 100);
+        setTimeout(runImmediateChecks, 500);
+        setTimeout(runImmediateChecks, 1000);
+
+        // ========================================
+        // DISABLE KEYBOARD SHORTCUTS
+        // ========================================
+        const handleKeyDown = (e) => {
             // F12
             if (e.keyCode === 123) {
                 e.preventDefault();
@@ -77,6 +195,11 @@ const DevToolsProtection = () => {
                 e.preventDefault();
                 return false;
             }
+            // Ctrl+Shift+C (Inspect Element)
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
+                e.preventDefault();
+                return false;
+            }
             // Ctrl+U (View Source)
             if (e.ctrlKey && e.keyCode === 85) {
                 e.preventDefault();
@@ -87,175 +210,76 @@ const DevToolsProtection = () => {
                 e.preventDefault();
                 return false;
             }
-            // Ctrl+Shift+C (Inspect Element)
-            if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
+            // Cmd+Option+I (Mac Inspect)
+            if (e.metaKey && e.altKey && e.keyCode === 73) {
+                e.preventDefault();
+                return false;
+            }
+            // Cmd+Option+J (Mac Console)
+            if (e.metaKey && e.altKey && e.keyCode === 74) {
+                e.preventDefault();
+                return false;
+            }
+            // Cmd+Option+C (Mac Inspect Element)
+            if (e.metaKey && e.altKey && e.keyCode === 67) {
                 e.preventDefault();
                 return false;
             }
         };
 
-        // 3. Detect DevTools Open (Window size method)
-        const detectDevTools = () => {
-            const threshold = 160;
-            const widthThreshold = window.outerWidth - window.innerWidth > threshold;
-            const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-
-            if (widthThreshold || heightThreshold) {
-                redirectToGoogle();
-                return true;
-            }
+        // ========================================
+        // DISABLE RIGHT CLICK
+        // ========================================
+        const handleContextMenu = (e) => {
+            e.preventDefault();
             return false;
         };
 
-        // 4. Detect DevTools using console (runs BEFORE console is disabled)
-        const devtoolsDetector = () => {
-            let devtools = false;
-            const element = new Image();
-            Object.defineProperty(element, 'id', {
-                get: function () {
-                    devtools = true;
-                    redirectToGoogle();
-                }
-            });
-            // Use console.log before it's disabled
-            console.log(element);
-            console.clear();
-            return devtools;
-        };
-
-        // 5. Detect DevTools using toString (more reliable immediate check)
-        const detectDevToolsToString = () => {
-            let devtools = false;
-            const element = document.createElement('div');
-            Object.defineProperty(element, 'id', {
-                get: function () {
-                    devtools = true;
-                    redirectToGoogle();
-                }
-            });
-            // This will trigger the getter if devtools are open
-            const result = element.toString();
-            return devtools;
-        };
-
-        // 6. Detect DevTools using performance timing
-        const detectDevToolsPerformance = () => {
-            const start = performance.now();
-            debugger;
-            const end = performance.now();
-            if (end - start > 100) {
-                redirectToGoogle();
-                return true;
+        // ========================================
+        // CONTINUOUS MONITORING
+        // ========================================
+        const monitoringInterval = setInterval(() => {
+            if (hasRedirected.current) {
+                clearInterval(monitoringInterval);
+                return;
             }
-            return false;
-        };
 
-        // 7. Disable console methods (but keep a reference for detection)
-        const originalConsoleLog = console.log;
-        const disableConsole = () => {
-            const noop = () => { };
-            console.log = noop;
-            console.warn = noop;
-            console.error = noop;
-            console.info = noop;
-            console.debug = noop;
-            console.table = noop;
-            console.clear = noop;
-        };
-
-        // 8. Detect debugger (continuous monitoring)
-        let debugIntervalId = null;
-        const detectDebugger = () => {
-            debugIntervalId = setInterval(() => {
-                const before = new Date().getTime();
-                debugger;
-                const after = new Date().getTime();
-                if (after - before > 100) {
-                    redirectToGoogle();
-                }
-            }, 1000);
-        };
-
-        // 9. Monitor localStorage/sessionStorage changes
-        let storageIntervalId = null;
-        const monitorStorage = () => {
-            storageIntervalId = setInterval(() => {
-                if (typeof (Storage) !== "undefined") {
-                    try {
-                        const testKey = '__storage_test__';
-                        localStorage.setItem(testKey, testKey);
-                        localStorage.removeItem(testKey);
-                    } catch (e) {
-                        // Storage is being inspected
-                        clearInterval(storageIntervalId);
-                        redirectToGoogle();
-                    }
-                }
-            }, 1000);
-        };
-
-        // IMMEDIATE CHECKS - Run all detection methods immediately on page load
-        // This ensures devtools are detected even if already open
-
-        // Check 1: Window size detection (immediate)
-        if (detectDevTools()) {
-            return; // Already redirected
-        }
-
-        // Check 2: Console detection (immediate - must run before disabling console)
-        if (devtoolsDetector()) {
-            return; // Already redirected
-        }
-
-        // Check 3: toString detection (immediate)
-        if (detectDevToolsToString()) {
-            return; // Already redirected
-        }
-
-        // Check 4: Performance timing detection (immediate)
-        if (detectDevToolsPerformance()) {
-            return; // Already redirected
-        }
-
-        // Apply protections
-        document.addEventListener('contextmenu', disableRightClick);
-        document.addEventListener('keydown', disableKeyboardShortcuts);
-
-        // Continuous monitoring - Check DevTools every second
-        const devToolsInterval = setInterval(() => {
-            detectDevTools();
+            checkWindowSize();
+            checkDebugger();
+            checkFirebug();
         }, 1000);
 
-        // Continuous console detection
-        const consoleInterval = setInterval(() => {
-            // Re-enable console.log temporarily for detection
-            console.log = originalConsoleLog;
-            devtoolsDetector();
-            // Disable again
-            disableConsole();
+        // More frequent checks for better detection
+        const fastCheckInterval = setInterval(() => {
+            if (hasRedirected.current) {
+                clearInterval(fastCheckInterval);
+                return;
+            }
+            checkDebugger();
         }, 500);
 
-        // Disable console (after initial detection)
-        disableConsole();
+        // ========================================
+        // APPLY PROTECTIONS
+        // ========================================
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('contextmenu', handleContextMenu);
 
-        // Start debugger detection
-        detectDebugger();
+        // Disable text selection (optional, uncomment if needed)
+        // document.body.style.userSelect = 'none';
+        // document.body.style.webkitUserSelect = 'none';
 
-        // Monitor storage
-        monitorStorage();
-
-        // Cleanup
+        // ========================================
+        // CLEANUP
+        // ========================================
         return () => {
-            document.removeEventListener('contextmenu', disableRightClick);
-            document.removeEventListener('keydown', disableKeyboardShortcuts);
-            clearInterval(devToolsInterval);
-            clearInterval(consoleInterval);
-            if (debugIntervalId) clearInterval(debugIntervalId);
-            if (storageIntervalId) clearInterval(storageIntervalId);
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('contextmenu', handleContextMenu);
+            clearInterval(monitoringInterval);
+            clearInterval(fastCheckInterval);
         };
     }, []);
 
-    return null; // This component doesn't render anything
+    return null;
 };
 
 export default DevToolsProtection;
