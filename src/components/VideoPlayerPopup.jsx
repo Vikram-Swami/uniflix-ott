@@ -300,38 +300,6 @@ const VideoPlayerPopup = ({ movieData }) => {
         };
     }, [isMobileDevice, isIOSDevice, playlist]);
 
-    // On iOS, detect taps that reveal native controls and synchronize header visibility
-    useEffect(() => {
-        if (!isIOSDevice || !videoRef.current) return;
-
-        const videoEl = videoRef.current;
-
-        // When native controls become visible on iOS (user taps the video),
-        // the video element dispatches 'controls' display changes indirectly.
-        // We use touchstart/touchend to infer user interaction and show controls,
-        // and rely on our hide timeout to hide them again.
-
-        const handleTouch = (e) => {
-            // Show our custom header when user interacts with the video
-            resetControlsTimeout();
-        };
-
-        // Some iOS browsers may also emit 'click' after touch
-        const handleClick = (e) => {
-            resetControlsTimeout();
-        };
-
-        videoEl.addEventListener('touchstart', handleTouch, { passive: true });
-        videoEl.addEventListener('touchend', handleTouch, { passive: true });
-        videoEl.addEventListener('click', handleClick);
-
-        return () => {
-            videoEl.removeEventListener('touchstart', handleTouch);
-            videoEl.removeEventListener('touchend', handleTouch);
-            videoEl.removeEventListener('click', handleClick);
-        };
-    }, [isIOSDevice]);
-
     useEffect(() => {
         if (!playlist || !videoRef.current) return;
 
@@ -723,7 +691,9 @@ const VideoPlayerPopup = ({ movieData }) => {
             className="fixed inset-0 max-h-screen h-full w-full z-[99999000000000000000000000000000000000000000000000000000000000] bg-black"
             data-vjs-player
         >
-            <div className="fixed top-7 left-0 right-0 z-9999999999 flex items-center gap-3 px-4 py-3 bg-linear-to-b from-black/80 via-black/40 to-transparent pointer-events-auto">
+            <div
+                className={`fixed top-7 left-0 right-0 z-9999999999 flex items-center gap-3 px-4 py-3 bg-linear-to-b from-black/80 via-black/40 to-transparent transition-opacity duration-200 ${showControls ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+            >
                 <button
                     className={`cursor-pointer text-white hover:text-gray-300 active:scale-95 transition-all duration-200 shrink-0`}
                     onClick={() => {
@@ -733,7 +703,7 @@ const VideoPlayerPopup = ({ movieData }) => {
                 >
                     <LeftIcon className="w-6 sm:w-8 h-7 sm:h-8" />
                 </button>
-                <p className="text-sm sm:text-base md:text-xl font-semibold text-white truncate flex-1">{movieData?.title + movieData?.title + movieData?.title || 'Video Player'}</p>
+                <p className="text-sm sm:text-base md:text-xl font-semibold text-white truncate flex-1">{movieData?.title || 'Video Player'}</p>
             </div>
             <video
                 ref={videoRef}
