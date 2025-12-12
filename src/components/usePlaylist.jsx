@@ -12,6 +12,7 @@ const PlaylistProvider = ({ children }) => {
     const [currentMovieId, setCurrentMovieId] = useState(null);
     const [error, setError] = useState(null);
     const [holePageLoading, setHolePageLoading] = useState(false);
+    const [movieTitle, setMovieTitle] = useState("")
     const navigate = useNavigate()
     const useQuery = () => {
         return new URLSearchParams(useLocation().search);

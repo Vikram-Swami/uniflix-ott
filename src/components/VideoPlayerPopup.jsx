@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 import { usePlaylist } from "./usePlaylist";
-import { X } from "lucide-react";
+import { ArrowLeft, MoveLeft, X } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addRecent, loadRecp } from "../utils/recentPlays";
+import { LeftIcon } from "../assets/icons";
 // Detect iOS/Safari
 const isIOS = () => {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
@@ -690,8 +691,20 @@ const VideoPlayerPopup = ({ movieData }) => {
             className="fixed inset-0 max-h-screen h-full w-full z-[99999000000000000000000000000000000000000000000000000000000000] bg-black"
             data-vjs-player
         >
-            {!isIOSDevice && <button
-                className={`absolute z-100 right-4 top-4 cursor-pointer text-white hover:text-gray-300 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            <div className="flex items-center gap-5 absolute z-100 left-4! top-4! vjs-control-bar bg-transparent!">
+                <button
+                    className={`cursor-pointer text-white hover:text-gray-300 transition-transform transform duration-1000  hover:scale-125`}
+                    onClick={() => {
+                        setPlaylist(null);
+                        navigate(`/home?movieId=${movieId}`);
+                    }}
+                >
+                    <LeftIcon className="w-8 h-8" />
+                </button>
+                <p className="text-xl">A Minecraft Movie</p>
+            </div>
+            {/* {!isIOSDevice && <button
+                className={`absolute z-100 right-4 top-4 cursor-pointer text-white hover:text-gray-300 transition-opacity duration-300 bg-black/40! rounded-full p-1 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'
                     }`}
                 onClick={() => {
                     setPlaylist(null);
@@ -699,7 +712,7 @@ const VideoPlayerPopup = ({ movieData }) => {
                 }}
             >
                 <X className="w-10 h-10" />
-            </button>}
+            </button>} */}
             <video
                 ref={videoRef}
                 poster={`https://imgcdn.kim/pv/c/${movieId}.jpg`}
