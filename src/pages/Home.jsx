@@ -5,6 +5,7 @@ import MovieRow from '../components/MovieRow';
 import { fetchHomepage } from '../services/api';
 import { usePlaylist } from '../components/usePlaylist';
 import { Helmet } from 'react-helmet-async';
+import { sliderData } from "../utils/sliderData";
 
 const Home = () => {
   const [homepageData, setHomepageData] = useState(null);
@@ -64,7 +65,7 @@ const Home = () => {
       <div className="min-h-screen">
         {/* Hero Slider */}
         {homepageData?.slider && (
-          <HeroSlider slides={homepageData.slider} />
+          <HeroSlider slides={sliderData.homeData} />
         )}
         {/* Recent Swiper */}
         <RecentSwiper />

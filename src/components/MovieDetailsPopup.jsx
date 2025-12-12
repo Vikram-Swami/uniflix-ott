@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { getImageUrl, getMovieDetails, nextEpisode } from "../services/api";
 import { useWatchlist } from "../hooks/useWatchlist";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Check, Plus, Share2 } from "lucide-react";
+import { Check, ChevronDown, Plus, Share2 } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import MovieCard from "./MovieCard";
 import { Virtual, Navigation, FreeMode } from "swiper/modules";
@@ -505,8 +505,8 @@ ${pageUrl}`;
                                 {seasons?.length > 0 && (
                                     <div className="flex justify-end max-w-[1500px] mx-auto mb-10">
                                         <div className="relative" ref={dropdownRef}>
-                                            <button onClick={() => setIsOpen((prev) => !prev)} className="text-sm md:text-base 2xl:text-lg font-medium text-white outline-0! flex items-center cursor-pointer bg-white/30 h-9 md:h-10 2xl:h-12 w-[120px] md:w-[130px] rounded-md justify-center">
-                                                {selectedSeason ? selectedSeason : "Season " + movieData?.season?.length}
+                                            <button onClick={() => setIsOpen((prev) => !prev)} className="text-sm md:text-base 2xl:text-lg font-medium text-white outline-0! flex items-center cursor-pointer bg-white/30 h-9 md:h-10 2xl:h-12 w-[120px] md:w-[130px] rounded-md justify-center gap-2">
+                                                {selectedSeason ? selectedSeason : "Season " + movieData?.season?.length} <ChevronDown />
                                             </button>
                                             {isOpen && (
                                                 <div className="flex flex-col items-start absolute z-50 bg-gray-dark mt-1.5 rounded-md overflow-hidden right-0 w-[190px] md:w-[215px] bg-[#4e475b] shadow-2xl">
@@ -543,7 +543,7 @@ ${pageUrl}`;
                                                 <div key={episode?.id || index} className={`cursor-pointer group relative ${!movieData?.nextPageShow && seasonLoading ? "last:mb-10" : ""}`}>
                                                     <div onClick={() => fetchPlaylist(episode?.id)} className="flex gap-3 xs:gap-4 xl:gap-7 group relative items-start">
                                                         <span className="max-sm:hidden opacity-0 group-hover:opacity-100 absolute bg-gray-900 -left-3 -right-3 -bottom-3 -top-3 lg:-left-6 lg:-right-6 lg:-bottom-6 lg:-top-6 rounded-sm xs:rounded-md lg:rounded-lg xl:rounded-2xl -z-1 transition-all duration-300 ease-in-out"></span>
-                                                        <div className="min-w-[110px] xs:min-w-[130px] sm:min-w-[200px] lg:min-w-[250px] xl:min-w-[350px] max-w-[110px] xs:max-w-[130px] sm:max-w-[200px] md:max-w-[350px]">
+                                                        <div className="min-w-[110px] xs:min-w-[130px] sm:min-w-[200px] lg:min-w-[250px] lg:max-w-[250px] xl:min-w-[350px] max-w-[110px] xs:max-w-[130px] sm:max-w-[200px]! md:max-w-[350px]">
                                                             <div className="cursor-pointer aspect-video flex-[0_0_300px] overflow-hidden rounded-sm xs:rounded-md lg:rounded-lg xl:rounded-2xl bg-gray-800 shadow-2xl transition-all ease-in-out lg:flex-[0_0_230px] relative">
                                                                 <div className="group relative transition-all duration-500 ease-in-out opacity-100 w-full h-full">
                                                                     <img
@@ -607,18 +607,13 @@ ${pageUrl}`;
                                                             </p>
                                                         </div>
                                                     </div>
-                                                    {/* {episode?.ep_desc && (
-                                                        <p className="text-[#aaa] sm:hidden text-[11px] mt-2">
-                                                            {episode?.ep_desc}
-                                                        </p>
-                                                    )} */}
                                                 </div>
                                             )
                                         })
                                     }
                                 </div>
                                 {movieData?.nextPageShow && !seasonLoading ? <div className="flex justify-center mt-5 sm:mt-10">
-                                    {episodesLoading ? <div className="w-5 xs:w-7 md:w-9 h-5 xs:h-7 md:h-9 border-4 border-t-black border-white rounded-full animate-spin"></div> : <button onClick={handleShowMore} className={`h-6 xs:h-7 md:h-9 lg:h-11 w-[80px] xs:w-[100px] md:w-[125px] text-black bg-white rounded-sm md:rounded-md text-xs xs:text-sm md:text-base lg:text-lg font-medium hover:bg-gray-200 transition-all duration-300 ease-in-out flex items-center justify-center opacity-100 cursor-pointer hover:w-[135px]`}>
+                                    {episodesLoading ? <div className="w-5 xs:w-7 md:w-9 h-5 xs:h-7 md:h-9 border-4 border-t-black border-white rounded-full animate-spin"></div> : <button onClick={handleShowMore} className={`h-6 xs:h-7 md:h-9 lg:h-11 w-20 xs:w-[100px] md:w-[125px] text-black bg-white rounded-sm md:rounded-md text-xs xs:text-sm md:text-base lg:text-lg font-medium hover:bg-gray-200 transition-all duration-300 ease-in-out flex items-center justify-center opacity-100 cursor-pointer hover:w-[135px]`}>
                                         Show more
                                     </button>}
                                 </div> : ""}

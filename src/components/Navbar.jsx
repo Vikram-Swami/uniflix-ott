@@ -111,9 +111,9 @@ export default function Navbar({ setIsOpen, movieDetailsPopupScroll, isOpen }) {
         </div>
         <div className="flex items-center gap-3">
           <button className={`cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all duration-300 ease-in-out ${isOpen ? "bg-white text-black" : "bg-transparent text-white"}`} onClick={() => setIsOpen(prev => !prev)}>{!isOpen ? <Search size={19} /> : <X size={22} />}</button>
-          <button className={`cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all duration-300 ease-in-out menu_icon`}><MenuIcon className="w-5 h-5" /></button>
-          <div ref={menuRef2} className="relative w-[28px] h-[28px] lg:w-[33px] lg:h-[33px] max-xs:w-6 max-xs:h-6">
-            <button onClick={() => setUserDropdown(!userDropdown)}><img src={UserProfile} style={{ border: userDropdown ? "2px solid white" : "" }} alt="User Profile" className="w-[28px] h-[28px] lg:w-[33px] lg:h-[33px] max-xs:w-6 max-xs:h-6 rounded-full cursor-pointer" /></button>
+          <button className={`cursor-pointer w-9 h-9 flex items-center justify-center rounded-full sm:hover:bg-white sm:hover:text-black transition-all duration-300 ease-in-out menu_icon`}><MenuIcon className="w-5 h-5" /></button>
+          <div ref={menuRef2} className="relative w-7 h-7 lg:w-[33px] lg:h-[33px] max-xs:w-6 max-xs:h-6">
+            <button onClick={() => setUserDropdown(!userDropdown)}><img src={UserProfile} style={{ border: userDropdown ? "2px solid white" : "" }} alt="User Profile" className="w-7 h-7 lg:w-[33px] lg:h-[33px] max-xs:w-6 max-xs:h-6 rounded-full cursor-pointer" /></button>
             {userDropdown && <div className="absolute top-10 xs:top-11 md:top-13 md:-right-[21px] nav_bg_leaner2 w-40 xs:w-50 right-0 px-1 md:px-2 py-2 rounded-md flex flex-col">
               <div className="flex items-center gap-2 xs:gap-3 xs:py-2 px-2 max-xs:mb-3">
                 <User2 className="min-w-5 h-5" />

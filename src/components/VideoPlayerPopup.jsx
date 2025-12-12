@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 import { usePlaylist } from "./usePlaylist";
-import { ArrowLeft, MoveLeft, X } from "lucide-react";
+import { ArrowLeft, MoveLeft, Pause, Play, X } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addRecent, loadRecp } from "../utils/recentPlays";
-import { LeftIcon } from "../assets/icons";
+import { BackwardIcon, ForwardIcon, LeftIcon } from "../assets/icons";
 // Detect iOS/Safari
 const isIOS = () => {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
@@ -86,6 +86,7 @@ const VideoPlayerPopup = ({ movieData }) => {
         }, 4000);
     };
 
+
     // Handle mouse movement
     const handleMouseMove = () => {
         resetControlsTimeout();
@@ -94,6 +95,54 @@ const VideoPlayerPopup = ({ movieData }) => {
     // Handle mouse enter
     const handleMouseEnter = () => {
         resetControlsTimeout();
+    };
+
+    const handleSkipBackward = () => {
+        if (isIOSDevice) return;
+
+        if (playerRef.current) {
+            const currentTime = playerRef.current.currentTime();
+            playerRef.current.currentTime(Math.max(0, currentTime - 10));
+        } else if (videoRef.current) {
+            videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 10);
+        }
+    };
+
+    // Handle skip forward (10 seconds)
+    const handleSkipForward = () => {
+        if (isIOSDevice) return;
+
+        if (playerRef.current) {
+            const currentTime = playerRef.current.currentTime();
+            const duration = playerRef.current.duration();
+            playerRef.current.currentTime(Math.min(duration, currentTime + 10));
+        } else if (videoRef.current) {
+            const duration = videoRef.current.duration;
+            videoRef.current.currentTime = Math.min(duration, videoRef.current.currentTime + 10);
+        }
+    };
+
+    // Handle play/pause toggle
+    const handlePlayPause = () => {
+        if (isIOSDevice) return;
+
+        if (playerRef.current) {
+            if (playerRef.current.paused()) {
+                playerRef.current.play();
+                setIsPlaying(true)
+            } else {
+                playerRef.current.pause();
+                setIsPlaying(false)
+            }
+        } else if (videoRef.current) {
+            if (videoRef.current.paused) {
+                videoRef.current.play();
+                setIsPlaying(true)
+            } else {
+                videoRef.current.pause();
+                setIsPlaying(false)
+            }
+        }
     };
 
     // Setup mouse event listeners
@@ -705,6 +754,11 @@ const VideoPlayerPopup = ({ movieData }) => {
                 </button>
                 <p className="text-sm sm:text-base md:text-xl text-[#D8D8D8] truncate flex-1">{movieData?.title || 'Video Player'}</p>
             </div>
+            {!isIOSDevice && <div className="center_controls absolute top-1/2 left-1/2! bg-transparent! w-full -translate-1/2 flex gap-15 xs:gap-20 vjs-control-bar justify-center items-center">
+                <button onClick={handleSkipBackward} className="cursor-pointer" type="button"><BackwardIcon className="w-10 md:w-15 h-10 md:h-15" /></button>
+                <button onClick={handlePlayPause} className="cursor-pointer play_pause" type="button">{!isPlaying ? <Play className="w-13 md:w-18 fill-white h-13 md:h-18" /> : <Pause className="w-13 md:w-18 h-13 md:h-18 fill-white" />}</button>
+                <button onClick={handleSkipForward} className="cursor-pointer" type="button"><ForwardIcon className="w-10 md:w-15 h-10 md:h-15" /></button>
+            </div>}
             <video
                 ref={videoRef}
                 poster={`https://imgcdn.kim/pv/c/${movieId}.jpg`}

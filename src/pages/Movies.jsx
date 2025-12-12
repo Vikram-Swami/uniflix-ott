@@ -5,6 +5,7 @@ import { fetchMoviepage } from '../services/api';
 import { useWatchlist } from '../hooks/useWatchlist';
 import { usePlaylist } from '../components/usePlaylist';
 import { Helmet } from 'react-helmet-async';
+import { sliderData } from "../utils/sliderData";
 
 const Movies = () => {
   const [homepageData, setHomepageData] = useState(null);
@@ -75,7 +76,7 @@ const Movies = () => {
       <div className="min-h-screen">
         {/* Hero Slider */}
         {homepageData?.slider && (
-          <HeroSlider slides={homepageData.slider} />
+          <HeroSlider slides={sliderData.movieData} />
         )}
 
         {/* Movie Rows */}
