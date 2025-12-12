@@ -37,7 +37,7 @@ const HeroSlider = ({ slides }) => {
                   <img className="w-[70%] mx-auto xs:w-full h-full" src={item.namelogo} />
                   <p className="line_clamp_2  max-md:hidden!">{item.desc}</p>
                   <div className="flex gap-4 items-center max-xs:justify-center">
-                    <Link to={`/home?movieId=${item.id}`} className="h-11 md:h-14 flex items-center justify-center w-[150px] md:w-[180px] rounded-lg bg-white/30 bg-background px-3 font-medium md:text-[18px] cursor-pointer text-center transition-all duration-300 ease-in-out hover:bg-white hover:text-black">
+                    <Link to={`?movieId=${item.id}`} className="h-11 md:h-14 flex items-center justify-center w-[150px] md:w-[180px] rounded-lg bg-white/30 bg-background px-3 font-medium md:text-[18px] cursor-pointer text-center transition-all duration-300 ease-in-out hover:bg-white hover:text-black">
                       <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" className="w-8 md:w-10 h-8 md:h-10 pe-2" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M133 440a35.37 35.37 0 0 1-17.5-4.67c-12-6.8-19.46-20-19.46-34.33V111c0-14.37 7.46-27.53 19.46-34.33a35.13 35.13 0 0 1 35.77.45l247.85 148.36a36 36 0 0 1 0 61l-247.89 148.4A35.5 35.5 0 0 1 133 440z"></path>
                       </svg>Watch Now
                     </Link>
@@ -64,7 +64,7 @@ const HeroSlider = ({ slides }) => {
                   </div>
                 </div>
               </div>
-              <img onClick={() => navigate(`/home?movieId=${item.id}`)} className="w-full h-full object-cover object-top-right" src={item.img} alt="movie-poster" />
+              <img onClick={() => navigate(`?movieId=${item.id}`)} className="w-full h-full object-cover object-top-right" src={item.img} alt="movie-poster" />
             </div>
           )
         })}
