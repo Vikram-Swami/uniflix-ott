@@ -300,6 +300,38 @@ const VideoPlayerPopup = ({ movieData }) => {
         };
     }, [isMobileDevice, isIOSDevice, playlist]);
 
+    // On iOS, detect taps that reveal native controls and synchronize header visibility
+    useEffect(() => {
+        if (!isIOSDevice || !videoRef.current) return;
+
+        const videoEl = videoRef.current;
+
+        // When native controls become visible on iOS (user taps the video),
+        // the video element dispatches 'controls' display changes indirectly.
+        // We use touchstart/touchend to infer user interaction and show controls,
+        // and rely on our hide timeout to hide them again.
+
+        const handleTouch = (e) => {
+            // Show our custom header when user interacts with the video
+            resetControlsTimeout();
+        };
+
+        // Some iOS browsers may also emit 'click' after touch
+        const handleClick = (e) => {
+            resetControlsTimeout();
+        };
+
+        videoEl.addEventListener('touchstart', handleTouch, { passive: true });
+        videoEl.addEventListener('touchend', handleTouch, { passive: true });
+        videoEl.addEventListener('click', handleClick);
+
+        return () => {
+            videoEl.removeEventListener('touchstart', handleTouch);
+            videoEl.removeEventListener('touchend', handleTouch);
+            videoEl.removeEventListener('click', handleClick);
+        };
+    }, [isIOSDevice]);
+
     useEffect(() => {
         if (!playlist || !videoRef.current) return;
 
@@ -701,7 +733,7 @@ const VideoPlayerPopup = ({ movieData }) => {
                 >
                     <LeftIcon className="w-6 sm:w-8 h-7 sm:h-8" />
                 </button>
-                <p className="text-sm sm:text-base md:text-xl font-semibold text-white truncate flex-1">{movieData?.title || 'Video Player'}</p>
+                <p className="text-sm sm:text-base md:text-xl font-semibold text-white truncate flex-1">{movieData?.title + movieData?.title + movieData?.title || 'Video Player'}</p>
             </div>
             <video
                 ref={videoRef}
