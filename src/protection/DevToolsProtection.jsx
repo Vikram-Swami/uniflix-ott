@@ -2,6 +2,41 @@ import { useEffect } from 'react';
 
 const DevToolsProtection = () => {
     useEffect(() => {
+        // Detect if device is mobile or tablet (iPhone/Android)
+        const isMobileDevice = () => {
+            // Check user agent for mobile/tablet patterns
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            // Mobile device patterns
+            const mobilePatterns = [
+                /android/i,
+                /webos/i,
+                /iphone/i,
+                /ipad/i,
+                /ipod/i,
+                /blackberry/i,
+                /windows phone/i,
+                /mobile/i
+            ];
+
+            // Check if user agent matches mobile patterns
+            const isMobileUA = mobilePatterns.some(pattern => pattern.test(userAgent));
+
+            // Check for touch capability (additional check)
+            const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+            // Check screen size (mobile devices typically have smaller screens)
+            const isSmallScreen = window.innerWidth <= 768;
+
+            // Return true if it's likely a mobile/tablet device
+            return isMobileUA || (hasTouchScreen && isSmallScreen);
+        };
+
+        // If it's a mobile/tablet device, don't run DevTools protection
+        if (isMobileDevice()) {
+            return; // Exit early - no protection needed on mobile devices
+        }
+
         // Helper function to redirect
         const redirectToGoogle = () => {
             // Clear storage

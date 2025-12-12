@@ -89,15 +89,15 @@ function App() {
     if (isOpen) document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
-  useEffect(() => {
-    if (isUser && (pathname === "/login" || pathname === "/signup")) {
-      navigate("/home")
-    }
-  }, [isUser])
+  // useEffect(() => {
+  //   if (isUser && (pathname === "/login" || pathname === "/signup")) {
+  //     navigate("/home")
+  //   }
+  // }, [isUser])
 
   return (
     <>
-      <DevToolsProtection />
+      {/* <DevToolsProtection /> */}
       {holePageLoading && <div className="fixed inset-0 bg-black/50 z-50000000">
         <div className="shimmer2 h-1 w-full bg-sky-500"></div>
       </div>}
