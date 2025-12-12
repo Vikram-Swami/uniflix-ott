@@ -32,12 +32,12 @@ const HeroSlider = ({ slides }) => {
               <div className="w-full h-50 hero_bg_leaner absolute -bottom-px"></div>
               <div className="w-[200px] h-full hero_bg_leaner_2 absolute left-0 bottom-0"></div>
               <div className="absolute bottom-0 right-0 text-white max-sm:hidden text-sm md:text-[16px] font-semibold mx-10 md:mx-20 mb-15 md:mb-20 bg-white/30 px-3 py-0.5 rounded-md">{item.ua}</div>
-              <div className="absolute bottom-0 max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]! pb-10 md:pb-20">
+              <div className="absolute bottom-0 max-xs:px-3 xs:px-6 sm2:px-8 md2:px-11 2xl:px-[72px]! pb-10 md:pb-20 max-xs:w-full">
                 <div className="relative z-10 flex max-xs:justify-center xs:max-w-[300px] md:max-w-[400px] lg:max-w-[500px] 2xl:max-w-[700px]! flex-col gap-4">
-                  <img className="w-[70%] mx-auto xs:w-full h-full" src={item.namelogo} />
+                  <img className="max-xs:w-[70%] max-xs:mx-auto" src={item.namelogo} />
                   <p className="line_clamp_2  max-md:hidden!">{item.desc}</p>
                   <div className="flex gap-4 items-center max-xs:justify-center">
-                    <Link to={`?movieId=${item.id}`} className="h-11 md:h-14 flex items-center justify-center w-[150px] md:w-[180px] rounded-lg bg-white/30 bg-background px-3 font-medium md:text-[18px] cursor-pointer text-center transition-all duration-300 ease-in-out hover:bg-white hover:text-black">
+                    <Link to={`/home?movieId=${item.id}`} className="h-11 md:h-14 flex items-center justify-center w-[150px] md:w-[180px] rounded-lg bg-white/30 bg-background px-3 font-medium md:text-[18px] cursor-pointer text-center transition-all duration-300 ease-in-out hover:bg-white hover:text-black">
                       <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" className="w-8 md:w-10 h-8 md:h-10 pe-2" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M133 440a35.37 35.37 0 0 1-17.5-4.67c-12-6.8-19.46-20-19.46-34.33V111c0-14.37 7.46-27.53 19.46-34.33a35.13 35.13 0 0 1 35.77.45l247.85 148.36a36 36 0 0 1 0 61l-247.89 148.4A35.5 35.5 0 0 1 133 440z"></path>
                       </svg>Watch Now
                     </Link>
@@ -64,7 +64,7 @@ const HeroSlider = ({ slides }) => {
                   </div>
                 </div>
               </div>
-              <img onClick={() => navigate(`?movieId=${item.id}`)} className="w-full h-full object-cover object-top-right" src={item.img} alt="movie-poster" />
+              <img onClick={() => navigate(`/home?movieId=${item.id}`)} className="w-full h-full object-cover object-top-right" src={item.img} alt="movie-poster" />
             </div>
           )
         })}
