@@ -19,7 +19,7 @@ const HeroSlider = ({ slides }) => {
     slidesToShow: 1,
     slidesToScroll: 1,
     waitForAnimate: false,
-    autoplay: true,
+    // autoplay: true,
     pauseOnHover: false,
     autoplaySpeed: 5000,
   };

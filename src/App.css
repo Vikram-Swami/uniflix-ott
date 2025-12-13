@@ -381,8 +381,8 @@ img {
     filter: brightness(0.9);
   }
   .mask_bottom2 {
-    -webkit-mask: radial-gradient(100% 11% at 50% 102.1%, transparent 51%, white 53%);
-    mask: radial-gradient(100% 11% at 50% 102.1%, transparent 51%, white 53%);
+   -webkit-mask: radial-gradient(100% 11% at 50% 104%, transparent 51%, white 123%);
+    mask: radial-gradient(100% 11% at 50% 104%, transparent 51%, white 123%);
   }
 }
 
@@ -390,6 +390,12 @@ img {
   .nav_bg_leaner {
     background: linear-gradient(to bottom, #191e25cc, #191e25cc);
     backdrop-filter: blur(10px);
+  }
+}
+
+@media (max-width: 1200px) {
+  .mask_bottom2 {
+    
   }
 }
 
@@ -408,7 +414,7 @@ img {
     filter: brightness(0.9);
   }
   .mask_bottom2 {
-    -webkit-mask: radial-gradient(100% 13% at 50% 102.1%, transparent 51%, white 53%);
-    mask: radial-gradient(100% 13% at 50% 102.1%, transparent 51%, white 53%);
+    -webkit-mask: radial-gradient(100% 13% at 50% 103%, transparent 51%, white 80%);
+    mask: radial-gradient(100% 13% at 50% 103%, transparent 51%, white 80%);
   }
 }
