@@ -97,7 +97,7 @@ html {
 }
 
 .slick-dots {
-  @apply bottom-0! sm:bottom-4!;
+  @apply -bottom-3!;
 }
 
 .slick-dots li.slick-active button:before {
@@ -107,6 +107,13 @@ html {
 
 .cards_slider:hover .arrow {
   @apply sm2:flex!;
+}
+
+.cards_slider2:hover .arrow {
+  @apply opacity-100;
+}
+.cards_slider2 .arrow:hover {
+  @apply scale-130 duration-500;
 }
 .arrow:hover span {
   @apply scale-150;
@@ -367,10 +374,34 @@ img {
   user-select: none;
 }
 
+@media (max-width: 1400px) {
+  .mask_bottom {
+    -webkit-mask: radial-gradient(100% 11% at 50% 102%, transparent 50%, white 52%);
+    mask: radial-gradient(100% 11% at 50% 102%, transparent 50%, white 52%);
+    filter: brightness(0.9);
+  }
+  .mask_bottom2 {
+    -webkit-mask: radial-gradient(100% 11% at 50% 102.1%, transparent 51%, white 53%);
+    mask: radial-gradient(100% 11% at 50% 102.1%, transparent 51%, white 53%);
+  }
+}
+
 @media only screen and (max-width: 480px) {
   .Toastify__toast-container--top-left,
   .Toastify__toast-container--top-center,
   .Toastify__toast-container--top-right {
     transform: translate(-50%) !important;
+  }
+}
+
+@media (min-width: 1400px) {
+  .mask_bottom {
+    -webkit-mask: radial-gradient(99% 13% at 50% 102%, transparent 50%, white 52%);
+    mask: radial-gradient(99% 13% at 50% 102%, transparent 50%, white 52%);
+    filter: brightness(0.9);
+  }
+  .mask_bottom2 {
+    -webkit-mask: radial-gradient(98% 13% at 50% 102.1%, transparent 51%, white 53%);
+    mask: radial-gradient(98% 13% at 50% 102.1%, transparent 51%, white 53%);
   }
 }
