@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 import { usePlaylist } from "./usePlaylist";
-import { ArrowLeft, MoveLeft, Pause, Play, X } from "lucide-react";
+import {Pause, Play } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addRecent, loadRecp } from "../utils/recentPlays";
 import { BackwardIcon, ForwardIcon, LeftIcon } from "../assets/icons";

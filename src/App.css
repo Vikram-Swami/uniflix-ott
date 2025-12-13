@@ -386,6 +386,13 @@ img {
   }
 }
 
+@media (max-width: 767px) {
+  .nav_bg_leaner {
+    background: linear-gradient(to bottom, #191e25cc, #191e25cc);
+    backdrop-filter: blur(10px);
+  }
+}
+
 @media only screen and (max-width: 480px) {
   .Toastify__toast-container--top-left,
   .Toastify__toast-container--top-center,
@@ -396,12 +403,12 @@ img {
 
 @media (min-width: 1400px) {
   .mask_bottom {
-    -webkit-mask: radial-gradient(99% 13% at 50% 102%, transparent 50%, white 52%);
-    mask: radial-gradient(99% 13% at 50% 102%, transparent 50%, white 52%);
+    -webkit-mask: radial-gradient(100% 13% at 50% 102%, transparent 50%, white 52%);
+    mask: radial-gradient(100% 13% at 50% 102%, transparent 50%, white 52%);
     filter: brightness(0.9);
   }
   .mask_bottom2 {
-    -webkit-mask: radial-gradient(98% 13% at 50% 102.1%, transparent 51%, white 53%);
-    mask: radial-gradient(98% 13% at 50% 102.1%, transparent 51%, white 53%);
+    -webkit-mask: radial-gradient(100% 13% at 50% 102.1%, transparent 51%, white 53%);
+    mask: radial-gradient(100% 13% at 50% 102.1%, transparent 51%, white 53%);
   }
 }
