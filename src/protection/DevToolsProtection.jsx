@@ -2,6 +2,32 @@ import { useEffect } from 'react';
 
 const DevToolsProtection = () => {
     useEffect(() => {
+        const preventZoom = (e) => {
+            if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '=')) {
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener('keydown', preventZoom);
+
+        return () => {
+            document.removeEventListener('keydown', preventZoom);
+        };
+    }, []);
+    useEffect(() => {
+        const preventWheelZoom = (e) => {
+            if (e.ctrlKey) {
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener('wheel', preventWheelZoom, { passive: false });
+
+        return () => {
+            document.removeEventListener('wheel', preventWheelZoom);
+        };
+    }, []);
+    useEffect(() => {
         // Detect if device is mobile or tablet (iPhone/Android)
         const isMobileDevice = () => {
             const userAgent = navigator.userAgent || navigator.vendor || window.opera || '';
@@ -41,17 +67,6 @@ const DevToolsProtection = () => {
 
         // Helper function to redirect
         const redirectToGoogle = () => {
-            // Clear storage
-            localStorage.clear();
-            sessionStorage.clear();
-
-            // Clear cookies
-            document.cookie.split(";").forEach((c) => {
-                document.cookie = c
-                    .replace(/^ +/, "")
-                    .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-            });
-
             // Redirect to Google
             window.location.href = 'https://www.google.com';
         };
