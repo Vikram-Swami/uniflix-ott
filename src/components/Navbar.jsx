@@ -76,7 +76,7 @@ export default function Navbar({ setIsOpen, movieDetailsPopupScroll, isOpen }) {
       <div className={`flex relative items-center justify-between h-[50px] md:h-[60px] 2xl:h-[70px] px-3 xs:px-[21px] md:rounded-b-xl transition-all duration-300 ease-in-out ${isScrolled || movieDetailsPopupScroll ? "nav_bg_leaner2" : "nav_bg_leaner"
         }`}>
         <div ref={menuRef} className="flex items-center xs:gap-17 gap-4">
-          <Link to="/home" className="2xl:text-3xl text-2xl max-md:hidden"><img src={Uniflix} alt="" /></Link>
+          <Link to="/home" className="max-md:hidden"><img className="max-lg:w-[90px] lg:w-[100px]" src={Uniflix} alt="logo" /></Link>
           <button onClick={() => setIsOpenDropdown(!isOpenDropdown)} className="md:hidden cursor-pointer"><TextAlignJustify className="max-xs:w-5 max-xs:h-5" /></button>
           {isOpenDropdown && <div div className="flex max-md:flex-col md:items-center text-sm 2xl:text-[16px] font-semibold gap-1 md:gap-[5px] max-md:absolute top-[50px] mt-0.5 max-md:[background:linear-gradient(to_bottom,#191e25cc,#191e25cc)] max-md:w-[150px] max-md:px-3 py-2 max-md:rounded-md max-md:left-3">
             <NavLink onClick={() => {
@@ -108,7 +108,7 @@ export default function Navbar({ setIsOpen, movieDetailsPopupScroll, isOpen }) {
               Watch list
             </NavLink>
           </div>}
-          <Link to="/home" className={`2xl:text-3xl text-2xl max-xs:text-xl md:hidden xs:absolute xs:left-1/2 xs:-translate-x-1/2 ${isUser ? "xs:absolute xs:left-1/2 xs:-translate-x-1/2" : ""}`}>UniFlix</Link>
+          <Link to="/home" className={`2xl:text-3xl text-2xl max-xs:text-xl md:hidden xs:absolute xs:left-1/2 xs:-translate-x-1/2 ${isUser ? "xs:absolute xs:left-1/2 xs:-translate-x-1/2" : ""}`}><img className="w-[60px] xs:w-[70px]" src={Uniflix} alt="logo" /></Link>
         </div>
         <div className="flex items-center gap-3">
           <button className={`cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all duration-300 ease-in-out ${isOpen ? "bg-white text-black" : "bg-transparent text-white"}`} onClick={() => setIsOpen(prev => !prev)}>{!isOpen ? <Search size={19} /> : <X size={22} />}</button>

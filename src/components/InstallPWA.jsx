@@ -9,7 +9,7 @@ const InstallPWA = () => {
 
     return (
         <div className="flex items-center flex-col h-full justify-end">
-            <p className="text-xs xs:text-sm md:text-base">Uniflix is a copy of Prime Video and Lions Gate Play</p>
+            <p className="text-xs xs:text-sm md:text-base">Uniflix is a clone of Prime Video and 10+ OTT</p>
             <p className="my-2 text-xs xs:text-sm md:text-base">Stay connect with us and share with your friends and family</p>
             <p className="text-xs xs:text-sm md:text-base">You can download our Uniflix app for a better experience.</p>
             <div className="flex relative z-10 items-center gap-10 mt-5 mb-7 sm:mb-10">

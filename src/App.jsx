@@ -10,6 +10,7 @@ import ProtectedRoute from "./authentication/ProtectedRoute";
 import Cookies from "js-cookie"
 import InstallPWA from "./components/InstallPWA";
 import DevToolsProtection from "./protection/DevToolsProtection";
+import Preloading from "./components/Preloading";
 
 // 🔥 Lazy-loaded pages
 const Home = lazy(() => import("./pages/Home"));
@@ -23,8 +24,6 @@ function App() {
   const [MovieDetailsPopupScroll, setMovieDetailsPopupScroll] = useState(0);
   const [movieData, setMovieData] = useState(null);
   const popupRef = useRef(null);
-  const isUser = Cookies.get("vk")
-  const navigate = useNavigate()
   const { playlist, holePageLoading, setPlaylist } = usePlaylist();
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -89,15 +88,11 @@ function App() {
     if (isOpen) document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
-  // useEffect(() => {
-  //   if (isUser && (pathname === "/login" || pathname === "/signup")) {
-  //     navigate("/home")
-  //   }
-  // }, [isUser])
 
   return (
     <>
-      <DevToolsProtection />
+       <DevToolsProtection />
+      <Preloading />
       {holePageLoading && <div className="fixed inset-0 bg-black/50 z-50000000">
         <div className="shimmer2 h-1 w-full bg-sky-500"></div>
       </div>}

@@ -1,7 +1,166 @@
-import React from 'react'
+import { useState, useEffect } from 'react';
 
 export default function Preloading() {
-  return (
-    <div>Preloading</div>
-  )
+    const [showU, setShowU] = useState(false);
+    const [revealN, setRevealN] = useState(0);
+    const [revealI1, setRevealI1] = useState(0);
+    const [revealF, setRevealF] = useState(0);
+    const [revealL, setRevealL] = useState(0);
+    const [revealI2, setRevealI2] = useState(0);
+    const [revealX, setRevealX] = useState(0);
+    const [showPreloader, setShowPreloader] = useState(false);
+    useEffect(() => {
+        const hasShownPreloader = sessionStorage.getItem('preloaderShown');
+
+        // Agar pehli baar tab open ho raha hai to preloader dikhao
+        if (!hasShownPreloader) {
+            setShowPreloader(true);
+            sessionStorage.setItem('preloaderShown', 'true');
+
+            // U letter drops from top
+            setTimeout(() => setShowU(true), 500);
+
+            // N letter writing animation
+            setTimeout(() => {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 9;
+                    setRevealN(progress);
+                    if (progress >= 100) clearInterval(interval);
+                }, 30);
+            }, 1500);
+
+            // I letter writing animation
+            setTimeout(() => {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 9;
+                    setRevealI1(progress);
+                    if (progress >= 100) clearInterval(interval);
+                }, 30);
+            }, 1800);
+
+            // F letter writing animation
+            setTimeout(() => {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 9;
+                    setRevealF(progress);
+                    if (progress >= 100) clearInterval(interval);
+                }, 30);
+            }, 2100);
+
+            // L letter writing animation
+            setTimeout(() => {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 9;
+                    setRevealL(progress);
+                    if (progress >= 100) clearInterval(interval);
+                }, 30);
+            }, 2400);
+
+            // I2 letter writing animation
+            setTimeout(() => {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 9;
+                    setRevealI2(progress);
+                    if (progress >= 100) clearInterval(interval);
+                }, 30);
+            }, 2700);
+
+            // X letter writing animation
+            setTimeout(() => {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 9;
+                    setRevealX(progress);
+                    if (progress >= 100) clearInterval(interval);
+                }, 30);
+            }, 3000);
+
+            setTimeout(() => {
+                setShowPreloader(false);
+            }, 4500);
+        }
+    }, []);
+
+    if (!showPreloader) return null;
+
+    return (
+        <div className="fixed w-full h-full inset-0 z-500000000 bg-black flex items-center justify-center overflow-hidden">
+            <svg
+                style={{
+                    top: showU ? '50%' : "0%",
+                    transform: showU ? 'translateY(-50px)' : 'translateY(-200px)',
+                    transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                }}
+                className="w-[150px] xs:w-[200px] md:w-[300px] lg:w-[400px] h-auto absolute"
+                width="432"
+                height="121"
+                viewBox="0 0 432 121"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                {/* U Letter - drops from top */}
+                <g style={{
+                    opacity: showU ? 1 : 0,
+                }}>
+                    <path
+                        d="M66.3 63.75C66.22 97.31 54.93 115.35 32.53 118.84C10.82 122.33 0 106.51 0 70.46V0L18.16 0.0599976C18.16 23.0667 18.1367 46.0667 18.09 69.06C18.09 88.36 23.09 97.3 33.25 96.06C43.19 94.83 48.19 85.37 48.25 67.52C48.29 45.0667 48.3367 22.6133 48.39 0.160004L66.49 0.220001C66.4233 21.3933 66.36 42.57 66.3 63.75Z"
+                        fill="skyblue"
+                        className="fill-sky-500" />
+                </g>
+
+                {/* N Letter */}
+                <g style={{ clipPath: `inset(${100 - revealN}% 0 0 0)` }}>
+                    <path
+                        d="M156 104.65C149.887 104.95 143.78 105.283 137.68 105.65C126.68 84.3 115.68 62.65 104.68 40.39C102.747 36.49 101.413 33.5367 100.68 31.53H100.46C100.74 35.35 100.873 41.1866 100.86 49.04C100.8 68.8733 100.743 88.7066 100.69 108.54C94.9899 109.073 89.2898 109.643 83.5898 110.25C83.7032 73.5833 83.8065 36.9167 83.8998 0.25L103.4 0.299988C113.97 22.3 124.54 43.61 135.14 64.59C136.587 67.43 137.92 70.24 139.14 73.02H139.36C139.067 70.5867 138.927 65.7767 138.94 58.59C138.993 39.2033 139.04 19.81 139.08 0.410004L156.18 0.459991L156 104.65Z"
+                        fill="skyblue"
+                        className="fill-sky-500" />
+                </g>
+
+                {/* I Letter */}
+                <g style={{ clipPath: `inset(${100 - revealI1}% 0 0 0)` }}>
+                    <path
+                        d="M192.64 103.372C186.587 103.492 180.534 103.658 174.48 103.872L174.63 0.511719L192.73 0.561737L192.64 103.372Z"
+                        fill="skyblue"
+                        className="fill-sky-500" />
+                </g>
+
+                {/* F Letter */}
+                <g style={{ clipPath: `inset(${100 - revealF}% 0 0 0)` }}>
+                    <path
+                        d="M257.49 19.6106C248.03 19.5106 238.57 19.4606 229.11 19.4606C229.11 27.8473 229.11 36.234 229.11 44.6206C237.777 44.6606 246.477 44.7406 255.21 44.8606V63.6606C246.503 63.5006 237.797 63.394 229.09 63.3406C229.09 76.6073 229.09 89.8773 229.09 103.151C223.03 103.104 216.973 103.104 210.92 103.151C210.92 68.9773 210.92 34.8073 210.92 0.640625L257.38 0.76062L257.49 19.6106Z"
+                        fill="skyblue"
+                        className="fill-sky-500" />
+                </g>
+
+                {/* L Letter */}
+                <g style={{ clipPath: `inset(${100 - revealL}% 0 0 0)` }}>
+                    <path
+                        d="M318.84 107C302.84 105.753 286.84 104.803 270.84 104.15L270.66 0.769531L288.76 0.819519C288.82 29.2062 288.883 57.5929 288.95 85.9795C298.89 86.4329 308.827 86.9795 318.76 87.6195C318.793 94.0795 318.82 100.54 318.84 107Z"
+                        fill="skyblue"
+                        className="fill-sky-500" />
+                </g>
+
+                {/* I Letter (second) */}
+                <g style={{ clipPath: `inset(${100 - revealI2}% 0 0 0)` }}>
+                    <path
+                        d="M347.771 109.598C341.771 108.985 335.738 108.418 329.671 107.898L329.371 0.898438H347.471L347.771 109.598Z"
+                        fill="skyblue"
+                        className="fill-sky-500" />
+                </g>
+
+                {/* X Letter */}
+                <g style={{ clipPath: `inset(${100 - revealX}% 0 0 0)` }}>
+                    <path
+                        d="M431.36 120.869C424.26 119.669 417.14 118.532 410 117.459C405.4 104.126 400.787 91.0458 396.16 78.2191C395.393 75.6744 394.848 73.068 394.53 70.4291H394.3C393.835 73.0543 393.224 75.6517 392.47 78.2091C387.87 90.0291 383.277 101.672 378.69 113.139C371.51 112.239 364.33 111.396 357.15 110.609C365.63 93.2757 374.11 75.5324 382.59 57.3791C374.75 38.1124 366.9 19.3324 359.04 1.03906L381.04 1.09909C384.9 12.3391 388.754 23.7324 392.6 35.2791C393.613 38.4712 394.421 41.7244 395.02 45.0191H395.24C395.69 42.8091 396.52 39.5391 397.74 35.1691C401.98 24.0224 406.22 12.6891 410.46 1.16907L430.64 1.22906C422.64 20.9624 414.64 40.0791 406.64 58.5791C414.92 78.6591 423.16 99.4224 431.36 120.869Z"
+                        fill="skyblue"
+                        className="fill-sky-500" />
+                </g>
+            </svg>
+        </div>
+    );
 }
