@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import HeroSlider from '../components/HeroSlider';
 import RecentSwiper from '../components/RecentSwiper';
-import MovieRow from '../components/MovieRow';
+import LazyMovieRow from '../components/LazyMovieRow'; // ← Import karo
 import { fetchHomepage } from '../services/api';
 import { usePlaylist } from '../components/usePlaylist';
 import { Helmet } from 'react-helmet-async';
@@ -67,17 +67,18 @@ const Home = () => {
         {homepageData?.slider && (
           <HeroSlider slides={sliderData.homeData} />
         )}
+
         {/* Recent Swiper */}
         <RecentSwiper />
 
-        {/* Movie Rows */}
+        {/* Movie Rows with Lazy Loading */}
         <div className="pb-16">
           {homepageData?.post?.map((row, index) => (
-              <MovieRow
-                key={index}
-                title={row.cate}
-                movieIds={row.ids}
-              />
+            <LazyMovieRow
+              key={index}
+              title={row.cate}
+              movieIds={row.ids}
+            />
           ))}
         </div>
       </div>
@@ -86,4 +87,3 @@ const Home = () => {
 };
 
 export default Home;
-

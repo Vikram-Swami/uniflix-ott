@@ -6,6 +6,7 @@ import { useWatchlist } from '../hooks/useWatchlist';
 import { usePlaylist } from '../components/usePlaylist';
 import { Helmet } from 'react-helmet-async';
 import { sliderData } from "../utils/sliderData";
+import LazyMovieRow from "../components/LazyMovieRow";
 
 const TVShows = () => {
   const [homepageData, setHomepageData] = useState(null);
@@ -82,7 +83,7 @@ const TVShows = () => {
         {/* Movie Rows */}
         <div className="pb-16">
           {homepageData?.post?.map((row, index) => (
-            <MovieRow
+            <LazyMovieRow
               key={index}
               title={row.cate}
               movieIds={row.ids}
