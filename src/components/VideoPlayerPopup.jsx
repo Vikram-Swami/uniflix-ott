@@ -782,7 +782,7 @@ const VideoPlayerPopup = ({ movieData }) => {
             data-vjs-player
         >
             <div
-                className={`${isIOSDevice ? "top-7 ps-2 pe-4 pt-1 pb-3" : "top-0 ps-3 sm:ps-5 pe-4 py-4"} fixed left-0! right-0! z-9999999999 flex items-center gap-3 sm:gap-5 transition-opacity duration-200 ${isIOSDevice && showControls ? 'opacity-100 pointer-events-auto' : isIOSDevice ? 'opacity-0 pointer-events-none' : 'vjs-control-bar bg-transparent! md:h-20!'} ${!isIOSDevice ? "bg-linear-to-b from-black/80 via-black/40 to-transparent" : ""}`}>
+                className={`${isIOSDevice ? "top-7 max-xs:ps-2 xs:ps-5 pe-4 max-xs:pt-1 xs:pt-3 pb-3" : "top-0 ps-3 sm:ps-5 pe-4 py-4"} fixed left-0! right-0! z-9999999999 flex items-center gap-3 sm:gap-5 transition-opacity duration-200 ${isIOSDevice && showControls ? 'opacity-100 pointer-events-auto' : isIOSDevice ? 'opacity-0 pointer-events-none' : 'vjs-control-bar bg-transparent! md:h-20!'} ${!isIOSDevice ? "bg-linear-to-b from-black/80 via-black/40 to-transparent" : ""}`}>
                 <button
                     className={`cursor-pointer text-white hover:text-gray-300 active:scale-95 transition-all duration-200 shrink-0`}
                     onClick={() => {
