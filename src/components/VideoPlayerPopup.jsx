@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 import { usePlaylist } from "./usePlaylist";
-import {Pause, Play } from "lucide-react";
+import { Pause, Play } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addRecent, loadRecp } from "../utils/recentPlays";
 import { BackwardIcon, ForwardIcon, LeftIcon } from "../assets/icons";
@@ -31,12 +31,22 @@ const isMac = () => {
     const platform = navigator.platform || '';
     const ua = navigator.userAgent || '';
 
-    // MacBook/iMac/Mac Mini detection
-    return (
+    // First check: Is it a Mac?
+    const isMacDevice = (
         /Mac|Macintosh/.test(platform) ||
         /Mac OS X/.test(ua) ||
         (platform === 'MacIntel' && navigator.maxTouchPoints === 0)
     );
+
+    // Second check: Is it Safari browser?
+    // Safari has 'Safari' in UA but NOT 'Chrome' or 'Chromium'
+    const isSafari = (
+        /Safari/.test(ua) &&
+        !/Chrome|Chromium|CriOS|Edg/.test(ua)
+    );
+
+    // Both conditions must be true
+    return isMacDevice && isSafari;
 };
 
 const isAppleDevice = () => {
@@ -772,15 +782,13 @@ const VideoPlayerPopup = ({ movieData }) => {
             data-vjs-player
         >
             <div
-                className={`${isIOSDevice ? "top-7 ps-2 pe-4 pt-1 pb-3" : "top-0 ps-3 sm:ps-5 pe-4 py-4"} fixed left-0! right-0! z-9999999999 flex items-center gap-3 sm:gap-5 bg-linear-to-b from-black/80 via-black/40 to-transparent transition-opacity duration-200 ${isIOSDevice && showControls ? 'opacity-100 pointer-events-auto' : isIOSDevice ? 'opacity-0 pointer-events-none' : 'vjs-control-bar bg-transparent! md:h-20!'}`}
-            >
+                className={`${isIOSDevice ? "top-7 ps-2 pe-4 pt-1 pb-3" : "top-0 ps-3 sm:ps-5 pe-4 py-4"} fixed left-0! right-0! z-9999999999 flex items-center gap-3 sm:gap-5 transition-opacity duration-200 ${isIOSDevice && showControls ? 'opacity-100 pointer-events-auto' : isIOSDevice ? 'opacity-0 pointer-events-none' : 'vjs-control-bar bg-transparent! md:h-20!'} ${!isIOSDevice ? "bg-linear-to-b from-black/80 via-black/40 to-transparent" : ""}`}>
                 <button
                     className={`cursor-pointer text-white hover:text-gray-300 active:scale-95 transition-all duration-200 shrink-0`}
                     onClick={() => {
                         setPlaylist(null);
                         navigate(`/home?movieId=${movieId}`);
-                    }}
-                >
+                    }}>
                     <LeftIcon className="w-4 lg:w-6 lg:h-6" />
                 </button>
                 <p className="text-sm sm:text-base md:text-xl text-[#D8D8D8] truncate flex-1">{movieData?.title || 'Video Player'}</p>
