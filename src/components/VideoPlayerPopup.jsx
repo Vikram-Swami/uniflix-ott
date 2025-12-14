@@ -7,9 +7,40 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { addRecent, loadRecp } from "../utils/recentPlays";
 import { BackwardIcon, ForwardIcon, LeftIcon } from "../assets/icons";
 // Detect iOS/Safari
+// const isIOS = () => {
+//     return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+//         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+// };
+
 const isIOS = () => {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+
+    if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) {
+        return true;
+    }
+
+    // iPad with iPadOS 13+ (NOT MacBook)
+    if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) {
+        return true;
+    }
+
+    return false;
+};
+
+const isMac = () => {
+    const platform = navigator.platform || '';
+    const ua = navigator.userAgent || '';
+
+    // MacBook/iMac/Mac Mini detection
+    return (
+        /Mac|Macintosh/.test(platform) ||
+        /Mac OS X/.test(ua) ||
+        (platform === 'MacIntel' && navigator.maxTouchPoints === 0)
+    );
+};
+
+const isAppleDevice = () => {
+    return isIOS() || isMac();
 };
 
 // Detect mobile device
@@ -57,7 +88,7 @@ const VideoPlayerPopup = ({ movieData }) => {
     const containerRef = useRef(null);
     const controlsTimeoutRef = useRef(null);
     const [showControls, setShowControls] = useState(true);
-    const isIOSDevice = isIOS();
+    const isIOSDevice = isAppleDevice();
     const isMobileDevice = isMobile();
     const orientationLockedRef = useRef(false);
     const videoPlayStateRef = useRef(false);
