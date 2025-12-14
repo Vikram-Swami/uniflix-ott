@@ -6,8 +6,8 @@ import MovieDetailsPopup from "./components/MovieDetailsPopup";
 import VideoPlayerPopup from "./components/VideoPlayerPopup";
 import { usePlaylist } from "./components/usePlaylist";
 import { ToastContainer } from "react-toastify";
-import ProtectedRoute from "./authentication/ProtectedRoute";
-import Cookies from "js-cookie"
+// import ProtectedRoute from "./authentication/ProtectedRoute";
+// import Cookies from "js-cookie"
 import InstallPWA from "./components/InstallPWA";
 import DevToolsProtection from "./protection/DevToolsProtection";
 import Preloading from "./components/Preloading";
@@ -17,7 +17,7 @@ const Home = lazy(() => import("./pages/Home"));
 const Movies = lazy(() => import("./pages/Movies"));
 const TVShows = lazy(() => import("./pages/TVShows"));
 const Watchlist = lazy(() => import("./pages/Watchlist"));
-const Login = lazy(() => import("./authentication/Login"));
+// const Login = lazy(() => import("./authentication/Login"));
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -90,41 +90,43 @@ function App() {
   }, [isOpen]);
 
   return (
-    <>
-       <DevToolsProtection />
-      <Preloading />
-      {holePageLoading && <div className="fixed inset-0 bg-black/50 z-50000000">
-        <div className="shimmer2 h-1 w-full bg-sky-500"></div>
-      </div>}
-      {playlist && <VideoPlayerPopup movieData={movieData} />}
-      {isOpen && <div className="bg-[#00050d]/80 fixed inset-0 z-1000"></div>}
-      <div ref={popupRef}>
-        <Navbar setIsOpen={setIsOpen} movieDetailsPopupScroll={MovieDetailsPopupScroll} isOpen={isOpen} />
-        <SearchPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      </div>
-      {movieId && <MovieDetailsPopup setMovieDetailsPopupScroll={setMovieDetailsPopupScroll} setMovieData={setMovieData} movieData={movieData} />}
-      <Suspense
-        fallback={
-          <div className="flex justify-center items-end h-[50vh]">
-            <div className="w-10 md:w-14 h-10 md:h-14 border-5 border-t-black border-white rounded-full animate-spin"></div>
-          </div>
-        }>
-        <Routes>
-          <Route path="/" element={<Navigate to="/home" />} />
-          {/* <Route path="/login" element={<Login />} /> */}
-          {/* <Route path="/signup" element={<Login />} /> */}
-          <Route path="/home" element={<Home />} />
-          <Route path="/movies" element={<Movies />} />
-          <Route path="/series" element={<TVShows />} />
-          <Route path="/watch-list" element={<Watchlist />} />
+    <div className="min-h-screen flex flex-col">
+      <div className="grow">
+        <DevToolsProtection />
+        <Preloading />
+        {holePageLoading && <div className="fixed inset-0 bg-black/50 z-50000000">
+          <div className="shimmer2 h-1 w-full bg-sky-500"></div>
+        </div>}
+        {playlist && <VideoPlayerPopup movieData={movieData} />}
+        {isOpen && <div className="bg-[#00050d]/80 fixed inset-0 z-1000"></div>}
+        <div ref={popupRef}>
+          <Navbar setIsOpen={setIsOpen} movieDetailsPopupScroll={MovieDetailsPopupScroll} isOpen={isOpen} />
+          <SearchPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        </div>
+        {movieId && <MovieDetailsPopup setMovieDetailsPopupScroll={setMovieDetailsPopupScroll} setMovieData={setMovieData} movieData={movieData} />}
+        <Suspense
+          fallback={
+            <div className="flex justify-center items-center h-screen">
+              <div className="w-10 md:w-14 h-10 md:h-14 border-5 border-t-black border-white rounded-full animate-spin"></div>
+            </div>
+          }>
+          <Routes>
+            <Route path="/" element={<Navigate to="/home" />} />
+            {/* <Route path="/login" element={<Login />} /> */}
+            {/* <Route path="/signup" element={<Login />} /> */}
+            <Route path="/home" element={<Home />} />
+            <Route path="/movies" element={<Movies />} />
+            <Route path="/series" element={<TVShows />} />
+            <Route path="/watch-list" element={<Watchlist />} />
 
-          {/* Invalid route → redirect to /home */}
-          <Route path="*" element={<Navigate to="/home" replace />} />
-        </Routes>
-      </Suspense>
-      {!holePageLoading && pathname !== "/login" && pathname !== "/signup" && <InstallPWA />}
+            {/* Invalid route → redirect to /home */}
+            <Route path="*" element={<Navigate to="/home" replace />} />
+          </Routes>
+        </Suspense>
+      </div>
+      {!holePageLoading && <InstallPWA />}
       <ToastContainer theme="dark" position="top-center" />
-    </>
+    </div>
   );
 }
 
