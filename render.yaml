@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: uniflix-captcha-server
+    env: node
+    plan: starter # Free tier - upgrade if needed
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+    healthCheckPath: /health

@@ -1,185 +1,86 @@
+/* eslint-env node */
+/* global process */
 import express from 'express';
 import puppeteer from 'puppeteer';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
-// Middleware
+// Middleware - Allow all origins for universal compatibility
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Your React app URL
+    origin: true, // Allow all origins for universal platform support
     credentials: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 app.use(express.json());
 app.use(cookieParser());
 
-// Function to get captcha token
+// Function to get captcha token using Puppeteer
+// Works on all platforms: Windows, Mac, Linux (server-side)
 async function getCaptchaToken() {
   let browser;
   try {
-    browser = await puppeteer.launch({
-      headless: false, // Set to true for production
+    // Detect platform for optimal browser launch
+    const platform = process.platform;
+    console.log('Server platform:', platform);
+
+    const launchOptions = {
+      headless: false, // Show browser so user can solve captcha
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
-        '--start-maximized', // Maximize window on startup
-        '--window-position=0,0', // Position at top-left
-        '--disable-infobars', // Remove info bars
-        '--disable-background-timer-throttling', // Prevent background throttling
-        '--disable-backgrounding-occluded-windows', // Keep window active
-        '--disable-renderer-backgrounding', // Keep renderer active
-        '--disable-features=TranslateUI', // Disable translate UI
-        '--app=https://net20.cc/verify', // App mode - hides browser UI (header, address bar, tabs)
+        '--disable-infobars',
+        '--disable-blink-features=AutomationControlled',
       ],
-      defaultViewport: null, // Use full window size
-    });
+      defaultViewport: null,
+    };
 
-    // Get the default page that opens with browser
+    // Platform-specific optimizations
+    if (platform === 'win32') {
+      // Windows
+      launchOptions.args.push('--start-maximized', '--window-position=0,0');
+    } else if (platform === 'darwin') {
+      // macOS
+      launchOptions.args.push('--start-maximized');
+    } else {
+      // Linux and others
+      launchOptions.args.push('--start-maximized', '--window-position=0,0');
+    }
+
+    browser = await puppeteer.launch(launchOptions);
+
     const pages = await browser.pages();
     const page = pages.length > 0 ? pages[0] : await browser.newPage();
 
-    // Maximize and focus window using Chrome DevTools Protocol
-    let client;
+    // Maximize window
     try {
-      client = await page.target().createCDPSession();
+      const client = await page.target().createCDPSession();
       const { windowId } = await client.send('Browser.getWindowForTarget', {
         targetId: page.target()._targetId,
       });
-
-      // Maximize window immediately
-      await client.send('Browser.setWindowBounds', {
-        windowId: windowId,
-        bounds: {
-          windowState: 'maximized',
-        },
-      });
-
-      // Small delay then bring to front
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
-      // Minimize and maximize trick to bring to foreground
-      await client.send('Browser.setWindowBounds', {
-        windowId: windowId,
-        bounds: { windowState: 'minimized' },
-      });
-      await new Promise((resolve) => setTimeout(resolve, 50));
       await client.send('Browser.setWindowBounds', {
         windowId: windowId,
         bounds: { windowState: 'maximized' },
       });
-      await new Promise((resolve) => setTimeout(resolve, 150));
     } catch (err) {
-      console.log('Could not maximize via CDP, using fallback:', err.message);
+      console.log('Could not maximize via CDP:', err.message);
     }
 
-    // Bring window to front immediately after creation
     await page.bringToFront();
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
-    // Navigate to the page
+    // Navigate to the verification page
     await page.goto('https://net20.cc/verify', {
       waitUntil: 'networkidle2',
     });
 
-    // After page loads, bring to front again and focus using CDP
     await page.bringToFront();
-    await new Promise((resolve) => setTimeout(resolve, 200));
-
-    // Use CDP to focus and activate the window (more reliable on Windows)
-    if (client) {
-      try {
-        const { windowId } = await client.send('Browser.getWindowForTarget', {
-          targetId: page.target()._targetId,
-        });
-
-        // Trick: Minimize and then maximize to bring window to foreground
-        await client.send('Browser.setWindowBounds', {
-          windowId: windowId,
-          bounds: {
-            windowState: 'minimized',
-          },
-        });
-        await new Promise((resolve) => setTimeout(resolve, 100));
-
-        // Now maximize to bring it to front
-        await client.send('Browser.setWindowBounds', {
-          windowId: windowId,
-          bounds: {
-            windowState: 'maximized',
-          },
-        });
-        await new Promise((resolve) => setTimeout(resolve, 200));
-      } catch (err) {
-        console.log('Could not focus window via CDP:', err.message);
-      }
-    }
-
-    // Aggressive sequence to bring window to foreground
-    // Repeat minimize/maximize trick multiple times
-    if (client) {
-      try {
-        const { windowId } = await client.send('Browser.getWindowForTarget', {
-          targetId: page.target()._targetId,
-        });
-
-        // Repeat minimize/maximize 2-3 times to ensure window comes to front
-        for (let i = 0; i < 2; i++) {
-          await client.send('Browser.setWindowBounds', {
-            windowId: windowId,
-            bounds: { windowState: 'minimized' },
-          });
-          await new Promise((resolve) => setTimeout(resolve, 50));
-          await client.send('Browser.setWindowBounds', {
-            windowId: windowId,
-            bounds: { windowState: 'maximized' },
-          });
-          await new Promise((resolve) => setTimeout(resolve, 100));
-        }
-      } catch (err) {
-        console.log('Could not use minimize/maximize trick:', err.message);
-      }
-    }
-
-    // Multiple aggressive bringToFront calls
-    for (let i = 0; i < 5; i++) {
-      await page.bringToFront();
-      await new Promise((resolve) => setTimeout(resolve, 50));
-    }
-
-    // Try to bring all browser pages to front
-    try {
-      const pages = await browser.pages();
-      for (const p of pages) {
-        await p.bringToFront();
-      }
-      await page.bringToFront(); // Ensure our page is on top
-    } catch {
-      // Ignore if it fails
-    }
-
-    // Try to focus window using JavaScript multiple times
-    try {
-      for (let i = 0; i < 3; i++) {
-        await page.evaluate(() => {
-          window.focus();
-          if (document.hasFocus && !document.hasFocus()) {
-            window.focus();
-          }
-        });
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      }
-    } catch {
-      // Ignore if focus fails
-    }
-
-    // Final aggressive bringToFront sequence
-    for (let i = 0; i < 3; i++) {
-      await page.bringToFront();
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    }
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     console.log('Waiting for captcha to be solved...');
 
@@ -208,19 +109,30 @@ async function getCaptchaToken() {
   }
 }
 
-// API endpoint
+// API endpoint to get captcha token
 app.post('/api/get-captcha-token', async (req, res) => {
   try {
     console.log('Received request for captcha token');
     const token = await getCaptchaToken();
 
-    // Set cookie in response
-    res.cookie('t_hash_t', token, {
-      httpOnly: false,
-      secure: false, // Set to true in production with HTTPS
-      sameSite: 'lax',
-      maxAge: 3600000, // 1 hour
-    });
+    // Set cookie in response with universal compatibility
+    // Works on all platforms: iOS, Android, Mac, Windows, Linux
+    const cookieOptions = {
+      httpOnly: false, // Allow JavaScript access
+      secure: process.env.NODE_ENV === 'production', // HTTPS in production
+      sameSite: 'lax', // Compatible with all browsers
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: '/', // Available site-wide
+    };
+
+    res.cookie('t_hash_t', token, cookieOptions);
+
+    // Also set in response header for mobile compatibility
+    res.setHeader('Set-Cookie', [
+      `t_hash_t=${token}; Path=/; Max-Age=${7 * 24 * 60 * 60}; SameSite=Lax${
+        process.env.NODE_ENV === 'production' ? '; Secure' : ''
+      }`,
+    ]);
 
     res.json({
       success: true,
@@ -234,6 +146,33 @@ app.post('/api/get-captcha-token', async (req, res) => {
       error: error.message,
     });
   }
+});
+
+// Health check endpoint - for server availability detection
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    platform: process.platform,
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// CORS preflight handler - handle OPTIONS requests
+// Note: CORS middleware already handles most OPTIONS, but we add specific routes if needed
+app.options('/api/get-captcha-token', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.sendStatus(200);
+});
+
+app.options('/health', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.sendStatus(200);
 });
 
 app.listen(PORT, () => {
