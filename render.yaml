@@ -3,11 +3,17 @@ services:
     name: uniflix-captcha-server
     env: node
     plan: starter # Free tier - upgrade if needed
-    buildCommand: npm install
+    buildCommand: npm install && npx puppeteer browsers install chrome
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 3001
+      - key: RENDER
+        value: 'true'
+      - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
+        value: 'false'
+      - key: PUPPETEER_EXECUTABLE_PATH
+        value: ''
     healthCheckPath: /health
