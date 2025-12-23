@@ -27,9 +27,8 @@ body,
 html {
   @apply overflow-x-hidden;
 }
-::-webkit-scrollbar {
+body::-webkit-scrollbar {
   width: 0px;
-  /* height: 0px; */
 }
 
 .movie_details_popup_scroll {
@@ -46,6 +45,7 @@ html {
   background: linear-gradient(to bottom, #191e25cc, #191e25cc);
   backdrop-filter: blur(10px);
 }
+
 .hero_bg_leaner {
   background: linear-gradient(
     360deg,
@@ -55,6 +55,18 @@ html {
     rgba(0, 5, 13, 0.4) 68.44%,
     rgba(0, 5, 13, 0.199103) 84.29%,
     rgba(0, 5, 13, 0) 100%
+  );
+}
+
+.hero_bg_leaner3 {
+  background: linear-gradient(
+    360deg,
+    #181818 0%,
+    #181818c6 23.58%,
+    #18181899 45.06%,
+    #1818187b 68.44%,
+    #1818184d 84.29%,
+    #1818180c 100%
   );
 }
 .hero_bg_leaner_2 {
@@ -186,6 +198,9 @@ html {
 .movie_details:hover {
   @apply sm:scale-120 sm:-translate-y-[30px];
 }
+.movie_details.movie_details2 {
+  @apply sm:scale-150 sm:-translate-y-[40%];
+}
 
 .movie_details:hover .movie_details_box {
   @apply transition-all duration-300 ease-in-out sm:block;
@@ -195,6 +210,9 @@ html {
   fill: black;
 }
 
+.lang {
+  -webkit-text-stroke: 0.5px white;
+}
 .menu_icon path {
   @apply transition-all duration-300 ease-in-out;
 }
@@ -286,14 +304,29 @@ html {
   scrollbar-width: thin;
   scrollbar-color: rgb(60, 58, 58) #00050d;
 }
+.lang_slider2::-webkit-scrollbar {
+  height: 4px !important;
+  width: 100% !important;
+}
+.lang_slider2::-webkit-scrollbar-thumb {
+  @apply bg-red-700 rounded-full;
+}
+.lang_slider2::-webkit-scrollbar-track {
+  @apply bg-white/10 rounded-full;
+}
 
 .video-js video {
   height: 100dvh !important;
   font-size: 20px !important;
 }
 
+.video-js .vjs-menu-content {
+  scrollbar-width: thin !important;
+  scrollbar-color: #00a6f4 rgba(0, 128, 0, 0);
+}
+
 .video-js {
-  @apply min-h-[40px]! text-sm! md:text-[15px]! 2xl:text-[17px]!;
+  @apply min-h-10! text-sm! md:text-[15px]! 2xl:text-[17px]!;
 }
 
 .login_bg::after {
@@ -335,6 +368,21 @@ html {
 
 .video-js .vjs-volume-level {
   @apply bg-sky-500! rounded-full;
+}
+
+.more_cards::after {
+  background-image: linear-gradient(
+    198deg,
+    rgba(0, 0, 0, 0.9),
+    hsla(0, 0%, 9%, 0.5) 20%,
+    transparent 28%
+  );
+  bottom: 0;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 /* Disable text selection */
@@ -381,7 +429,7 @@ img {
     filter: brightness(0.9);
   }
   .mask_bottom2 {
-   -webkit-mask: radial-gradient(100% 11% at 50% 104%, transparent 51%, white 123%);
+    -webkit-mask: radial-gradient(100% 11% at 50% 104%, transparent 51%, white 123%);
     mask: radial-gradient(100% 11% at 50% 104%, transparent 51%, white 123%);
   }
 }
@@ -395,7 +443,6 @@ img {
 
 @media (max-width: 1200px) {
   .mask_bottom2 {
-    
   }
 }
 

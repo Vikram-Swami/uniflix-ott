@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getImageUrl, getMovieDetails, nextEpisode } from "../services/api";
 import { useWatchlist } from "../hooks/useWatchlist";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Check, ChevronDown, Plus, Share2 } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import MovieCard from "./MovieCard";
-import { Virtual, Navigation, FreeMode } from "swiper/modules";
+import {Navigation, FreeMode } from "swiper/modules";
 import { usePlaylist } from "./usePlaylist";
 import { loadRecp } from "../utils/recentPlays";
 import { ArrowIcon } from "../assets/icons";
@@ -320,11 +320,11 @@ ${pageUrl}`;
                             {imdb && <span>{imdb}</span>}
                             {<span>{movieData?.runtime}</span>}
                             {year && <span>{year}</span>}
-                            <span className="inline-block overflow-hidden xs:rounded-[4px] bg-[#fff3] px-1.5 xs:px-3 font-normal text-white text-[11px] xs:text-sm 2xl:text-[16px]">
+                            <span className="inline-block overflow-hidden xs:rounded-sm bg-[#fff3] px-1.5 xs:px-3 font-normal text-white text-[11px] xs:text-sm 2xl:text-[16px]">
                                 {movieData?.hdsd}
                             </span>
                             {rating && (
-                                <span className="inline-block overflow-hidden rounded-[2px] xs:rounded-[4px] bg-[#fff3] px-1.5 xs:px-3 font-normal text-white text-[11px] xs:text-sm 2xl:text-[16px]">
+                                <span className="inline-block overflow-hidden rounded-xs xs:rounded-sm bg-[#fff3] px-1.5 xs:px-3 font-normal text-white text-[11px] xs:text-sm 2xl:text-[16px]">
                                     {rating?.split("[")[1]?.split("]")[0] ? rating?.split("[")[1]?.split("]")[0] : rating}
                                 </span>
                             )}

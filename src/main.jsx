@@ -12,18 +12,21 @@ import { AuthProvider } from "./hooks/useAuth.jsx";
 import PlaylistProvider from "./components/usePlaylist.jsx";
 import { HelmetProvider } from 'react-helmet-async';
 import { PWAInstallProvider } from "./hooks/usePWAInstall.jsx";
+import OttProvider from "./hooks/useOtt.jsx";
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <AuthProvider>
       <PWAInstallProvider>
-        <PlaylistProvider>
-          <WatchlistProvider>
-            <HelmetProvider>
-              <App />
-            </HelmetProvider>
-          </WatchlistProvider>
-        </PlaylistProvider>
+        <OttProvider>
+          <PlaylistProvider>
+            <WatchlistProvider>
+              <HelmetProvider>
+                <App />
+              </HelmetProvider>
+            </WatchlistProvider>
+          </PlaylistProvider>
+        </OttProvider>
       </PWAInstallProvider>
     </AuthProvider>
   </BrowserRouter>

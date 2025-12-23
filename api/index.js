@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     const response = await fetch(targetUrl, {
       method: req.method,
       headers: {
-        ...req.headers, // 👈 सभी headers forward करें (cookies भी)
+        ...req.headers,
       },
       body: req.method !== "GET" && req.method !== "HEAD" ? JSON.stringify(req.body) : undefined,
     });

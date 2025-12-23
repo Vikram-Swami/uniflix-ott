@@ -44,6 +44,19 @@ export const fetchMovieInfo = async (id) => {
     throw error;
   }
 };
+
+// netflix
+export const fetchMovieInfo2 = async (id) => {
+  try {
+    const response = await fetch(`api2/mini-modal-info.php?id=${id}`);
+    if (!response.ok) throw new Error("Failed to fetch movie info");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching movie info:", error);
+    throw error;
+  }
+};
+
 export const searchMovie = async (query) => {
   try {
     const response = await fetch(`${BASE_URL}/search.php?s=${query}`);
@@ -54,6 +67,7 @@ export const searchMovie = async (query) => {
     throw error;
   }
 };
+
 export const getMovieDetails = async (id) => {
   try {
     const response = await fetch(`${BASE_URL}/post.php?id=${id}&t=1763834888`);
@@ -64,6 +78,19 @@ export const getMovieDetails = async (id) => {
     throw error;
   }
 };
+
+// netflix
+export const getMovieDetails2 = async (id) => {
+  try {
+    const response = await fetch(`api2/post.php?id=${id}&t=1763834888`);
+    if (!response.ok) throw new Error("Failed to fetch movie details");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching movie details:", error);
+    throw error;
+  }
+};
+
 export const nextEpisode = async (id, series, page) => {
   try {
     const response = await fetch(
@@ -77,7 +104,24 @@ export const nextEpisode = async (id, series, page) => {
   }
 };
 
+export const nextEpisode2 = async (id, series, page) => {
+  try {
+    const response = await fetch(
+      `api2/episodes.php?s=${id}&series=${series}&page=${page}&t=1763848157`
+    );
+    if (!response.ok) throw new Error("Failed to fetch next episode");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching next episode:", error);
+    throw error;
+  }
+};
+
 export const getImageUrl = (id) => {
   if (!id) return;
   return `https://imgcdn.kim/pv/341/${id}.jpg`;
+};
+export const getImageUrl2 = (id, h) => {
+  if (!id) return;
+  return `https://imgcdn.kim/poster/${h}/${id}.jpg`;
 };

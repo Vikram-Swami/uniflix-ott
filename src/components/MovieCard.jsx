@@ -173,4 +173,3 @@ const MovieCard = ({ id, index, ids, isHovering, setIsHovering, activeIndex, onH
 };
 
 export default React.memo(MovieCard);
-

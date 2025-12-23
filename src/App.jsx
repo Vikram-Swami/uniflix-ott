@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation, Navigate, useNavigate } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import Navbar from "./components/Navbar";
 import SearchPopup from "./components/SearchPopup";
@@ -7,30 +7,33 @@ import VideoPlayerPopup from "./components/VideoPlayerPopup";
 import { usePlaylist } from "./components/usePlaylist";
 import { ToastContainer } from "react-toastify";
 // import ProtectedRoute from "./authentication/ProtectedRoute";
-// import Cookies from "js-cookie"
+import Cookies from "js-cookie"
 import InstallPWA from "./components/InstallPWA";
 import DevToolsProtection from "./protection/DevToolsProtection";
 import Preloading from "./components/Preloading";
+import MovieDetailsNfPopup from "./components/MovieDetailsNfPopup";
+import Verify from "./components/Verify";
+import VideoPlayer from "./components/VideoPlayer";
 
 // 🔥 Lazy-loaded pages
 const Home = lazy(() => import("./pages/Home"));
+const HomeNf = lazy(() => import("./netflix/Home"));
 const Movies = lazy(() => import("./pages/Movies"));
 const TVShows = lazy(() => import("./pages/TVShows"));
 const Watchlist = lazy(() => import("./pages/Watchlist"));
-// const Login = lazy(() => import("./authentication/Login"));
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [MovieDetailsPopupScroll, setMovieDetailsPopupScroll] = useState(0);
   const [movieData, setMovieData] = useState(null);
   const popupRef = useRef(null);
+  const ott = "nf"
   const { playlist, holePageLoading, setPlaylist } = usePlaylist();
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
   };
   const query = useQuery();
   const movieId = query.get("movieId")
-  const { pathname } = useLocation()
   const p = query.get("p")
   useEffect(() => {
     const html = document.querySelector("html");
@@ -42,7 +45,6 @@ function App() {
       }
     }
   }, [isOpen]);
-
   useEffect(() => {
     function handleOverflow() {
       const html = document.querySelector("html");
@@ -92,37 +94,55 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="grow">
-        <DevToolsProtection />
+        {/* <DevToolsProtection /> */}
+        <VideoPlayer />
         <Preloading />
         {holePageLoading && <div className="fixed inset-0 bg-black/50 z-50000000">
           <div className="shimmer2 h-1 w-full bg-sky-500"></div>
         </div>}
-        {playlist && <VideoPlayerPopup movieData={movieData} />}
+        {/* {playlist && <VideoPlayerPopup movieData={movieData} />} */}
         {isOpen && <div className="bg-[#00050d]/80 fixed inset-0 z-1000"></div>}
         <div ref={popupRef}>
           <Navbar setIsOpen={setIsOpen} movieDetailsPopupScroll={MovieDetailsPopupScroll} isOpen={isOpen} />
-          <SearchPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
+          {/* <SearchPopup isOpen={isOpen} onClose={() => setIsOpen(false)} /> */}
         </div>
-        {movieId && <MovieDetailsPopup setMovieDetailsPopupScroll={setMovieDetailsPopupScroll} setMovieData={setMovieData} movieData={movieData} />}
-        <Suspense
-          fallback={
-            <div className="flex justify-center items-center h-screen">
-              <div className="w-10 md:w-14 h-10 md:h-14 border-5 border-t-black border-white rounded-full animate-spin"></div>
-            </div>
-          }>
-          <Routes>
-            <Route path="/" element={<Navigate to="/home" />} />
-            {/* <Route path="/login" element={<Login />} /> */}
-            {/* <Route path="/signup" element={<Login />} /> */}
-            <Route path="/home" element={<Home />} />
-            <Route path="/movies" element={<Movies />} />
-            <Route path="/series" element={<TVShows />} />
-            <Route path="/watch-list" element={<Watchlist />} />
-
-            {/* Invalid route → redirect to /home */}
-            <Route path="*" element={<Navigate to="/home" replace />} />
-          </Routes>
-        </Suspense>
+        {ott === "pv" ? <>
+          {movieId && <MovieDetailsPopup setMovieDetailsPopupScroll={setMovieDetailsPopupScroll} setMovieData={setMovieData} movieData={movieData} />}
+          <Suspense
+            fallback={
+              <div className="flex justify-center items-center h-screen">
+                <div className="w-10 md:w-14 h-10 md:h-14 border-5 border-t-black border-white rounded-full animate-spin"></div>
+              </div>
+            }>
+            <Routes>
+              <Route path="/" element={<Navigate to="/home" />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/movies" element={<Movies />} />
+              <Route path="/series" element={<TVShows />} />
+              <Route path="/watch-list" element={<Watchlist />} />
+              <Route path="*" element={<Navigate to="/home" replace />} />
+            </Routes>
+          </Suspense>
+        </> :
+          <>
+            {movieId && <MovieDetailsNfPopup setMovieDetailsPopupScroll={setMovieDetailsPopupScroll} setMovieData={setMovieData} movieData={movieData} />}
+            <Suspense
+              fallback={
+                <div className="flex justify-center items-center h-screen">
+                  <div className="w-10 md:w-14 h-10 md:h-14 border-5 border-t-black border-white rounded-full animate-spin"></div>
+                </div>
+              }>
+              <Routes>
+                <Route path="/" element={<Navigate to="/home" />} />
+                <Route path="/home" element={<HomeNf />} />
+                <Route path="/verify" element={<Verify />} />
+                <Route path="/movies" element={<Movies />} />
+                <Route path="/series" element={<TVShows />} />
+                <Route path="/watch-list" element={<Watchlist />} />
+                {/* <Route path="*" element={<Navigate to="/home" replace />} /> */}
+              </Routes>
+            </Suspense>
+          </>}
       </div>
       {!holePageLoading && <InstallPWA />}
       <ToastContainer theme="dark" position="top-center" />

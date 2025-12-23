@@ -66,7 +66,7 @@ const TVShows = () => {
       <Helmet>
         <title>Series - Uniflix</title>
         <meta name="description" content="Browse unlimited series on Uniflix. Watch latest Hollywood, Bollywood series online." />
-        <meta name="keywords" content="watch series online, bollywood series, hollywood series" />
+        <meta name="keywords" content="watch series online, bollywood series, hollywood series, movies, series, streaming, watch online, uniflix, prime video, netflix, live movies, sports, live tv, all series watch online movies,watch online series, free movies, watch unlimited movies, watch unlimited series , all movies free, all series free, jio hotstar, jio hotstar moveis, hotstar movies, hotstar , jio hotstar all movies, jio hotstar all series, disney movies, anime moveis , cartoon , viral movies, tranding movies, hindi movies, Dhurandhar, Dhurandhar movie download, watch online ,download all movie for free" />
         <meta property="og:title" content="Series - Uniflix" />
         <meta property="og:description" content="Browse unlimited series on Uniflix" />
         <meta property="og:url" content="https://uniflix.fun/series" />

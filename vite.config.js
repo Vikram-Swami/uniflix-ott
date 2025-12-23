@@ -127,6 +127,17 @@ export default defineConfig({
           });
         },
       },
+      "/api/media7": {
+        target: "https://s01.freecdn200.top",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/media7/, ""),
+        configure: (proxy, _options) => {
+          proxy.on("proxyReq", (proxyReq, req, _res) => {
+            proxyReq.setHeader("Referer", "https://net51.cc/");
+            proxyReq.setHeader("Origin", "https://net51.cc");
+          });
+        },
+      },
       "/api/media": {
         target: "https://s11.nm-cdn8.top",
         changeOrigin: true,
@@ -143,10 +154,35 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/img\//, ""),
       },
+      "/api2": {
+        target: "https://net20.cc",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api2/, ""),
+        secure: true,
+        configure: (proxy, _options) => {
+          proxy.on("proxyReq", (proxyReq, req, _res) => {
+            console.log("Sending Request to Target:", req.method, req.url);
+
+            // 🔥 Add your static cookie here
+            proxyReq.setHeader(
+              "Cookie",
+              "t_hash_t=76e967a991b05eb57f9c018629fe7146%3A%3Ae6fd472a577c8d5f109c1f03d97e88d3%3A%3A1766424139%3A%3Ani"
+            );
+          });
+
+          proxy.on("proxyRes", (proxyRes, req, _res) => {
+            console.log("Received Response from Target:", proxyRes.statusCode, req.url);
+          });
+
+          proxy.on("error", (err) => {
+            console.log("proxy error", err);
+          });
+        },
+      },
       "/api": {
         target: "https://net51.cc",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, "/pv"),
+        rewrite: (path) => path.replace(/^\/api/, ""),
         secure: true,
         configure: (proxy, _options) => {
           proxy.on("error", (err, _req, _res) => {

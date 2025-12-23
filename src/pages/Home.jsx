@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import HeroSlider from '../components/HeroSlider';
 import RecentSwiper from '../components/RecentSwiper';
-import LazyMovieRow from '../components/LazyMovieRow'; // ← Import karo
+import LazyMovieRow from '../components/LazyMovieRow';
 import { fetchHomepage } from '../services/api';
 import { usePlaylist } from '../components/usePlaylist';
 import { Helmet } from 'react-helmet-async';
@@ -54,7 +54,7 @@ const Home = () => {
       <Helmet>
         <title>Home - Uniflix</title>
         <meta name="description" content="Browse unlimited movies and series on Uniflix. Watch latest Hollywood, Bollywood movies and series online." />
-        <meta name="keywords" content="watch movies online, bollywood movies, hollywood movies, watch series online, bollywood series, hollywood series" />
+        <meta name="keywords" content="Dhurandhar, Dhurandhar movie download,watch series online, bollywood series, hollywood series,watch movies online, bollywood movies, hollywood movies, movies, series, streaming, watch online, uniflix, prime video, netflix, live movies, sports, live tv, all series watch online movies,watch online series, free movies, watch unlimited movies, watch unlimited series , all movies free, all series free, jio hotstar, jio hotstar moveis, hotstar movies, hotstar , jio hotstar all movies, jio hotstar all series, disney movies, anime moveis , cartoon , viral movies, tranding movies, hindi movies, watch online ,download all movie for free" />
         <meta property="og:title" content="Home - Uniflix" />
         <meta property="og:description" content="Browse unlimited movies and series on Uniflix" />
         <meta property="og:url" content="https://uniflix.fun/home" />

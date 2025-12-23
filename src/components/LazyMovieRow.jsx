@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import MovieRow from '../components/MovieRow';
+import { useOtt } from "../hooks/useOtt";
+import MovieRow2 from "./MovieRow2";
 
 const LazyMovieRow = ({ title, movieIds }) => {
   const [isVisible, setIsVisible] = useState(false);
   const rowRef = useRef(null);
-
+  const { ott } = useOtt()
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -34,9 +36,9 @@ const LazyMovieRow = ({ title, movieIds }) => {
 
   return (
     <div ref={rowRef}>
-      {isVisible ? (
+      {isVisible && ott === "pv" ? (
         <MovieRow title={title} movieIds={movieIds} />
-      ) : (
+      ) : isVisible && ott === "nf" ? <MovieRow2 title={title} movieIds={movieIds} /> : (
         <div className="h-[300px] flex items-center justify-center">
           <div className="text-gray-500">Loading...</div>
         </div>
