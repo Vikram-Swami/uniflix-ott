@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 export default function CaptchaTokenSystem() {
@@ -11,7 +10,7 @@ export default function CaptchaTokenSystem() {
   const getTokenFromBackend = async () => {
     setLoading(true);
     setStatus('🔄 Getting token from net20.cc...');
-    
+
     try {
       const response = await fetch('http://localhost:3001/api/get-captcha-token', {
         method: 'POST',
@@ -22,13 +21,13 @@ export default function CaptchaTokenSystem() {
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
         setToken(data.token);
         setStatus('✅ Token received successfully!');
-        
+
         // Set cookie in your domain
-        document.cookie = `t_hash_t=${data.token}; path=/; max-age=3600`;
+        document.cookie =`t_hash_t = ${ data.token }; path =/; max-age=3600`;
       } else {
         setStatus('❌ Failed to get token: ' + data.error);
       }
@@ -96,19 +95,19 @@ export default function CaptchaTokenSystem() {
             }}>
               <div># Step 1: Create backend folder</div>
               <div>mkdir captcha-backend && cd captcha-backend</div>
-              <div><br/></div>
+              <div><br /></div>
               <div># Step 2: Initialize Node.js project</div>
               <div>npm init -y</div>
-              <div><br/></div>
+              <div><br /></div>
               <div># Step 3: Install dependencies</div>
               <div>npm install express puppeteer cors cookie-parser</div>
-              <div><br/></div>
+              <div><br /></div>
               <div># Step 4: Create server.js file (code below)</div>
-              <div><br/></div>
+              <div><br /></div>
               <div># Step 5: Run server</div>
               <div>node server.js</div>
             </div>
-            <button 
+            <button
               onClick={() => setShowSetup(false)}
               style={{
                 padding: '10px 20px',
@@ -145,7 +144,7 @@ export default function CaptchaTokenSystem() {
             fontSize: '13px',
             lineHeight: '1.6'
           }}>
-{`const express = require('express');
+            {`const express = require('express');
 const puppeteer = require('puppeteer');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -233,7 +232,7 @@ app.post('/api/get-captcha-token', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(\`Server running on http://localhost:\${PORT}\`);
+  console.log(\Server running on http://localhost:\${PORT}\);
   console.log('Waiting for requests...');
 });`}
           </pre>
@@ -252,10 +251,10 @@ app.listen(PORT, () => {
 
           {status && (
             <div style={{
-              background: status.includes('❌') ? '#f8d7da' : 
-                         status.includes('✅') ? '#d4edda' : '#d1ecf1',
-              color: status.includes('❌') ? '#721c24' : 
-                     status.includes('✅') ? '#155724' : '#0c5460',
+              background: status.includes('❌') ? '#f8d7da' :
+                status.includes('✅') ? '#d4edda' : '#d1ecf1',
+              color: status.includes('❌') ? '#721c24' :
+                status.includes('✅') ? '#155724' : '#0c5460',
               padding: '15px',
               borderRadius: '8px',
               marginBottom: '20px',
