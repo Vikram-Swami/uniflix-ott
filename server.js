@@ -1,5 +1,3 @@
-/* eslint-env node */
-/* global process */
 import express from "express";
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
