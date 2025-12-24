@@ -317,5 +317,5 @@ app.post("/api/clear-cache", (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log("🔒 Captcha bypass mode: Stealth + Anti-detection");
-  console.log("💾 Token caching: Enabled (6 days)");
+  console.log("💾 Token caching: Enabled (65 days)");
 });
