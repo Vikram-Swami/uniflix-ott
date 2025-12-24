@@ -39,7 +39,7 @@ const MyComponent = () => {
     // Update this with your deployed server URL
     return (
       import.meta.env.VITE_SERVER_URL ||
-      'https://uniflix-ott.onrender.com' // Replace with your deployed URL
+      'https://uniflix-captcha-server-production.up.railway.app' // Replace with your deployed URL
     );
   };
 
