@@ -167,6 +167,11 @@ const MyComponent = () => {
     }
   };
 
+  const checkCookies = () => {
+    const cookies = document.cookie;
+    alert(cookies || 'No cookies found');
+  };
+
   // Function to get token from server using Puppeteer (works on all platforms)
   const getTokenFromServer = async () => {
     setLoading(true);
@@ -196,7 +201,7 @@ const MyComponent = () => {
         credentials: 'include',
         signal: controller.signal,
       });
-
+      console.log(response)
       clearTimeout(timeoutId);
 
       if (!response.ok) {
@@ -308,6 +313,23 @@ const MyComponent = () => {
           ) : (
             <span>🔑 Get Token (Works on {platform || 'All'} Platforms)</span>
           )}
+        </button>
+
+        <button
+          onClick={checkCookies}
+          style={{
+            width: '100%',
+            padding: '12px',
+            background: '#28a745',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            cursor: 'pointer'
+          }}
+        >
+          🍪 Check Current Cookies
         </button>
         <div style={{ fontSize: '12px', color: '#999', lineHeight: '1.5' }}>
           <p style={{ margin: '5px 0' }}>
