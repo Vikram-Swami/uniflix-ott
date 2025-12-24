@@ -10,7 +10,7 @@ puppeteer.use(
   RecaptchaPlugin({
     provider: {
       id: "2captcha",
-      token: "OPTIONAL_API_KEY",
+      token: process.env.CAPTCHA_API_KEY || "",
     },
     visualFeedback: true,
   })
@@ -19,6 +19,7 @@ puppeteer.use(
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// CORS - Allow all origins
 app.use(
   cors({
     origin: true,
@@ -27,17 +28,17 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
-// Token cache with expiry
+// Token cache
 const tokenCache = {
   token: null,
   expiresAt: null,
   cookies: null,
 };
 
-// Check if cached token is still valid
 function isCachedTokenValid() {
   return false;
 }
@@ -45,12 +46,10 @@ function isCachedTokenValid() {
 async function getCaptchaToken() {
   let browser;
   try {
+    // Check cache first
     if (isCachedTokenValid()) {
-      console.log(
-        "✅ Using cached token (valid for " +
-          Math.floor((tokenCache.expiresAt - Date.now()) / 1000 / 60) +
-          " minutes)"
-      );
+      const minutesLeft = Math.floor((tokenCache.expiresAt - Date.now()) / 1000 / 60);
+      console.log(`✅ Using cached token (valid for ${minutesLeft} minutes)`);
       return {
         token: tokenCache.token,
         cookies: tokenCache.cookies,
@@ -58,14 +57,12 @@ async function getCaptchaToken() {
       };
     }
 
-    const platform = process.platform;
+    const isRender = Boolean(process.env.RENDER);
+    const isRailway = Boolean(process.env.RAILWAY_ENVIRONMENT);
     const isProduction = process.env.NODE_ENV === "production";
-    const isRender = process.env.RENDER == true || process.env.RENDER_SERVICE_NAME;
-    const isRailway = process.env.RAILWAY_ENVIRONMENT !== undefined;
     const isCloud = isRender || isRailway || isProduction;
 
-    console.log("🌐 Server platform:", platform);
-    console.log("☁️  Cloud environment:", isCloud);
+    console.log("🌐 Environment:", { isRender, isRailway, isProduction, isCloud });
 
     const launchOptions = {
       headless: "new",
@@ -80,33 +77,18 @@ async function getCaptchaToken() {
         "--disable-blink-features=AutomationControlled",
         "--disable-features=IsolateOrigins,site-per-process",
         "--disable-web-security",
-        "--disable-features=VizDisplayCompositor",
         "--window-size=1920,1080",
         "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       ],
-      defaultViewport: null,
     };
 
-    if (isCloud || platform === "linux") {
+    if (isCloud) {
       launchOptions.args.push(
         "--single-process",
         "--disable-extensions",
         "--disable-background-networking",
-        "--disable-background-timer-throttling",
-        "--disable-backgrounding-occluded-windows",
-        "--disable-breakpad",
-        "--disable-client-side-phishing-detection",
-        "--disable-default-apps",
-        "--disable-hang-monitor",
-        "--disable-popup-blocking",
-        "--disable-prompt-on-repost",
-        "--disable-sync",
-        "--disable-translate",
-        "--metrics-recording-only",
         "--mute-audio",
-        "--no-crash-upload",
         "--no-default-browser-check",
-        "--no-pings",
         "--password-store=basic",
         "--use-mock-keychain"
       );
@@ -116,29 +98,12 @@ async function getCaptchaToken() {
     browser = await puppeteer.launch(launchOptions);
     const page = await browser.newPage();
 
-    // Anti-detection measures
+    // Anti-detection
     await page.evaluateOnNewDocument(() => {
-      Object.defineProperty(navigator, "webdriver", {
-        get: () => false,
-      });
-
-      Object.defineProperty(navigator, "plugins", {
-        get: () => [1, 2, 3, 4, 5],
-      });
-
-      Object.defineProperty(navigator, "languages", {
-        get: () => ["en-US", "en"],
-      });
-
-      window.chrome = {
-        runtime: {},
-      };
-
-      const originalQuery = window.navigator.permissions.query;
-      window.navigator.permissions.query = (parameters) =>
-        parameters.name === "notifications"
-          ? Promise.resolve({ state: Notification.permission })
-          : originalQuery(parameters);
+      Object.defineProperty(navigator, "webdriver", { get: () => false });
+      Object.defineProperty(navigator, "plugins", { get: () => [1, 2, 3, 4, 5] });
+      Object.defineProperty(navigator, "languages", { get: () => ["en-US", "en"] });
+      window.chrome = { runtime: {} };
     });
 
     await page.setViewport({ width: 1920, height: 1080 });
@@ -153,69 +118,45 @@ async function getCaptchaToken() {
       timeout: 60000,
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    console.log("🔍 Page loaded. Attempting automatic captcha bypass...");
+    console.log("🔍 Checking for captcha...");
+    const captchaExists = await page.evaluate(() => {
+      return document.querySelector('iframe[src*="recaptcha"]') !== null;
+    });
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+    if (captchaExists) {
+      console.log("🤖 reCAPTCHA detected. Attempting to solve...");
 
-      const captchaExists = await page.evaluate(() => {
-        return document.querySelector('iframe[src*="recaptcha"]') !== null;
-      });
-
-      if (captchaExists) {
-        console.log("🤖 reCAPTCHA detected. Attempting to solve...");
-
-        try {
-          const recaptchaFrame = page.frames().find((frame) => frame.url().includes("recaptcha"));
-          if (recaptchaFrame) {
-            await recaptchaFrame.click(".recaptcha-checkbox-border");
-            console.log("✅ Clicked reCAPTCHA checkbox");
-            await new Promise((resolve) => setTimeout(resolve, 3000));
-          }
-        } catch (e) {
-          console.log("❌ Checkbox click failed:", e.message);
-        }
-
-        try {
-          await page.solveRecaptchas();
-          console.log("🔧 Attempted plugin-based solving");
+      // Try clicking checkbox
+      try {
+        const frames = page.frames();
+        const recaptchaFrame = frames.find((f) => f.url().includes("recaptcha"));
+        if (recaptchaFrame) {
+          await recaptchaFrame.click(".recaptcha-checkbox-border");
+          console.log("✅ Clicked checkbox");
           await new Promise((resolve) => setTimeout(resolve, 3000));
-        } catch (e) {
-          console.log("⚠️  Plugin solving not available:", e.message);
         }
+      } catch (e) {
+        console.log("❌ Checkbox click failed:", e.message);
       }
-    } catch (error) {
-      console.log("⚠️  Captcha handling error:", error.message);
+
+      // Try plugin solve
+      try {
+        await page.solveRecaptchas();
+        console.log("🔧 Plugin solve attempted");
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+      } catch (e) {
+        console.log("⚠️  Plugin not available:", e.message);
+      }
     }
 
     console.log("⏳ Waiting for token cookie...");
-    try {
-      await page.waitForFunction(() => document.cookie.includes("t_hash_t"), {
-        timeout: 180000,
-        polling: 1000,
-      });
-      console.log("🎉 Cookie detected!");
-    } catch (timeoutError) {
-      const cookies = await page.cookies();
-      const tokenCookie = cookies.find((c) => c.name === "t_hash_t");
+    await page.waitForFunction(() => document.cookie.includes("t_hash_t"), {
+      timeout: 180000,
+      polling: 1000,
+    });
 
-      if (tokenCookie) {
-        console.log("✅ Cookie found despite timeout!");
-      } else {
-        console.error(
-          "❌ Available cookies:",
-          cookies.map((c) => c.name)
-        );
-        throw new Error(
-          "Captcha could not be solved automatically. " +
-            "This site requires manual verification or a paid captcha service."
-        );
-      }
-    }
-
-    // Extract ALL cookies from net20.cc domain
     const allCookies = await page.cookies();
     const tokenCookie = allCookies.find((c) => c.name === "t_hash_t");
 
@@ -223,9 +164,9 @@ async function getCaptchaToken() {
       throw new Error("Token not found in cookies");
     }
 
-    console.log("🎯 Token extracted successfully:", tokenCookie.value.substring(0, 20) + "...");
+    console.log("🎯 Token extracted:", tokenCookie.value.substring(0, 20) + "...");
 
-    // Cache the token for 6 days
+    // Cache for 6 days
     const sixDays = 6 * 24 * 60 * 60 * 1000;
     tokenCache.token = tokenCookie.value;
     tokenCache.expiresAt = Date.now() + sixDays;
@@ -239,7 +180,7 @@ async function getCaptchaToken() {
       fromCache: false,
     };
   } catch (error) {
-    console.error("❌ Error getting token:", error);
+    console.error("❌ Error:", error.message);
     throw error;
   } finally {
     if (browser) {
@@ -248,46 +189,37 @@ async function getCaptchaToken() {
   }
 }
 
-// API endpoint
+// Get token endpoint
 app.post("/api/get-captcha-token", async (req, res) => {
   try {
-    console.log("📨 Received request for captcha token");
+    console.log("📨 Token request received");
     const result = await getCaptchaToken();
 
-    // Set cookie with proper domain settings for net20.cc
-    const cookieOptions = {
-      httpOnly: true,
+    res.cookie("t_hash_t", result.token, {
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: "/",
-    };
+    });
 
-    res.cookie("t_hash_t", result.token, cookieOptions);
     res.json({
       success: true,
       token: result.token,
       fromCache: result.fromCache,
-      message: result.fromCache ? "Using cached token" : "Token extracted and cached successfully",
+      message: result.fromCache ? "Using cached token" : "New token extracted",
       expiresAt: tokenCache.expiresAt ? new Date(tokenCache.expiresAt).toISOString() : null,
-      ccc: result,
-      allCookies: result.cookies.map((c) => ({
-        name: c.name,
-        value: c.value.substring(0, 20) + "...",
-        domain: c.domain,
-      })),
     });
   } catch (error) {
-    console.error("❌ API Error:", error);
+    console.error("❌ API Error:", error.message);
     res.status(500).json({
       success: false,
       error: error.message,
-      suggestion: "Consider using a captcha solving service like 2captcha for reliable results",
     });
   }
 });
 
-// Health check endpoint
+// Health check
 app.get("/health", (req, res) => {
   res.json({
     status: "ok",
@@ -298,7 +230,7 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Clear cache endpoint (for testing)
+// Clear cache
 app.post("/api/clear-cache", (req, res) => {
   tokenCache.token = null;
   tokenCache.expiresAt = null;
@@ -306,8 +238,21 @@ app.post("/api/clear-cache", (req, res) => {
   res.json({ success: true, message: "Cache cleared" });
 });
 
+// Root endpoint
+app.get("/", (req, res) => {
+  res.json({
+    service: "Captcha Token Service",
+    status: "running",
+    endpoints: {
+      getToken: "POST /api/get-captcha-token",
+      health: "GET /health",
+      clearCache: "POST /api/clear-cache",
+    },
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log("🔒 Captcha bypass mode: Stealth + Anti-detection");
-  console.log("💾 Token caching: Enabled (65 days)");
+  console.log(`🔒 Environment: ${process.env.NODE_ENV || "development"}`);
+  console.log("💾 Token caching: Enabled");
 });
