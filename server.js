@@ -62,7 +62,7 @@ async function getCaptchaToken() {
 
     const platform = process.platform;
     const isProduction = process.env.NODE_ENV === "production";
-    const isRender = process.env.RENDER === "true" || process.env.RENDER_SERVICE_NAME;
+    const isRender = process.env.RENDER == true || process.env.RENDER_SERVICE_NAME;
     const isRailway = process.env.RAILWAY_ENVIRONMENT !== undefined;
     const isCloud = isRender || isRailway || isProduction;
 
