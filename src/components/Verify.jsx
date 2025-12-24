@@ -315,7 +315,7 @@ const MyComponent = () => {
             <span>🔑 Get Token (Works on {platform || 'All'} Platforms)</span>
           )}
         </button>
-        <h1 className="text-5xl">Token : {token}</h1>
+        <h1 className="text-5xl">Token : <span className="text-base!">{token}</span></h1>
         <div style={{ fontSize: '12px', color: '#999', lineHeight: '1.5' }}>
           <p style={{ margin: '5px 0' }}>
             <strong>How it works:</strong>
