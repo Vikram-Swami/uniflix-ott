@@ -41,18 +41,12 @@ const tokenCache = {
 
 // Check if cached token is still valid
 function isCachedTokenValid() {
-  if (!tokenCache.token || !tokenCache.expiresAt) {
-    return false;
-  }
-
-  const now = Date.now();
-  return tokenCache.expiresAt > now;
+  return false;
 }
 
 async function getCaptchaToken() {
   let browser;
   try {
-    // Check cache first
     if (isCachedTokenValid()) {
       console.log(
         "✅ Using cached token (valid for " +
