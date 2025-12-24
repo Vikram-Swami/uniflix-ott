@@ -7,6 +7,7 @@ const MyComponent = () => {
   const [loading, setLoading] = useState(false);
   const [platform, setPlatform] = useState('');
   const pollingIntervalRef = useRef(null);
+  const [token, setToken] = useState("")
 
   // Detect platform
   useEffect(() => {
@@ -201,7 +202,6 @@ const MyComponent = () => {
         credentials: 'include',
         signal: controller.signal,
       });
-      console.log(response)
       clearTimeout(timeoutId);
 
       if (!response.ok) {
@@ -212,6 +212,7 @@ const MyComponent = () => {
 
       if (data.success && data.token) {
         // Store token in cookies with platform-specific settings
+        setToken(data.token)
         const cookieOptions = {
           expires: 7, // 7 days
           path: '/',
@@ -314,23 +315,7 @@ const MyComponent = () => {
             <span>🔑 Get Token (Works on {platform || 'All'} Platforms)</span>
           )}
         </button>
-
-        <button
-          onClick={checkCookies}
-          style={{
-            width: '100%',
-            padding: '12px',
-            background: '#28a745',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            cursor: 'pointer'
-          }}
-        >
-          🍪 Check Current Cookies
-        </button>
+        <h1 className="text-5xl">Token : {token}</h1>
         <div style={{ fontSize: '12px', color: '#999', lineHeight: '1.5' }}>
           <p style={{ margin: '5px 0' }}>
             <strong>How it works:</strong>
