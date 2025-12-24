@@ -1,7 +1,0 @@
-# Create .renderignore
-cat > .renderignore << EOF
-eslint.config.js
-.eslintrc*
-.vscode/
-*.log
-EOF
