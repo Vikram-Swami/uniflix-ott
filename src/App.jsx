@@ -95,7 +95,7 @@ function App() {
     <div className="min-h-screen flex flex-col">
       <div className="grow">
         {/* <DevToolsProtection /> */}
-        <VideoPlayer />
+        {/* <VideoPlayer /> */}
         <Preloading />
         {holePageLoading && <div className="fixed inset-0 bg-black/50 z-50000000">
           <div className="shimmer2 h-1 w-full bg-sky-500"></div>

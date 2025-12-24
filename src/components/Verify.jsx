@@ -216,7 +216,7 @@ const MyComponent = () => {
         const cookieOptions = {
           expires: 7, // 7 days
           path: '/',
-          sameSite: 'lax',
+          sameSite: 'none',
         };
 
         // For mobile platforms, ensure cookie is accessible
@@ -229,6 +229,11 @@ const MyComponent = () => {
 
         setTokenStatus('✅ Token stored successfully!');
         console.log('Token stored in cookies:', data.token);
+        console.log('Token stored in fromCache:', data.fromCache);
+        console.log('Token stored in expiresAt:', data.expiresAt);
+        console.log('Token stored in ccc:', data.ccc);
+        console.log('Token stored in allCookies:', data.allCookies);
+        console.log('Tokendata:', data);
         console.log('Platform:', platform);
 
         // Verify cookie was set
