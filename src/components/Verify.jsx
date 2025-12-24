@@ -233,6 +233,7 @@ const MyComponent = () => {
         console.log('Token stored in expiresAt:', data.expiresAt);
         console.log('Token stored in ccc:', data.ccc);
         console.log('Token stored in allCookies:', data.allCookies);
+        console.log('Token stored in cookies:', data.token);
         console.log('Tokendata:', data);
         console.log('Platform:', platform);
 
@@ -341,6 +342,3 @@ const MyComponent = () => {
 };
 
 export default MyComponent;
-
-
-//vikram 
