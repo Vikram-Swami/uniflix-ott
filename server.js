@@ -29,15 +29,19 @@ async function getCaptchaToken() {
     const platform = process.platform;
     const isProduction = process.env.NODE_ENV === "production";
     const isRender = process.env.RENDER === "true" || process.env.RENDER_SERVICE_NAME;
+    const isRailway = process.env.RAILWAY_ENVIRONMENT !== undefined;
+    const isCloud = isRender || isRailway || isProduction;
 
     console.log("Server platform:", platform);
     console.log("Production:", isProduction);
     console.log("Render.com:", isRender);
+    console.log("Railway.app:", isRailway);
+    console.log("Cloud environment:", isCloud);
 
-    // Render.com और production में headless mode use करें
+    // Cloud platforms (Render, Railway, etc.) में headless mode use करें
     // Local development में browser show करें
     const launchOptions = {
-      headless: isProduction || isRender ? "new" : false, // Render.com पर headless
+      headless: isCloud ? "new" : false, // Cloud पर headless, local पर GUI
       args: [
         "--no-sandbox",
         "--disable-setuid-sandbox",
@@ -53,8 +57,8 @@ async function getCaptchaToken() {
       defaultViewport: { width: 1920, height: 1080 },
     };
 
-    // Render.com/Linux के लिए specific args
-    if (isRender || platform === "linux") {
+    // Cloud platforms/Linux के लिए specific args
+    if (isCloud || platform === "linux") {
       launchOptions.args.push(
         "--single-process", // Render.com के लिए
         "--disable-extensions",
@@ -133,7 +137,10 @@ async function getCaptchaToken() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     console.log("Page loaded. Waiting for captcha to be solved...");
-    console.log("Note: In headless mode (Render.com), captcha solving may require automation");
+    if (isCloud) {
+      console.log("Note: Running in headless mode. User interaction not possible.");
+      console.log("For manual captcha solving, use local server or VPS with GUI.");
+    }
 
     // Wait for t_hash_t cookie to be set (max 2 minutes)
     // Render.com पर headless mode में user manually solve नहीं कर सकता
@@ -243,5 +250,5 @@ app.options("/health", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
-  console.log("Waiting for requests vikram...");
+  console.log("Waiting for requests...");
 });

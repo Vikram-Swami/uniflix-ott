@@ -1,0 +1,15 @@
+# Railway.app Nixpacks configuration for better Puppeteer support
+[phases.setup]
+nixPkgs = ['nodejs_20', 'chromium']
+
+[phases.install]
+cmds = [
+  'npm ci',
+  'npx puppeteer browsers install chrome'
+]
+
+[phases.build]
+cmds = ['echo "Build complete"']
+
+[start]
+cmd = 'node server.js'
