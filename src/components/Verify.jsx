@@ -354,7 +354,7 @@ export default function Verify() {
   return (
     <div className="mt-20">
       <ReCAPTCHA
-        sitekey="6LeHJTgsAAAAALnuAFKdhUZp0AFi0ZwJMu95Mim8"
+        sitekey="6LepeTgsAAAAAPyC7Sar7kamaE-73XHFZO0xxTB0"
         onChange={onChange}
       />
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis, necessitatibus? Consequatur assumenda omnis eaque labore temporibus. Placeat at ea quos nulla delectus consequatur aspernatur omnis et deleniti autem! Numquam dolorem doloribus adipisci iusto consequatur odit dolores sit neque tenetur beatae quidem earum quo est cum minus perferendis quod placeat quos dolorum, nemo, voluptatum totam quia excepturi veritatis! Temporibus aspernatur non qui obcaecati, itaque minus expedita atque, maxime quis ipsum esse ab quod dolor. Doloremque, similique. Dolore illo, saepe minima omnis excepturi magnam accusamus, cupiditate, aut ullam fuga aliquid reiciendis est debitis laudantium consequatur quas modi culpa distinctio impedit placeat consequuntur.</p>
