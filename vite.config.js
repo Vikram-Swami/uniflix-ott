@@ -166,9 +166,7 @@ export default defineConfig({
             // 🔥 Add your static cookie here
             proxyReq.setHeader(
               "Cookie",
-              `t_hash_t=${decodeURIComponent(
-                "c906c55e57d0a2d20824cf03780ba78d%253A%253A8bcbf979400e4c3c71d76a5df60c1dba%253A%253A1766617277%253A%253Ani"
-              )}`
+              "t_hash_t=f99555565205a61253b9bf1e4b4ead52%3A%3A3d18ca8c6f3b544fab88fcf80b75e89f%3A%3A1766576969%3A%3Ani"
             );
           });
           //           "f99555565205a61253b9bf1e4b4ead52%3A%3A3d18ca8c6f3b544fab88fcf80b75e89f%3A%3A1766576969%3A%3Ani"

@@ -40,10 +40,7 @@ const tokenCache = {
 
 // Check if cached token is still valid
 function isCachedTokenValid() {
-  if (!tokenCache.token || !tokenCache.expiresAt) {
-    return false;
-  }
-  return Date.now() < tokenCache.expiresAt;
+  return false;
 }
 
 // India proxy configuration
